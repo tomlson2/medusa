@@ -1,0 +1,2 @@
+from webwalking import WebWalking
+
