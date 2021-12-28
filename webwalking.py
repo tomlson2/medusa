@@ -28,18 +28,36 @@ class WebWalking():
         opoint = self.path[0]
         start = time.time()
         current = time.time() + 5
-        
+
         while True:
+            im = self.show_coords()
+            for coords in self.path:
+                image = cv.drawMarker(im, coords, (0,0,255),markerType=cv.MARKER_SQUARE, markerSize=4)
             coordinates = self.get_coordinates()
             d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
             arr = np.array(list(d))
             ind = np.where(arr < 100)
             ind = ind[0].tolist()
-            possible_points = self.path[ind[-7]:ind[-1]]
+            possible_points = self.path[ind[-6]:ind[-1]]
             point = random.choice(possible_points)
+            
+            if coordinates in self.path:
+                color = (0,255,0)
+            else:
+                color = (0,0,255)
 
-            if coordinates == self.path[-1]:
+            image = cv.putText(image,str(coordinates), (150,40),cv.FONT_HERSHEY_PLAIN,3,color,1)
+            image = cv.drawMarker(image,coordinates, (0,255,0),markerType=cv.MARKER_DIAMOND, markerSize=8,thickness=4)
+            cv.imshow('Map', image)
+
+            if cv.waitKey(1) == ord('q'):
+                cv.destroyAllWindows()
+                break
+
+            if coordinates == self.path[-1] or coordinates == self.path[-2]:
                 print('finished walk!')
+                cv.destroyAllWindows()
+                time.sleep(0.5)
                 break
 
             rel_point = self.get_relative_point(coordinates, point)
@@ -65,6 +83,16 @@ class WebWalking():
     def get_relative_point(self, coordinates, point):
         p = tuple(map(lambda i, j: i - j, point, coordinates))
         return list(p)
+    
+    def show_coords(self):
+
+        x = 10
+        y = 20
+        im = cv.imread(self.worldmap)
+        for coord in self.path:
+            im = cv.putText(im, str(coord), ((x,y)),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),1)
+            y = y+20
+        return im
 
     def get_path(self,name):
         path = []
@@ -86,6 +114,7 @@ class WebWalking():
                 cv.destroyAllWindows()
                 break
         return coordinates
+    
 
     @staticmethod
     def map_images():
@@ -103,6 +132,7 @@ class WebWalking():
                     win32gui.SendMessage(hWnd1, win32con.WM_MOUSEWHEEL, None, lParam)    
                 time.sleep(0.2)
             i += 1
+
 
     @staticmethod
     def map_stitching():
@@ -125,3 +155,4 @@ class WebWalking():
         else:
             print("error")
 
+#WebWalking('walking_lists\\to_dispenser2.pkl','map\\bf.png').get_path("bank")
