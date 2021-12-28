@@ -13,7 +13,7 @@ while True:
             x,y = win32api.GetCursorPos()
             made = True
             time.sleep(0.5)
-    if keyboard.is_pressqqzed("z"):
+    if keyboard.is_pressed("z"):
         w = x2-x
         h = y2-y
         print("self.w = "+str(w)+"\nself.h = "+str(h)+"\nself.x = "+str(x)+"\nself.y = "+str(y))

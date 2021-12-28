@@ -25,12 +25,11 @@ class Bank:
         self.x = Vision('Needle\\x_bank.png')
     
     def status(self):
+
         bank_interface = self.screen.contains(self.bank_check,0.9)
         return bank_interface
 
     def withdraw(self, item, threshold=0.6, quantity=0):
-
-        #TODO CHECK IF INVENTORY HAS SPACE TO WITHDRAW
 
         if self.status() == False:
             self.findbank()
@@ -53,6 +52,8 @@ class Bank:
     def findbank(self):
         print('Finding Bank...')
         while True:
+            if self.status() == True:
+                break
             try:
                 self.screen.click(self.bank_needle,0.7)
                 self.screen.wait_for(self.bank_check)

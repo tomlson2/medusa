@@ -27,7 +27,7 @@ class WebWalking():
     def walk(self):
         opoint = self.path[0]
         start = time.time()
-        current = time.time() + 4
+        current = time.time() + 5
         
         while True:
             coordinates = self.get_coordinates()
@@ -46,7 +46,7 @@ class WebWalking():
 
             opoint = point
 
-            if current - start > 3:
+            if current - start > 4:
                 hWnd = win32gui.FindWindow(None, "BlueStacks")
                 lParam = win32api.MAKELONG(1720+rel_point[0], 185+rel_point[1])
                 hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
@@ -87,6 +87,7 @@ class WebWalking():
                 break
         return coordinates
 
+    @staticmethod
     def map_images():
         map = WindowCapture(area='map')
         hWnd = win32gui.FindWindow(None, "BlueStacks")
@@ -103,6 +104,7 @@ class WebWalking():
                 time.sleep(0.2)
             i += 1
 
+    @staticmethod
     def map_stitching():
         image_paths = ["map//one.png","map//two.png"]
         images = []
@@ -122,3 +124,4 @@ class WebWalking():
             cv.waitKey(1)
         else:
             print("error")
+

@@ -5,7 +5,7 @@ from vision import Vision
 
 wincap = WindowCapture()
 
-needle = 'Needle\\coal.png'
+needle = 'Needle\\fcb.png'
 
 vision = Vision(needle)
 

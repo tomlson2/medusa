@@ -1,17 +1,80 @@
+from numpy import ndarray
 from webwalking import WebWalking
 from vision import Vision
 from player import Player
+from bank import Bank
 from interactions import Interactions
+from numpy import array
+import time
+import random
 
 inventory = Interactions(area='inventory')
 screen = Interactions()
 bank = Interactions(area='bank')
+chatbox = Interactions(area='chatbox')
+
+to_furnace = WebWalking('walking_lists\\tobelt.pkl','map\\bf.png')
+to_bank = WebWalking('walking_lists\\to_bf_bank.pkl','map\\bf.png')
+to_dispenser = WebWalking('walking_lists\\to_dispenser.pkl','map\\bf.png')
+
+chest = Bank('Needle\\bchest.png')
 
 player = Player()
 
-coal_bag = Vision('Needle\\coal_bag.png')
+#chest = Vision('Needle\\bchest.png')
+coal_bag = Vision('Needle\\cb.png')
 coal = Vision('Needle\\coal.png')
+fill_cb = Vision('Needle\\fcb.png')
+empty_cb = Vision('Needle\\ecb.png')
 adamant_ore = Vision('Needle\\adamant_ore.png')
+take_bars = Vision('Needle\\take_adamant_bars.png')
+adamant_bar = Vision('Needle\\addy_bar.png')
 
-# TODO: Right clicking, improved web walking speed, bank ocr, stamina check, anticheat, edge detection
+belt = array([(1146,533,187,168)])
+dispenser = array([(1133,471,235,234)])
+
+# TODO: improved web walking speed, bank ocr, stamina check, anticheat, edge detection
+
+def anticheat_sleep():
+    time.sleep(random.normalvariate(0.6,0.1))
+
+def empty_bag():
+    inventory.click(coal_bag,1,right_click=True)
+    screen.click(empty_cb,1)
+    anticheat_sleep()
+
+def fill_bag():
+    inventory.click(coal_bag,1,right_click=True)
+    screen.click(fill_cb,1)
+
+while True:
+    chest.findbank()
+    fill_bag()
+    chest.withdraw(coal)
+    to_furnace.walk()
+    anticheat_sleep()
+    screen.click_region(belt)
+    empty_bag()
+    screen.click_region(belt)
+    
+    to_dispenser.walk()
+    anticheat_sleep()
+    screen.click_region(dispenser)
+    anticheat_sleep()
+    chatbox.click(take_bars,1)
+    to_bank.walk()
+    anticheat_sleep()
+    chest.findbank()
+    chest.deposit(adamant_bar)
+    fill_bag()
+    chest.withdraw(adamant_ore,1)
+    to_furnace.walk()
+    anticheat_sleep()
+    screen.click_region(belt)
+    empty_bag()
+    screen.click_region(belt)
+    to_bank.walk()
+    anticheat_sleep()
+
+    first_loop = False
 

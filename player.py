@@ -17,16 +17,15 @@ class Player:
 
     def health(self):
         im = self.vision.apply_hsv_filter(self.health_orb.get_screenshot(),self.filter)
-        self.numbers.number(im)
+        health = self.numbers.number(im)
+        return health
 
     def run(self):
         im = self.vision.apply_hsv_filter(self.run_orb.get_screenshot(),self.filter)
-        self.numbers.number(im)
+        run = self.numbers.number(im)
+        return run
 
     def prayer(self):
         im = self.vision.apply_hsv_filter(self.prayer_orb.get_screenshot(),self.filter)
-        self.numbers.number(im)
-
-player = Player()
-
-player.health()
+        prayer = self.numbers.number(im)
+        return prayer

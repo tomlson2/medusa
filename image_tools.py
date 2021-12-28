@@ -72,5 +72,3 @@ def pad(path,h,w):
     bh = h-x
     resized_im = cv.copyMakeBorder(im, bh, bh, bw, bw, borderType=cv.BORDER_CONSTANT)
     cv.imwrite(path,resized_im)
-
-pad('bf.png',500,500)

@@ -1,7 +1,8 @@
-from numpy import float64
+from numpy import float64, ndarray
 import win32gui, win32con, win32api
 import time
 import random
+from numpy import ndarray
 from hsvfilter import HsvFilter
 from vision import Vision
 from windowcapture import WindowCapture
@@ -16,9 +17,9 @@ class Interactions:
         self.vision = Vision('Needle\\banana.png')
     
 
-    def click(self, item: object, threshold : float = 0.7):
+    def click(self, item: object, threshold : float = 0.7, right_click : bool = False):
         """
-        Finds and clicks on needle based on area of defined Interaction object.
+        Finds and clicks on needle based on region of defined Interaction object.
         """
         rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
         points = item.get_click_points(rectangles)
@@ -29,16 +30,17 @@ class Interactions:
 
         hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        
+        if right_click == True:
+            time.sleep(random.normalvariate(.75,.04))
+
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
         time.sleep(random.normalvariate(0.85,0.2))
     
-    def right_click(self, item: object, threshold : float = 0.7):
-        """
-        Finds and clicks on needle based on area of defined Interaction object.
-        """
-        rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
-        points = item.get_click_points(rectangles)
+    def click_region(self, rectangle : ndarray, right_click : bool = False):
+        
+        points = self.vision.get_click_points(rectangle)
         point = WindowCapture(area = self.area).get_screen_position(points[0])
 
         hWnd = win32gui.FindWindow(None, "BlueStacks")
@@ -46,6 +48,10 @@ class Interactions:
 
         hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        
+        if right_click == True:
+            time.sleep(random.normalvariate(.75,.04))
+
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
         time.sleep(random.normalvariate(0.85,0.2))

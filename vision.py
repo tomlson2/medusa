@@ -1,8 +1,6 @@
 import cv2 as cv
 import numpy as np
 import random
-
-from pyautogui import position
 from hsvfilter import HsvFilter
 
 
@@ -68,7 +66,6 @@ class Vision:
             rectangles.append(rect)
 
         rectangles, weights = cv.groupRectangles(rectangles, groupThreshold=1, eps=0.5)
-        #print(rectangles)
 
         # for performance reasons, return a limited number of results.
         # these aren't necessarily the best results.
@@ -95,8 +92,8 @@ class Vision:
         # Loop over all the rectangles
         for (x, y, w, h) in rectangles:
             # Determine the center position        
-            click_x = random.randrange(x+2, x+w-2)
-            click_y = random.randrange(y+2, y+h-2)
+            click_x = random.randrange(x+4, x+w-4)
+            click_y = random.randrange(y+4, y+h-4)
             # Save the points
             points.append((click_x, click_y))
         return points

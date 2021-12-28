@@ -18,7 +18,7 @@ class Numbers():
         blur = cv.GaussianBlur(gray,(5,5),0)
         mask = cv.adaptiveThreshold(blur,255,1,1,11,2)
         contours, _ = cv.findContours(mask, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
-
+        num = ''
         for cnt in contours:
             if 250 > cv.contourArea(cnt)>50:
                 [x,y,w,h] = cv.boundingRect(cnt)
@@ -28,6 +28,7 @@ class Numbers():
                     roismall = roismall.reshape((1,100))
                     roismall = np.float32(roismall)
                     retval, results, neigh_resp, dists = self.model.findNearest(roismall, k = 1)
-                    num = str(int((results[0][0])))
-                    print(num)
+                    for digit in results[0]:
+                        num = str(int(digit)) + num
+        return int(num)
                 

@@ -14,16 +14,17 @@ class WindowCapture:
 
 
         # set the window size
-        win32gui.MoveWindow(self.hwnd, 0, 0, 1920, 1080, True)
+        win32gui.MoveWindow(self.hwnd, 0, 0, 1920, 1112, True)
 
         window_rect = win32gui.GetWindowRect(self.hwnd)
+        print(window_rect)
 
         w = window_rect[2] - window_rect[0]
         h = window_rect[3] - window_rect[1]
 
         # account for the window border and titlebar and cut them off
-        border_pixels = 2
-        titlebar_pixels = 30
+        border_pixels = 1
+        titlebar_pixels = 33
         self.w_diff = (border_pixels * 2)
         self.h_diff = titlebar_pixels - border_pixels
         self.cropped_x = border_pixels
@@ -51,10 +52,10 @@ class WindowCapture:
             self.y = 96
 
         if area == 'chatbox':
-            self.w = 453
-            self.h = 115
-            self.x = 22
-            self.y = 39
+            self.w = 1105
+            self.h = 297
+            self.x = 29
+            self.y = 37
         
         if area == 'bank':
             self.w = 1025
@@ -149,7 +150,6 @@ class WindowCapture:
         cDC.BitBlt((0, 0), (self.w, self.h), dcObj, (self.x, self.y), win32con.SRCCOPY)
 
         # convert the raw data into a format opencv can read
-        dataBitMap.SaveBitmapFile(cDC, 'debug.bmp')
         signedIntsArray = dataBitMap.GetBitmapBits(True)
         img = np.fromstring(signedIntsArray, dtype='uint8')
         img.shape = (self.h, self.w, 4)
