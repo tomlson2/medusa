@@ -54,10 +54,15 @@ class WebWalking():
                 cv.destroyAllWindows()
                 break
 
-            if coordinates == self.path[-1] or coordinates == self.path[-2]:
+            x1 = self.path[-1][0] - 2
+            x2 = self.path[-1][0] + 2
+            y1 = self.path[-1][1] - 2
+            y2 = self.path[-1][1] + 2
+
+            if  (x1 < coordinates[0] < x2 and y1 < coordinates[1] < y2):
                 print('finished walk!')
                 cv.destroyAllWindows()
-                time.sleep(0.5)
+                time.sleep(random.normalvariate(0.5,0.1))
                 break
 
             rel_point = self.get_relative_point(coordinates, point)
@@ -155,4 +160,4 @@ class WebWalking():
         else:
             print("error")
 
-#WebWalking('walking_lists\\to_dispenser2.pkl','map\\bf.png').get_path("bank")
+#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("bank")

@@ -30,8 +30,8 @@ iron_ore = Vision('Needle\\iron_ore.png')
 take_bars = Vision('Needle\\make_steel.png')
 steel_bar = Vision('Needle\\steel_bar.png')
 
-belt = array([(1146,533,187,168)])
-dispenser = array([(1133,471,235,234)])
+belt = array([(1079,582,110,105)])
+dispenser = array([(1027,503,150,137)])
 
 # TODO: improved web walking speed, bank ocr, stamina check, anticheat, edge detection
 
@@ -47,27 +47,23 @@ def fill_bag():
     inventory.click(coal_bag,1,right_click=True)
     screen.click(fill_cb,1)
 
-to_furnace.walk()
-to_dispenser.walk()
-to_bank.walk()
-
-# while True:
-#     chest.findbank()
-#     fill_bag()
-#     chest.withdraw(iron_ore,1)
-#     chest.close()
-#     to_furnace.walk()
-#     screen.click_region(belt)
-#     anticheat_sleep()
-#     empty_bag()
-#     anticheat_sleep()
-#     screen.click_region(belt)
-#     to_dispenser.walk()
-#     screen.click_region(dispenser)
-#     anticheat_sleep()
-#     chatbox.click(take_bars,.9)
-#     to_bank.walk()
-#     chest.findbank()
-#     chest.deposit(steel_bar,0.7)
+while True:
+    chest.findbank()
+    fill_bag()
+    chest.withdraw(iron_ore,1)
+    chest.close()
+    to_furnace.walk()
+    screen.click_region(belt)
+    anticheat_sleep()
+    empty_bag()
+    anticheat_sleep()
+    screen.click_region(belt)
+    to_dispenser.walk()
+    screen.click_region(dispenser)
+    anticheat_sleep()
+    chatbox.click(take_bars,.9)
+    to_bank.walk()
+    chest.findbank()
+    chest.deposit(steel_bar,0.7)
 
 
