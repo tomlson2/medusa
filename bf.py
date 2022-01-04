@@ -17,7 +17,7 @@ to_furnace = WebWalking('walking_lists\\tobelt.pkl','map\\bf.png')
 to_bank = WebWalking('walking_lists\\bank.pkl','map\\bf.png')
 to_dispenser = WebWalking('walking_lists\\dispenser.pkl','map\\bf.png')
 
-chest = Bank('Needle\\bchest.png')
+chest = Bank('Needle\\bchest.png', stam = True)
 
 player = Player()
 
@@ -47,25 +47,23 @@ def fill_bag():
     inventory.click(coal_bag,1,right_click=True)
     screen.click(fill_cb,1)
 
-screen.click_point((929,631))
-
-# while True:
-#     chest.findbank()
-#     fill_bag()
-#     chest.withdraw(iron_ore,1)
-#     chest.close()
-#     to_furnace.walk()
-#     screen.click_region(belt)
-#     anticheat_sleep()
-#     empty_bag()
-#     anticheat_sleep()
-#     screen.click_region(belt)
-#     to_dispenser.walk()
-#     screen.click_region(dispenser)
-#     anticheat_sleep()
-#     chatbox.click(take_bars,.9)
-#     to_bank.walk()
-#     chest.findbank()
-#     chest.deposit(steel_bar,0.7)
+while True:
+    chest.findbank()
+    fill_bag()
+    chest.withdraw(iron_ore,1)
+    chest.close()
+    to_furnace.walk()
+    screen.click_region(belt)
+    anticheat_sleep()
+    empty_bag()
+    anticheat_sleep()
+    screen.click_region(belt)
+    to_dispenser.walk()
+    screen.click_region(dispenser)
+    anticheat_sleep()
+    chatbox.click(take_bars,.9)
+    to_bank.walk()
+    chest.findbank()
+    chest.deposit(steel_bar,0.7)
 
 

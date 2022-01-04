@@ -2,6 +2,7 @@ from win32con import STATUS_ABANDONED_WAIT_0
 from vision import Vision
 from interactions import Interactions
 from windowcapture import WindowCapture
+from player import Player
 
 class Bank:
 
@@ -11,7 +12,7 @@ class Bank:
     item = None
     quantity = 0
 
-    def __init__(self, bank_needle):
+    def __init__(self, bank_needle : str, stam : bool = False):
 
         self.screen = Interactions()
         self.inventory = Interactions(area='inventory')
@@ -20,6 +21,9 @@ class Bank:
         self.sidebar_r = Interactions(area='sidebar_r')
         self.wincap = WindowCapture('BlueStacks')
 
+        self.stam = stam
+
+        self.stamina_pot = Vision('Needle\\stam.png')
         self.bank_needle = Vision(bank_needle)
         self.bank_check = Vision('Needle\\inventory_guy.png')
         self.x = Vision('Needle\\x_bank.png')
@@ -33,6 +37,15 @@ class Bank:
 
         if self.status() == False:
             self.findbank()
+        
+        if self.stam == True:
+            self.bank.click(self.stamina_pot,right_click=True)
+            self.bank.click(Vision('Needle\\withdraw-1.png'),1)
+            self.close()
+            self.inventory.click(self.stamina_pot)
+            self.findbank()
+            self.inventory.click(self.stamina_pot, 1)
+            
         print('Withdrawing...')
         self.bank.click(item, threshold)
 
