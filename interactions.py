@@ -45,6 +45,9 @@ class Interactions:
 
         time.sleep(random.normalvariate(0.85,0.2))
     
+    def click_point(self, points : tuple):
+        pass
+    
     def click_region(self, rectangle : ndarray, right_click : bool = False):
         
         points = self.vision.get_click_points(rectangle)
