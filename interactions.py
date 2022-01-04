@@ -45,9 +45,14 @@ class Interactions:
 
         time.sleep(random.normalvariate(0.85,0.2))
     
-    def click_point(self, points : tuple):
-        pass
-    
+    def click_point(self, point : tuple):
+        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
+
     def click_region(self, rectangle : ndarray, right_click : bool = False):
         
         points = self.vision.get_click_points(rectangle)
