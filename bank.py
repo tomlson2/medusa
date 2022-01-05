@@ -38,13 +38,13 @@ class Bank:
         if self.status() == False:
             self.findbank()
         
-        if self.stam == True:
-            self.bank.click(self.stamina_pot,right_click=True)
-            self.bank.click(Vision('Needle\\withdraw-1.png'),1)
-            self.close()
-            self.inventory.click(self.stamina_pot)
-            self.findbank()
-            self.inventory.click(self.stamina_pot, 1)
+        # if self.stam == True:
+        #     self.bank.click(self.stamina_pot,right_click=True)
+        #     self.bank.click(Vision('Needle\\withdraw-1.png'),1)
+        #     self.close()
+        #     self.inventory.click(self.stamina_pot)
+        #     self.findbank()
+        #     self.inventory.click(self.stamina_pot, 1)
             
         print('Withdrawing...')
         self.bank.click(item, threshold)

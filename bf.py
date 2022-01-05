@@ -13,7 +13,7 @@ screen = Interactions()
 bank = Interactions(area='bank')
 chatbox = Interactions(area='chatbox')
 
-to_furnace = WebWalking('walking_lists\\tobelt.pkl','map\\bf.png')
+to_belt = WebWalking('walking_lists\\tobelt.pkl','map\\bf.png')
 to_bank = WebWalking('walking_lists\\bank.pkl','map\\bf.png')
 to_dispenser = WebWalking('walking_lists\\dispenser.pkl','map\\bf.png')
 
@@ -52,7 +52,7 @@ while True:
     fill_bag()
     chest.withdraw(iron_ore,1)
     chest.close()
-    to_furnace.walk()
+    to_belt.walk()
     screen.click_region(belt)
     anticheat_sleep()
     empty_bag()

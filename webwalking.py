@@ -1,5 +1,6 @@
 import cv2 as cv
 import time
+from player import Player
 from windowcapture import WindowCapture
 from vision import Vision
 import win32gui, win32api, win32con
@@ -9,12 +10,13 @@ import win32gui, win32con
 import pickle
 
 
+
 class WebWalking():
     """
     WebWalking object, pass path to pickle list and map png
     """
     def __init__(self, path: str, worldmap: str):
-        
+
         try:
             with open(path, 'rb') as pickle_load:
                 self.path = pickle.load(pickle_load)
@@ -30,6 +32,8 @@ class WebWalking():
         current = time.time() + 5
 
         while True:
+            self.xp = Player().run()
+            print(self.xp)
             im = self.show_coords()
             for coords in self.path:
                 image = cv.drawMarker(im, coords, (0,0,255),markerType=cv.MARKER_SQUARE, markerSize=4)
@@ -59,7 +63,7 @@ class WebWalking():
             y1 = self.path[-1][1] - 2
             y2 = self.path[-1][1] + 2
 
-            if  (x1 < coordinates[0] < x2 and y1 < coordinates[1] < y2):
+            if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
                 print('finished walk!')
                 cv.destroyAllWindows()
                 time.sleep(random.normalvariate(0.5,0.1))
@@ -160,4 +164,5 @@ class WebWalking():
         else:
             print("error")
 
-#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("bank")
+#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("dispenser")
+#WebWalking('walking_lists\\dispenser.pkl','map\\bf.png').walk()

@@ -11,6 +11,7 @@ class Player:
         self.health_orb = WindowCapture(area='health_orb')
         self.prayer_orb = WindowCapture(area='prayer_orb')
         self.special_orb = WindowCapture(area='special_orb')
+        self.xp_bar = WindowCapture(area='xp_bar')
         self.vision = Vision('Needle\\banana.png')
         self.numbers = Numbers()
         self.filter = HsvFilter(vMin=136,sSub=255)
@@ -29,3 +30,8 @@ class Player:
         im = self.vision.apply_hsv_filter(self.prayer_orb.get_screenshot(),self.filter)
         prayer = self.numbers.number(im)
         return prayer
+
+    def xp(self):
+        im = self.vision.apply_hsv_filter(self.xp_bar.get_screenshot(),self.filter)
+        xp = self.numbers.number(im)
+        return xp

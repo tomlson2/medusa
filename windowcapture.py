@@ -68,6 +68,12 @@ class WindowCapture:
             self.h = 243
             self.x = 754
             self.y = 212
+        
+        if area == 'xp_bar':
+            self.w = 127
+            self.h = 49
+            self.x = 1279
+            self.y = 106
 
         if area == 'character':
             self.w = 175
