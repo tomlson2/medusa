@@ -17,7 +17,6 @@ class WindowCapture:
         win32gui.MoveWindow(self.hwnd, 0, 0, 1920, 1112, True)
 
         window_rect = win32gui.GetWindowRect(self.hwnd)
-        print(window_rect)
 
         w = window_rect[2] - window_rect[0]
         h = window_rect[3] - window_rect[1]
@@ -69,11 +68,17 @@ class WindowCapture:
             self.x = 754
             self.y = 212
         
+        if area == 'bank_test':
+            self.w = 200
+            self.h = 89
+            self.x = 317
+            self.y = 523
+        
         if area == 'xp_bar':
-            self.w = 127
-            self.h = 49
-            self.x = 1279
-            self.y = 106
+            self.w = 56
+            self.h = 30
+            self.x = 402
+            self.y = 523
 
         if area == 'character':
             self.w = 175

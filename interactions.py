@@ -59,7 +59,7 @@ class Interactions:
         point = WindowCapture(area = self.area).get_screen_position(points[0])
 
         hWnd = win32gui.FindWindow(None, "BlueStacks")
-        lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
+        lParam = win32api.MAKELONG(point[0]+10, point[1]-66)
 
         hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)

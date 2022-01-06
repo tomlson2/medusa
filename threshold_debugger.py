@@ -3,7 +3,7 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from vision import Vision
 
-wincap = WindowCapture()
+wincap = WindowCapture(area='bank_test')
 
 needle = 'Needle\\iron_ore.png'
 

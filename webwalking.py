@@ -32,17 +32,15 @@ class WebWalking():
         current = time.time() + 5
 
         while True:
-            self.xp = Player().run()
-            print(self.xp)
             im = self.show_coords()
             for coords in self.path:
                 image = cv.drawMarker(im, coords, (0,0,255),markerType=cv.MARKER_SQUARE, markerSize=4)
             coordinates = self.get_coordinates()
             d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
             arr = np.array(list(d))
-            ind = np.where(arr < 100)
+            ind = np.where(arr < 103)
             ind = ind[0].tolist()
-            possible_points = self.path[ind[-6]:ind[-1]]
+            possible_points = self.path[ind[-5]:ind[-1]]
             point = random.choice(possible_points)
             
             if coordinates in self.path:
@@ -66,7 +64,7 @@ class WebWalking():
             if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
                 print('finished walk!')
                 cv.destroyAllWindows()
-                time.sleep(random.normalvariate(0.5,0.1))
+                time.sleep(random.normalvariate(0.7,0.1))
                 break
 
             rel_point = self.get_relative_point(coordinates, point)
@@ -75,6 +73,7 @@ class WebWalking():
 
             if current - start > 4:
                 hWnd = win32gui.FindWindow(None, "BlueStacks")
+                # TODO Click point within 2 pixels, not exact
                 lParam = win32api.MAKELONG(1720+rel_point[0], 185+rel_point[1])
                 hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
                 win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
@@ -165,4 +164,4 @@ class WebWalking():
             print("error")
 
 #WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("dispenser")
-#WebWalking('walking_lists\\dispenser.pkl','map\\bf.png').walk()
+#WebWalking('walking_lists\\bank.pkl','map\\bf.png').walk()
