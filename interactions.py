@@ -44,6 +44,41 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
         time.sleep(random.normalvariate(0.85,0.2))
+        
+    def shift_click(self, item : object, threshold : float = 0.7):
+        """
+        Finds and shift clicks a needle based on region of defined 'item' Interaction object.
+        """
+        s = time.time()
+        
+        while time.time()-s < 10:
+            print(time.time()-s)
+            rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            if len(rectangles) > 0:
+                break
+
+        points = item.get_click_points(rectangles)
+        point = WindowCapture(area = self.area).get_screen_position(points[0])
+
+        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        
+        #vk_shift is shift key
+        #press keys
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, lParam)
+        time.sleep(random.normalvariate(.09, 0.01))
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        #release keys
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, lParam)
+        time.sleep(random.normalvariate(.09, 0.01))
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, lParam)
+
+        time.sleep(random.normalvariate(0.85,0.2))
+        
+        
+
     
     def click_point(self, point : tuple):
         hWnd = win32gui.FindWindow(None, "BlueStacks")

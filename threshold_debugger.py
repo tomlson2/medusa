@@ -3,9 +3,9 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from vision import Vision
 
-wincap = WindowCapture(area='bank_test')
+wincap = WindowCapture()
 
-needle = 'Needle\\iron_ore.png'
+needle = 'Needle\\lunar_bank.png'
 
 vision = Vision(needle)
 

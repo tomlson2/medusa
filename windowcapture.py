@@ -145,6 +145,12 @@ class WindowCapture:
             self.h = 44
             self.x = 735
             self.y = 271
+            
+        if area == 'left_inventory':
+            self.w = 426    
+            self.h = 579
+            self.x = 113
+            self.y = 468
 
         
   
