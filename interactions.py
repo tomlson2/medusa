@@ -44,7 +44,7 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
         time.sleep(random.normalvariate(0.85,0.2))
-        
+                
     def shift_click(self, item : object, threshold : float = 0.7):
         """
         Finds and shift clicks a needle based on region of defined 'item' Interaction object.
@@ -67,15 +67,17 @@ class Interactions:
         
         #vk_shift is shift key
         #press keys
-        win32gui.SendMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, lParam)
-        time.sleep(random.normalvariate(.09, 0.01))
+        #sleep between shifts and clicks are necessary, unknown reason but it works most of time
+        #no other way to send shift and click without multithreading i think
+        win32gui.PostMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, None)
+        time.sleep(random.normalvariate(.65, 0.005))
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         #release keys
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, lParam)
-        time.sleep(random.normalvariate(.09, 0.01))
-        win32gui.SendMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, lParam)
+        time.sleep(random.normalvariate(.65, 0.005))
+        win32gui.PostMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, None)
 
-        time.sleep(random.normalvariate(0.85,0.2))
+
         
         
 

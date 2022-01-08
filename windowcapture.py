@@ -123,10 +123,10 @@ class WindowCapture:
             self.y = 360
 
         if area == 'run_orb':
-            self.w = 47
-            self.h = 31
-            self.x = 1467
-            self.y = 304
+            self.w = 46
+            self.h = 30
+            self.x = 1470
+            self.y = 305
         
         if area == 'map':
             self.w = 976

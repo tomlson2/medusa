@@ -3,7 +3,7 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from vision import Vision
 
-wincap = WindowCapture()
+wincap = WindowCapture(area='run_orb')
 
 needle = 'Needle\\lunar_bank.png'
 

@@ -38,7 +38,8 @@ class WebWalking():
             coordinates = self.get_coordinates()
             d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
             arr = np.array(list(d))
-            ind = np.where(arr < 103)
+            #changed from 103 to 138, i dont know if breaks other scripts
+            ind = np.where(arr < 138)
             ind = ind[0].tolist()
             possible_points = self.path[ind[-5]:ind[-1]]
             point = random.choice(possible_points)
@@ -64,7 +65,7 @@ class WebWalking():
             if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
                 print('finished walk!')
                 cv.destroyAllWindows()
-                time.sleep(random.normalvariate(0.7,0.1))
+                time.sleep(random.normalvariate(0.4,0.1))
                 break
 
             rel_point = self.get_relative_point(coordinates, point)
