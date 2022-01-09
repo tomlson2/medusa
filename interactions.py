@@ -43,7 +43,19 @@ class Interactions:
 
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
-        time.sleep(random.normalvariate(0.85,0.2))
+        # changed sleep from (0.85, 0.2)
+        time.sleep(random.normalvariate(0.35,0.02))
+        
+    def hold_shift(self):
+        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, None)
+        
+    def release_shift(self):
+        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, None)
+        
                 
     def shift_click(self, item : object, threshold : float = 0.7):
         """
@@ -67,19 +79,16 @@ class Interactions:
         
         #vk_shift is shift key
         #press keys
-        #sleep between shifts and clicks are necessary, unknown reason but it works most of time
-        #no other way to send shift and click without multithreading i think
-        win32gui.PostMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, None)
-        time.sleep(random.normalvariate(.65, 0.005))
+        #for shift to work window has to be focused! IDK WHY OR HOW TO FIX
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, lParam)
+        time.sleep(random.normalvariate(.15, 0.001))
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         #release keys
+        time.sleep(.05)
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, lParam)
-        time.sleep(random.normalvariate(.65, 0.005))
-        win32gui.PostMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, None)
+        time.sleep(random.normalvariate(.15, 0.005))
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, lParam)
 
-
-        
-        
 
     
     def click_point(self, point : tuple):

@@ -56,11 +56,12 @@ class WebWalking():
             if cv.waitKey(1) == ord('q'):
                 cv.destroyAllWindows()
                 break
-
-            x1 = self.path[-1][0] - 2
-            x2 = self.path[-1][0] + 2
-            y1 = self.path[-1][1] - 2
-            y2 = self.path[-1][1] + 2
+            
+            #changed from 2 to 8, wanted run to finish within a few tiles
+            x1 = self.path[-1][0] - 8
+            x2 = self.path[-1][0] + 8
+            y1 = self.path[-1][1] - 8
+            y2 = self.path[-1][1] + 8
 
             if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
                 print('finished walk!')

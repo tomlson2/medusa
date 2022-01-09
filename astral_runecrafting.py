@@ -29,7 +29,11 @@ altar = Vision('Needle\\lunar_altar.png')
 xbank = Vision('Needle\\x_bank.png')
 spellbook = Vision('Needle\\magic_tab.png')
 bag = Vision('Needle\\bag_tab.png')
+dark_mage = Vision('Needle\\dark_mage.png')
+
 teleport_to_moonclan = Vision('Needle\\teleport_to_moonclan.png')
+npc_contact = Vision('Needle\\npc_contact.png')
+
 run_energy = Numbers()
 bank_region = array([(924,473,54,69)])
 
@@ -38,6 +42,8 @@ bank_region = array([(924,473,54,69)])
 essence = Vision('Needle\\pure_essence.png')
 small_pouch = Vision('Needle\\small_pouch.png')
 med_pouch = Vision('Needle\\med_pouch.png')
+large_pouch = Vision('Needle\\large_pouch.png')
+broken_large = Vision('Needle\\broken_large_pouch.png')
 
 
 
@@ -53,58 +59,88 @@ med_pouch = Vision('Needle\\med_pouch.png')
 #TODO: make it unbreakable
 #TODO: walk within region, multiple safe squares to end walk
 
+inventory.hold_shift()
+inventory.release_shift()
 
 while True:
     
     #time.sleep(10)
     #banking
     
-    
     bank1.withdraw(essence)
-    time.sleep(random.normalvariate(0.1, 0.02))
+    time.sleep(random.normalvariate(0.4, 0.02))
+    
+    #stamina check and withdraw
+    
+    
     screen.click(xbank)
-    time.sleep(random.normalvariate(0.3, 0.05))
+    time.sleep(random.normalvariate(0.4, 0.05))
     inventory.click(small_pouch)
-    time.sleep(random.normalvariate(0.08, 0.01))
+    time.sleep(random.normalvariate(0.18, 0.01))
     inventory.click(med_pouch)
-    time.sleep(random.normalvariate(0.1, 0.02))
+    time.sleep(random.normalvariate(0.08, 0.01))
+    inventory.click(large_pouch)
+    time.sleep(random.normalvariate(0.6, 0.02))
+    
+    #broken pouch check and solve
+    if inventory.contains(broken_large):
+        screen.click(spellbook)
+        time.sleep(.2)
+        left_inventory.click(npc_contact)
+        time.sleep(.2)
+        screen.click(dark_mage)
+        time.sleep(2.6)
+        
+        
     #screen.click_region(bank_region)
     #time.sleep(random.normalvariate(0.1, 0.02))
     bank1.withdraw(essence)
-    time.sleep(random.normalvariate(0.1, 0.02))
-    screen.click(xbank)
-    time.sleep(random.normalvariate(.2, 0.02))
+    time.sleep(random.normalvariate(0.4, 0.02))
+    
     
     #walk to altar
     to_altar.walk()
     time.sleep(random.normalvariate(.2, 0.02))
     #craft runes at altar
     screen.click(altar)
+    
     #mandatory sleep waiting for runes to craft
-    time.sleep(random.uniform(1.82,1.88))
+    time.sleep(random.uniform(1.9,1.92))
+    
+    time.sleep(.34)
     
     
-    #empty pouches
-    
-    time.sleep(random.normalvariate(0.05, 0.01))
     inventory.shift_click(small_pouch)
-    time.sleep(random.normalvariate(0.01, 0.001))
+
     inventory.shift_click(med_pouch)
-    time.sleep(random.normalvariate(0.08, 0.01))
     
+    inventory.shift_click(large_pouch)
+    time.sleep(.3)
+    if inventory.amount(essence, threshold=0.7) < 4:
+        print('failed to empty pouches...')
+        inventory.release_shift()
+        time.sleep(.25)
+        inventory.shift_click(small_pouch)
+        inventory.shift_click(med_pouch)
+        inventory.shift_click(large_pouch)
+    else:   
+        
+        print('pouches emptied...')
+        
+
     #inventory.click(large_pouch)
     #inventory.click(huge_pouch)
     time.sleep(random.normalvariate(.2, 0.02))
     
     screen.click(altar)
     #mandatory sleep waiting for runes to craft
-    time.sleep(random.uniform(1.4,1.5))
+    time.sleep(random.uniform(1.7,1.8))
     
     #return to bank
     screen.click(spellbook)
-    time.sleep(random.normalvariate(.2, 0.02))
+    time.sleep(random.normalvariate(.68, 0.02))
     left_inventory.click(teleport_to_moonclan)
-    time.sleep(random.normalvariate(.2, 0.02))
+    time.sleep(random.normalvariate(.3, 0.02))
     screen.click(bag)
     
     
@@ -118,7 +154,9 @@ while True:
     else:
         to_bank.walk()
         bank1.findbank
-        
+    
+    inventory.hold_shift()   
+    inventory.release_shift()
     
 
     
