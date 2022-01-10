@@ -40,7 +40,7 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         
         if right_click == True:
-            time.sleep(random.normalvariate(.75,.04))
+            time.sleep(random.normalvariate(.80,.025))
 
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
@@ -138,8 +138,8 @@ class Interactions:
         start_time = time.time()
         while self.contains(item, threshold) == False:
             current_time = (time.time() - start_time)
-            if current_time > 10:
-                print("Failed to find Needle in 10 seconds")
+            if current_time > 5:
+                print("Failed to find Needle in 5 seconds")
                 break
             time.sleep(1)
     

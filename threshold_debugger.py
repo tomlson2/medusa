@@ -3,9 +3,9 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from vision import Vision
 
-wincap = WindowCapture(area='health_orb')
+wincap = WindowCapture()
 
-needle = 'Needle\\lunar_bank.png'
+needle = 'Needle\\ecb.png'
 
 vision = Vision(needle)
 

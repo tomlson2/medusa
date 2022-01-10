@@ -30,7 +30,6 @@ class WebWalking():
         opoint = self.path[0]
         start = time.time()
         current = time.time() + 5
-        within = within * 3
 
         while True:
             im = self.show_coords()
@@ -41,7 +40,7 @@ class WebWalking():
             arr = np.array(list(d))
             #changed from 103 to 138, i dont know if breaks other scripts
             #TODO add points to list (ln44) where they are a certain distance away on minimap or 
-            ind = np.where(arr < 138)
+            ind = np.where(arr < 106)
             ind = ind[0].tolist()
             possible_points = self.path[ind[-5]:ind[-1]]
             point = random.choice(possible_points)
@@ -59,14 +58,7 @@ class WebWalking():
                 cv.destroyAllWindows()
                 break
             
-            #changed from 2 to 8, wanted run to finish within a few tiles
-
-    
-
-            x1 = self.path[-1][0] - within
-            x2 = self.path[-1][0] + within
-            y1 = self.path[-1][1] - within
-            y2 = self.path[-1][1] + within
+            x1,x2,y1,y2 = self.within_distance(within)
 
             if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
                 print('finished walk!')
@@ -78,7 +70,7 @@ class WebWalking():
 
             opoint = point
 
-            if current - start > 4:
+            if current - start > random.normalvariate(4,0.1):
                 hWnd = win32gui.FindWindow(None, "BlueStacks")
                 # TODO Click point within 2 pixels, not exact
                 lParam = win32api.MAKELONG(1720+rel_point[0], 185+rel_point[1])
@@ -88,6 +80,15 @@ class WebWalking():
                 start = time.time()
             
             current = time.time()
+    
+    def end_of_path(self):
+        coordinates = self.get_coordinates()
+        x1,x2,y1,y2 = self.within_distance()
+
+        if (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
+            return True
+        else
+            return False
 
     def get_coordinates(self):
         self.minivision = Vision(self.minimap.get_screenshot())
@@ -98,6 +99,16 @@ class WebWalking():
     def get_relative_point(self, coordinates, point):
         p = tuple(map(lambda i, j: i - j, point, coordinates))
         return list(p)
+    
+    def within_distance(self, within : int):
+            pixels = within * 3
+
+            x1 = self.path[-1][0] - pixels
+            x2 = self.path[-1][0] + pixels
+            y1 = self.path[-1][1] - pixels
+            y2 = self.path[-1][1] + pixels
+
+            return x1,x2,y1,y2
     
     def show_coords(self):
 

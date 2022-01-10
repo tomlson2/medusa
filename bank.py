@@ -68,7 +68,7 @@ class Bank:
             if self.status() == True:
                 break
             try:
-                self.screen.click(self.bank_needle,0.65)
+                self.screen.click(self.bank_needle,1)
                 self.screen.wait_for(self.bank_check)
                 break
             except IndexError:
