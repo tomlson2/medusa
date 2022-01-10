@@ -21,9 +21,10 @@ class Interactions:
         """
         Finds and clicks on needle based on region of defined Interaction object.
         """
+
+        # looks for item to click with 10 second timeout.
         s = time.time()
-        
-        while time.time()-s < 10:
+        while time.time()-s < 7:
             print(time.time()-s)
             rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
             if len(rectangles) > 0:

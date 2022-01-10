@@ -26,7 +26,7 @@ class WebWalking():
         self.minimap = WindowCapture(area='minimap')
         self.worldmap = worldmap
     
-    def walk(self):
+    def walk(self, within: int = 1):
         opoint = self.path[0]
         start = time.time()
         current = time.time() + 5
@@ -39,6 +39,7 @@ class WebWalking():
             d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
             arr = np.array(list(d))
             #changed from 103 to 138, i dont know if breaks other scripts
+            #TODO add points to list (ln44) where they are a certain distance away on minimap or 
             ind = np.where(arr < 138)
             ind = ind[0].tolist()
             possible_points = self.path[ind[-5]:ind[-1]]
@@ -58,10 +59,13 @@ class WebWalking():
                 break
             
             #changed from 2 to 8, wanted run to finish within a few tiles
-            x1 = self.path[-1][0] - 8
-            x2 = self.path[-1][0] + 8
-            y1 = self.path[-1][1] - 8
-            y2 = self.path[-1][1] + 8
+
+            within = within * 4
+
+            x1 = self.path[-1][0] - within
+            x2 = self.path[-1][0] + within
+            y1 = self.path[-1][1] - within
+            y2 = self.path[-1][1] + within
 
             if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
                 print('finished walk!')

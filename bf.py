@@ -62,6 +62,7 @@ while True:
     anticheat_sleep()
     screen.click_region(belt)
     to_dispenser.walk()
+    anticheat_sleep()
     screen.click_region(dispenser)
     anticheat_sleep()
     chatbox.click(take_bars,.9)
