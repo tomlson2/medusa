@@ -30,6 +30,7 @@ class WebWalking():
         opoint = self.path[0]
         start = time.time()
         current = time.time() + 5
+        within = within * 3
 
         while True:
             im = self.show_coords()
@@ -60,7 +61,7 @@ class WebWalking():
             
             #changed from 2 to 8, wanted run to finish within a few tiles
 
-            within = within * 4
+    
 
             x1 = self.path[-1][0] - within
             x2 = self.path[-1][0] + within
