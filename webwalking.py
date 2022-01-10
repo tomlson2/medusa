@@ -61,6 +61,8 @@ class WebWalking():
             
             #changed from 2 to 8, wanted run to finish within a few tiles
 
+    
+
             x1 = self.path[-1][0] - within
             x2 = self.path[-1][0] + within
             y1 = self.path[-1][1] - within
