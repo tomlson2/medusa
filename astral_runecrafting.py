@@ -6,7 +6,6 @@ from vision import Vision
 from webwalking import WebWalking
 from interactions import Interactions
 from numpy import array
-from ocr import Numbers
 from windowcapture import WindowCapture
 
 
@@ -16,7 +15,7 @@ inventory = Interactions(area='inventory')
 left_inventory = Interactions(area='left_inventory')
 screen = Interactions()
 bank = Interactions(area='bank')
-run_orb = WindowCapture(area='run_orb')
+run_orb = WindowCapture(area='health_orb')
 
 
 #webwalking paths
@@ -34,7 +33,6 @@ dark_mage = Vision('Needle\\dark_mage.png')
 teleport_to_moonclan = Vision('Needle\\teleport_to_moonclan.png')
 npc_contact = Vision('Needle\\npc_contact.png')
 
-run_energy = Numbers()
 bank_region = array([(924,473,54,69)])
 
 
@@ -63,7 +61,6 @@ inventory.hold_shift()
 inventory.release_shift()
 
 while True:
-    
     #time.sleep(10)
     #banking
     

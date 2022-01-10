@@ -56,6 +56,12 @@ class WindowCapture:
             self.x = 29
             self.y = 37
         
+        if area == 'smithing':
+            self.w = 133
+            self.h = 26
+            self.x = 1658
+            self.y = 632
+        
         if area == 'bank':
             self.w = 1025
             self.h = 688
@@ -105,10 +111,10 @@ class WindowCapture:
             self.y = 119
         
         if area == 'health_orb':
-            self.w = 43
-            self.h = 27
-            self.x = 1447
-            self.y = 164
+            self.w = 42
+            self.h = 29
+            self.x = 1446
+            self.y = 165
 
         if area == 'prayer_orb':
             self.w = 41
@@ -123,10 +129,10 @@ class WindowCapture:
             self.y = 360
 
         if area == 'run_orb':
-            self.w = 46
-            self.h = 30
+            self.w = 45
+            self.h = 29
             self.x = 1470
-            self.y = 305
+            self.y = 306
         
         if area == 'map':
             self.w = 976

@@ -13,9 +13,9 @@ class Player:
         self.special_orb = WindowCapture(area='special_orb')
         self.xp_bar = WindowCapture(area='xp_bar')
         self.vision = Vision('Needle\\banana.png')
-        self.bank_num = WindowCapture(area='bank_test')
+        self.coffer = WindowCapture(area='smithing')
         self.numbers = Numbers()
-        self.filter = HsvFilter(vMin=50,sSub=255)
+        self.filter = HsvFilter(vMin=136,sSub=255)
 
     def health(self):
         im = self.vision.apply_hsv_filter(self.health_orb.get_screenshot(),self.filter)
@@ -41,3 +41,14 @@ class Player:
         im = self.vision.apply_hsv_filter(self.bank_num.get_screenshot(),self.filter)
         number = self.numbers.number(im)
         return number
+    
+    def stats(self):
+        im = self.vision.apply_hsv_filter(self.health_orb.get_screenshot(),self.filter)
+        health = self.numbers.number(im)
+        im = self.vision.apply_hsv_filter(self.run_orb.get_screenshot(),self.filter)
+        run = self.numbers.number(im)
+        im = self.vision.apply_hsv_filter(self.prayer_orb.get_screenshot(),self.filter)
+        prayer = self.numbers.number(im)
+
+        text = "health: " + str(health) + " run: " + str(run) + " prayer: " + str(prayer) + "."
+        return text
