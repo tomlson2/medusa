@@ -29,6 +29,8 @@ class Bank:
         self.bank_needle = Vision(bank_needle)
         self.bank_check = Vision('Needle\\inventory_guy.png')
         self.x = Vision('Needle\\x_bank.png')
+        self.withdraw1 = Vision('Needle\\withdraw1.png')
+        self.withdraw_all = Vision('Needle\\withdraw_all.png')
     
     def status(self):
 
@@ -41,16 +43,17 @@ class Bank:
             self.findbank()
         
         if self.stam == True and Player().need_stam() == True:
-            self.bank.click(self.stamina_pot,right_click=True)
-            time.sleep(random.normalvariate(0.4,0.05))
-            self.bank.click(Vision('Needle\\withdraw-1.png'),1)
-            time.sleep(random.normalvariate(0.4,0.05))
+            self.bank.click(self.withdraw1, 1)
+            time.sleep(random.normalvariate(0.25,0.05))
+            self.bank.click(self.stamina_pot)
+            time.sleep(random.normalvariate(0.25,0.05))
             self.close()
-            time.sleep(random.normalvariate(0.4,0.05))
+            time.sleep(random.normalvariate(0.25,0.05))
             self.inventory.click(self.stamina_pot)
             self.findbank()
             self.inventory.click(self.stamina_pot, 1)
-            time.sleep(random.normalvariate(0.4,0.05))
+            self.screen.click(self.withdraw_all)
+            time.sleep(random.normalvariate(0.25,0.05))
             
         print('Withdrawing...')
         self.bank.click(item, threshold)
@@ -75,7 +78,7 @@ class Bank:
                 break
             try:
                 self.screen.click(self.bank_needle,1)
-                self.screen.wait_for(self.bank_check)
+                self.screen.wait_for(self.bank_check,0.8)
                 break
             except IndexError:
                 print('didnt find bank')

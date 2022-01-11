@@ -30,33 +30,28 @@ adamant_ore = Vision('Needle\\adamant_ore.png')
 make_bars = Vision('Needle\\make_adamant.png')
 addy_bar = Vision('Needle\\addy_bar.png')
 
-belt = array([(1079,582,110,105)])
+
+belt = array([(1097,569,65,58)])
 dispenser = array([(1090,529,106,93)])
 
 bars = 0
 
 def anticheat_sleep():
-    time.sleep(random.normalvariate(0.85,0.1))
+    time.sleep(random.normalvariate(0.55,0.1))
 
 def click_sleep():
-    time.sleep(random.normalvariate(0.7,0.05))
+    time.sleep(random.normalvariate(0.4,0.02))
 
 def empty_bag():
     inventory.click(coal_bag,1,right_click=True)
-    if screen.contains(fill_cb,0.85):
-        print("coal bag already empty!")
-    else:
-        screen.click(empty_cb,0.85)
-        click_sleep()
+    screen.click(empty_cb,1)
+    inventory.wait_for(coal)
 
 def fill_bag():
     chest.findbank()
     inventory.click(coal_bag,1,right_click=True)
-    if screen.contains(empty_cb,0.85):
-        print("coal bag already full!")
-    else:
-        screen.click(fill_cb,1)
-        click_sleep()
+    screen.click(fill_cb,1)
+    click_sleep()
 
 def put_ore_on():
     if inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7):
@@ -65,8 +60,20 @@ def put_ore_on():
             click_sleep()
             empty_bag()
             screen.click_region(belt)
+            click_sleep()
         else:
             to_belt.walk()
+            screen.click_region(belt)
+            click_sleep()
+            empty_bag()
+            screen.click_region(belt)
+            anticheat_sleep()
+    if inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7):
+        if to_belt.end_of_path() == True:
+            screen.click_region(belt)
+        else:
+            to_belt.walk()
+            screen.click_region(belt)
 
 def take_bars():
     if to_dispenser.end_of_path() == True:
@@ -110,7 +117,7 @@ while True:
         to_bank.walk(within=2)
         anticheat_sleep()
     bars = bars + inventory.amount(addy_bar,0.7)
-    print(str(bars) + " bars made. " + str(round((bars/(time.time()-start)*3600))) + " bars/hour")
+    print(time.strftime("%H:%M:%S. ", time.gmtime(time.time()-start)) + str(bars) + " bars made. " + str(round((bars/(time.time()-start)*3600))) + " bars/hour")
     chest.deposit(addy_bar,1)
         
 

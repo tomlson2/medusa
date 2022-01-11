@@ -43,7 +43,7 @@ class WebWalking():
             #TODO add points to list (ln44) where they are a certain distance away on minimap or 
             ind = np.where(arr < 106)
             ind = ind[0].tolist()
-            possible_points = self.path[ind[-5]:ind[-1]]
+            possible_points = self.path[ind[-4]:ind[-1]]
             point = random.choice(possible_points)
             
             if coordinates in self.path:

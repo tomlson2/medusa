@@ -40,12 +40,12 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         
         if right_click == True:
-            time.sleep(random.normalvariate(.80,.025))
+            time.sleep(random.normalvariate(.85,.02))
 
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
         # changed sleep from (0.85, 0.2)
-        time.sleep(random.normalvariate(0.35,0.02))
+        time.sleep(random.normalvariate(0.25,0.02))
         
     def hold_shift(self):
         hWnd = win32gui.FindWindow(None, "BlueStacks")
