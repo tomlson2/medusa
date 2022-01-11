@@ -1,3 +1,4 @@
+from os import stat
 import cv2 as cv
 import time
 from player import Player
@@ -73,7 +74,7 @@ class WebWalking():
             if current - start > random.normalvariate(4,0.1):
                 hWnd = win32gui.FindWindow(None, "BlueStacks")
                 # TODO Click point within 2 pixels, not exact
-                lParam = win32api.MAKELONG(1720+rel_point[0], 185+rel_point[1])
+                lParam = win32api.MAKELONG(1716+rel_point[0], 185+rel_point[1])
                 hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
                 win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
                 win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
@@ -81,35 +82,17 @@ class WebWalking():
             
             current = time.time()
     
-    def end_of_path(self):
+
+    def end_of_path(self, within : int = 1):
         coordinates = self.get_coordinates()
-        x1,x2,y1,y2 = self.within_distance()
+        x1,x2,y1,y2 = self.within_distance(within)
 
         if (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
             return True
-        else
+        else:
             return False
-
-    def get_coordinates(self):
-        self.minivision = Vision(self.minimap.get_screenshot())
-        rectangles = self.minivision.find(cv.imread(self.worldmap),1)
-        coordinates = self.minivision.get_center(rectangles)
-        return coordinates
-
-    def get_relative_point(self, coordinates, point):
-        p = tuple(map(lambda i, j: i - j, point, coordinates))
-        return list(p)
     
-    def within_distance(self, within : int):
-            pixels = within * 3
 
-            x1 = self.path[-1][0] - pixels
-            x2 = self.path[-1][0] + pixels
-            y1 = self.path[-1][1] - pixels
-            y2 = self.path[-1][1] + pixels
-
-            return x1,x2,y1,y2
-    
     def show_coords(self):
 
         x = 10
@@ -119,6 +102,7 @@ class WebWalking():
             im = cv.putText(im, str(coord), ((x,y)),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),1)
             y = y+20
         return im
+
 
     def get_path(self,name):
         path = []
@@ -140,6 +124,29 @@ class WebWalking():
                 cv.destroyAllWindows()
                 break
         return coordinates
+
+
+    def get_coordinates(self):
+        self.minivision = Vision(self.minimap.get_screenshot())
+        rectangles = self.minivision.find(cv.imread(self.worldmap),1)
+        coordinates = self.minivision.get_center(rectangles)
+        return coordinates
+
+
+    def get_relative_point(self, coordinates, point):
+        p = tuple(map(lambda i, j: i - j, point, coordinates))
+        return list(p)
+    
+
+    def within_distance(self, within : int):
+            pixels = within * 3
+
+            x1 = self.path[-1][0] - pixels
+            x2 = self.path[-1][0] + pixels
+            y1 = self.path[-1][1] - pixels
+            y2 = self.path[-1][1] + pixels
+
+            return x1,x2,y1,y2
     
 
     @staticmethod
@@ -181,5 +188,5 @@ class WebWalking():
         else:
             print("error")
 
-#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("dispenser")
+#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("tobelt")
 #WebWalking('walking_lists\\bank.pkl','map\\bf.png').walk()

@@ -85,6 +85,12 @@ class WindowCapture:
             self.h = 30
             self.x = 402
             self.y = 523
+        
+        if area == 'run_boot':
+            self.w = 53
+            self.h = 52
+            self.x = 1515
+            self.y = 285
 
         if area == 'character':
             self.w = 175

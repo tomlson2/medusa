@@ -3,6 +3,8 @@ from vision import Vision
 from interactions import Interactions
 from windowcapture import WindowCapture
 from player import Player
+import time
+import random
 
 class Bank:
 
@@ -38,13 +40,17 @@ class Bank:
         if self.status() == False:
             self.findbank()
         
-        # if self.stam == True:
-        #     self.bank.click(self.stamina_pot,right_click=True)
-        #     self.bank.click(Vision('Needle\\withdraw-1.png'),1)
-        #     self.close()
-        #     self.inventory.click(self.stamina_pot)
-        #     self.findbank()
-        #     self.inventory.click(self.stamina_pot, 1)
+        if self.stam == True and Player().need_stam() == True:
+            self.bank.click(self.stamina_pot,right_click=True)
+            time.sleep(random.normalvariate(0.4,0.05))
+            self.bank.click(Vision('Needle\\withdraw-1.png'),1)
+            time.sleep(random.normalvariate(0.4,0.05))
+            self.close()
+            time.sleep(random.normalvariate(0.4,0.05))
+            self.inventory.click(self.stamina_pot)
+            self.findbank()
+            self.inventory.click(self.stamina_pot, 1)
+            time.sleep(random.normalvariate(0.4,0.05))
             
         print('Withdrawing...')
         self.bank.click(item, threshold)

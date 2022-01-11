@@ -1,5 +1,6 @@
 from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
+from interactions import Interactions
 from vision import Vision
 from ocr import Numbers
 
@@ -7,12 +8,14 @@ from ocr import Numbers
 class Player:
 
     def __init__(self) -> None:
+        self.run_boot = Interactions(area='run_boot')
         self.run_orb = WindowCapture(area='run_orb')
         self.health_orb = WindowCapture(area='health_orb')
         self.prayer_orb = WindowCapture(area='prayer_orb')
         self.special_orb = WindowCapture(area='special_orb')
         self.xp_bar = WindowCapture(area='xp_bar')
         self.vision = Vision('Needle\\banana.png')
+        self.stam_boot = Vision('Needle\\stam_boot.png')
         self.coffer = WindowCapture(area='smithing')
         self.numbers = Numbers()
         self.filter = HsvFilter(vMin=136,sSub=255)
@@ -52,3 +55,13 @@ class Player:
 
         text = "health: " + str(health) + " run: " + str(run) + " prayer: " + str(prayer) + "."
         return text
+    
+    def need_stam(self):
+        if self.run() > 70 or self.run_boot.contains(self.stam_boot,0.9) == True:
+            print("dont need stam")
+            return False
+        else:
+            print("need stam")
+            return True
+
+
