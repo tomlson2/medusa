@@ -37,10 +37,10 @@ dispenser = array([(1090,529,106,93)])
 bars = 0
 
 def anticheat_sleep():
-    time.sleep(random.normalvariate(0.55,0.1))
+    time.sleep(random.normalvariate(0.4,0.04))
 
 def click_sleep():
-    time.sleep(random.normalvariate(0.4,0.02))
+    time.sleep(random.normalvariate(0.3,0.02))
 
 def empty_bag():
     inventory.click(coal_bag,1,right_click=True)
@@ -55,19 +55,11 @@ def fill_bag():
 
 def put_ore_on():
     if inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7):
-        if to_belt.end_of_path() == True:
-            screen.click_region(belt)
-            click_sleep()
-            empty_bag()
-            screen.click_region(belt)
-            click_sleep()
-        else:
-            to_belt.walk()
-            screen.click_region(belt)
-            click_sleep()
-            empty_bag()
-            screen.click_region(belt)
-            anticheat_sleep()
+        screen.click_region(belt)
+        click_sleep()
+        empty_bag()
+        screen.click_region(belt)
+        click_sleep()
     if inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7):
         if to_belt.end_of_path() == True:
             screen.click_region(belt)
@@ -76,34 +68,28 @@ def put_ore_on():
             screen.click_region(belt)
 
 def take_bars():
-    if to_dispenser.end_of_path() == True:
-        screen.click_region(dispenser)
-        click_sleep()
-        try:
-            chatbox.click(make_bars,0.8)
-        except IndexError:
-            to_dispenser.walk()
-            chatbox.click(make_bars,0.8)
-        click_sleep()
-    else:
+    screen.click_region(dispenser)
+    try:
+        chatbox.wait_for(make_bars)
+        chatbox.click(make_bars,0.8)
+    except IndexError:
         to_dispenser.walk()
+        screen.click_region(dispenser)
+        chatbox.click(make_bars,0.8)
 
 start = time.time()
 
 while True:
     while to_bank.end_of_path(within=2) == False:
         to_bank.walk(within=2)
-        anticheat_sleep()
     chest.withdraw(adamant_ore, 1)
     click_sleep()
     fill_bag()
     click_sleep()
     to_belt.walk()
-    anticheat_sleep()
     put_ore_on()
     while to_bank.end_of_path(within=2) == False:
         to_bank.walk(within=2)
-        anticheat_sleep()
     chest.withdraw(coal, 1)
     click_sleep()
     fill_bag()
@@ -111,11 +97,9 @@ while True:
     to_belt.walk()
     put_ore_on()
     to_dispenser.walk()
-    anticheat_sleep()
     take_bars()
     while to_bank.end_of_path(within=2) == False:
         to_bank.walk(within=2)
-        anticheat_sleep()
     bars = bars + inventory.amount(addy_bar,0.7)
     print(time.strftime("%H:%M:%S. ", time.gmtime(time.time()-start)) + str(bars) + " bars made. " + str(round((bars/(time.time()-start)*3600))) + " bars/hour")
     chest.deposit(addy_bar,1)
