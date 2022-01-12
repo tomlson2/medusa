@@ -27,7 +27,7 @@ class WebWalking():
         self.minimap = WindowCapture(area='minimap')
         self.worldmap = worldmap
     
-    def walk(self, within: int = 1):
+    def walk(self, within: int = 1, debugger = False):
         opoint = self.path[0]
         start = time.time()
         current = time.time() + 5
@@ -46,18 +46,19 @@ class WebWalking():
             possible_points = self.path[ind[-4]:ind[-1]]
             point = random.choice(possible_points)
             
-            if coordinates in self.path:
-                color = (0,255,0)
-            else:
-                color = (0,0,255)
+            if debugger = True:
+                if coordinates in self.path:
+                    color = (0,255,0)
+                else:
+                    color = (0,0,255)
 
-            image = cv.putText(image,str(coordinates), (150,40),cv.FONT_HERSHEY_PLAIN,3,color,1)
-            image = cv.drawMarker(image,coordinates, (0,255,0),markerType=cv.MARKER_DIAMOND, markerSize=8,thickness=4)
-            cv.imshow('Map', image)
+                image = cv.putText(image,str(coordinates), (150,40),cv.FONT_HERSHEY_PLAIN,3,color,1)
+                image = cv.drawMarker(image,coordinates, (0,255,0),markerType=cv.MARKER_DIAMOND, markerSize=8,thickness=4)
+                cv.imshow('Map', image)
 
-            if cv.waitKey(1) == ord('q'):
-                cv.destroyAllWindows()
-                break
+                if cv.waitKey(1) == ord('q'):
+                    cv.destroyAllWindows()
+                    break
             
             x1,x2,y1,y2 = self.within_distance(within)
 
