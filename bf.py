@@ -37,10 +37,10 @@ dispenser = array([(1090,529,106,93)])
 bars = 0
 
 def anticheat_sleep():
-    time.sleep(random.normalvariate(0.4,0.04))
+    time.sleep(random.normalvariate(0.2,0.02))
 
 def click_sleep():
-    time.sleep(random.normalvariate(0.3,0.02))
+    time.sleep(random.normalvariate(0.1,0.01))
 
 def empty_bag():
     inventory.click(coal_bag,1,right_click=True)
@@ -60,12 +60,12 @@ def put_ore_on():
         empty_bag()
         screen.click_region(belt)
         click_sleep()
-    if inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7):
-        if to_belt.end_of_path() == True:
-            screen.click_region(belt)
-        else:
-            to_belt.walk()
-            screen.click_region(belt)
+    # if inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7):
+    #     if to_belt.end_of_path() == True:
+    #         screen.click_region(belt)
+    #     else:
+    #         to_belt.walk()
+    #         screen.click_region(belt)
 
 def take_bars():
     screen.click_region(dispenser)
