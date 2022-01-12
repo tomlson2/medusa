@@ -44,45 +44,41 @@ class Bank:
         
         if self.stam == True and Player().need_stam() == True:
             self.bank.click(self.withdraw1, 1)
-            time.sleep(random.normalvariate(0.25,0.05))
+            time.sleep(random.normalvariate(0.15,0.01))
             self.bank.click(self.stamina_pot)
-            time.sleep(random.normalvariate(0.25,0.05))
+            time.sleep(random.normalvariate(0.15,0.01))
             self.close()
-            time.sleep(random.normalvariate(0.25,0.05))
+            time.sleep(random.normalvariate(0.15,0.01))
             self.inventory.click(self.stamina_pot)
             self.findbank()
             self.inventory.click(self.stamina_pot, 1)
             self.screen.click(self.withdraw_all)
-            time.sleep(random.normalvariate(0.25,0.05))
+            time.sleep(random.normalvariate(0.15,0.01))
             
-        print('Withdrawing...')
         self.bank.click(item, threshold)
 
 
     def deposit(self, item, threshold=0.6, quantity=0):
         if self.status() == False:
             self.findbank()
-        print('Depositing...')
         self.inventory.click(item, threshold)
 
     
     def close(self):
-        print('Closing Bank...')
         self.screen.wait_for(self.x,0.76)
         self.screen.click(self.x,0.76)
 
     def findbank(self):
-        print('Finding Bank...')
+        print("BANKING")
         while True:
             if self.status() == True:
                 break
             try:
                 self.screen.click(self.bank_needle,1)
-                self.screen.wait_for(self.bank_check,0.8)
+                self.screen.wait_for(self.bank_check,0.8) #TODO CHANGE TO BANK REGION?
                 break
             except IndexError:
-                print('didnt find bank')
-
+                print("DIDN'T FIND BANK")
         # screenshot = self.wincap.get_screenshot()
         # while vision.match(screenshot,threshold=0.8)[0] == False:
         #      screenshot = self.wincap.get_screenshot()

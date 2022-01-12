@@ -40,11 +40,10 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         
         if right_click == True:
-            time.sleep(random.normalvariate(.85,.02))
+            time.sleep(random.normalvariate(.72,.01))
 
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
-        # changed sleep from (0.85, 0.2)
         time.sleep(random.normalvariate(0.25,0.02))
         
     def hold_shift(self):
@@ -100,6 +99,8 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
+        time.sleep(random.normalvariate(0.2,0.02))
+
     def click_region(self, rectangle : ndarray, right_click : bool = False):
         
         points = self.vision.get_click_points(rectangle)
@@ -112,11 +113,11 @@ class Interactions:
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
         
         if right_click == True:
-            time.sleep(random.normalvariate(.75,.04))
+            time.sleep(random.normalvariate(.72,.01))
 
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
-        time.sleep(random.normalvariate(0.85,0.2))
+        time.sleep(random.normalvariate(0.25,0.03))
     
     def contains(self, item: object, threshold: float = 0.7) -> bool:
         """

@@ -28,6 +28,7 @@ class WebWalking():
         self.worldmap = worldmap
     
     def walk(self, within: int = 1, debugger = False):
+        print("WALKING")
         opoint = self.path[0]
         start = time.time()
         current = time.time() + 5
@@ -46,7 +47,7 @@ class WebWalking():
             possible_points = self.path[ind[-4]:ind[-1]]
             point = random.choice(possible_points)
             
-            if debugger = True:
+            if debugger == True:
                 if coordinates in self.path:
                     color = (0,255,0)
                 else:
@@ -63,9 +64,8 @@ class WebWalking():
             x1,x2,y1,y2 = self.within_distance(within)
 
             if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
-                print('finished walk!')
                 cv.destroyAllWindows()
-                time.sleep(random.normalvariate(0.4,0.1))
+                time.sleep(random.normalvariate(0.3,0.05))
                 break
 
             rel_point = self.get_relative_point(coordinates, point)

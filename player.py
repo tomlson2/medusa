@@ -58,10 +58,9 @@ class Player:
     
     def need_stam(self):
         if self.run() > 70 or self.run_boot.contains(self.stam_boot,0.9) == True:
-            print("dont need stam")
             return False
         else:
-            print("need stam")
+            print("NEED STAM")
             return True
 
 
