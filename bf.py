@@ -5,8 +5,17 @@ from player import Player
 from bank import Bank
 from interactions import Interactions
 from numpy import array
+from wikiapi import Price
 import time
 import random
+
+
+price = Price()
+
+coal_price = price.load_price('Coal')
+adamant_ore_price = price.load_price('Adamantite ore')
+adamant_bar_price = price.load_price('Adamantite bar')
+profit_per_bar = adamant_bar_price - ((coal_price * 3) + adamant_ore_price)
 
 inventory = Interactions(area='inventory')
 screen = Interactions()
@@ -80,6 +89,8 @@ def take_bars():
 
 start = time.time()
 
+
+
 while True:
     to_bank.walk(within=2)
     chest.withdraw(adamant_ore, 1)
@@ -95,7 +106,7 @@ while True:
     take_bars()
     to_bank.walk(within=2)
     bars = bars + inventory.amount(addy_bar,0.7)
-    print(time.strftime("%H:%M:%S. ", time.gmtime(time.time()-start)) + str(bars) + " bars made. " + str(round((bars/(time.time()-start)*3600))) + " bars/hour")
+    print(time.strftime("%H:%M:%S. ", time.gmtime(time.time()-start)) + str(bars) + " bars made. " + str(round((bars/(time.time()-start)*3600))) + " bars/hour | " + str(bars * profit_per_bar) + " profit // " + str(round((bars/(time.time()-start)*3600) * profit_per_bar)) + "profit/hr.")
     chest.deposit(addy_bar,1)
         
 
