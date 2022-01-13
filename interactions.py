@@ -6,8 +6,8 @@ from numpy import ndarray
 from hsvfilter import HsvFilter
 from vision import Vision
 from windowcapture import WindowCapture
-from ocr import Ocr
-import cv2 as cv
+# from ocr import Ocr
+# import cv2 as cv
 
 class Interactions:
     """
@@ -18,7 +18,7 @@ class Interactions:
         self.area = area
         self.wincap = WindowCapture()
         self.vision = Vision('Needle\\banana.png')
-        self.ocr = Ocr('samples/bold12lowersamples.data', 'responses/bold12lowerresponses.data')
+        # self.ocr = Ocr('samples/bold12lowersamples.data', 'responses/bold12lowerresponses.data')
     
 
     def click(self, item: object, threshold : float = 0.7, right_click : bool = False):
@@ -50,20 +50,21 @@ class Interactions:
 
         time.sleep(random.normalvariate(0.25,0.02))
 
-        if point[0] < 964:
-            self.wincap.x = point[0] + 65
-            self.wincap.y = point[1] - 20
-            self.wincap.w = 300
-            self.wincap.h = 45
-        else:
-            self.wincap.x = point[0] - 365
-            self.wincap.y = point[1] - 20
-            self.wincap.w = 300
-            self.wincap.h = 45
-        #time.sleep(0.05)
-        im = self.wincap.get_screenshot()
+        # TODO
+        # if point[0] < 964:
+        #     self.wincap.x = point[0] + 65
+        #     self.wincap.y = point[1] - 20
+        #     self.wincap.w = 300
+        #     self.wincap.h = 45
+        # else:
+        #     self.wincap.x = point[0] - 365
+        #     self.wincap.y = point[1] - 20
+        #     self.wincap.w = 300
+        #     self.wincap.h = 45
+
+        # im = self.wincap.get_screenshot()
         
-        print(self.ocr.text(im))
+        # print(self.ocr.text(im))
 
         
     def hold_shift(self):

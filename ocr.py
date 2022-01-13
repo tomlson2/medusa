@@ -3,6 +3,12 @@ import numpy as np
 
 class Ocr:
 
+    '''
+    TODO\n
+    -finish and identify differences needed (parameters) for number()\n
+    -eliminate contours withing each other
+    '''
+
     def __init__(self, samples_file : str, responses_file : str) -> None:
         samples = np.loadtxt(samples_file,np.float32)
         responses = np.loadtxt(responses_file,np.float32)
@@ -22,7 +28,7 @@ class Ocr:
         num = []
         xlis = []
         for cnt in contours:
-            if 350 > cv.contourArea(cnt)>50:
+            if 350 > cv.contourArea(cnt)>75:
                 [x,y,w,h] = cv.boundingRect(cnt)
                 if  h>10 or w>10:
                     coord = int(x + (w / 2))
@@ -33,12 +39,12 @@ class Ocr:
                     roismall = np.float32(roismall)
                     retval, results, neigh_resp, dists = self.model.findNearest(roismall, k = 1)
                     for digit in results[0]:
-                        num.append(str(chr(digit)))
+                        num.append(int(digit))
         zipped_pairs = zip(num, xlis)
         z = sorted(zipped_pairs, key = lambda x: x[1])
         num = [x[0] for x in z]
         res = ''.join(map(str, num))
-        return str(res)
+        return int(res)
 
     def text(self, im):
         out = np.zeros(im.shape,np.uint8)
