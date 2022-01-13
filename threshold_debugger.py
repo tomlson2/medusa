@@ -3,7 +3,7 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from vision import Vision
 
-wincap = WindowCapture()
+wincap = WindowCapture(area='xp_bar')
 
 needle = 'Needle\\make_adamant.png'
 

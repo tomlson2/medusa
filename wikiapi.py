@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 
-class Price():
+class Price:
 
     def __init__(self):
         r = requests.get("https://prices.runescape.wiki/api/v1/osrs/1h")

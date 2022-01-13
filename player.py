@@ -2,7 +2,7 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from interactions import Interactions
 from vision import Vision
-from ocr import Numbers
+from ocr import Ocr
 
 
 class Player:
@@ -17,33 +17,26 @@ class Player:
         self.vision = Vision('Needle\\banana.png')
         self.stam_boot = Vision('Needle\\stam_boot.png')
         self.coffer = WindowCapture(area='smithing')
-        self.numbers = Numbers()
         self.filter = HsvFilter(vMin=136,sSub=255)
+
+        self.orbs = Ocr('samples/generalsamples.data', 'responses/generalresponses.data')
+        self.xpb = Ocr('samples/xpsamps.data', 'responses/xpresponses.data')
+        self.choose_option = Ocr('samples/bold12lowersamples.data', 'responses/bold12lowerresponses.data')
 
     def health(self):
         im = self.vision.apply_hsv_filter(self.health_orb.get_screenshot(),self.filter)
-        health = self.numbers.number(im)
+        health = self.orbs.number(im)
         return health
 
     def run(self):
         im = self.vision.apply_hsv_filter(self.run_orb.get_screenshot(),self.filter)
-        run = self.numbers.number(im)
+        run = self.orbs.number(im)
         return run
 
     def prayer(self):
         im = self.vision.apply_hsv_filter(self.prayer_orb.get_screenshot(),self.filter)
-        prayer = self.numbers.number(im)
+        prayer = self.orbs.number(im)
         return prayer
-
-    def xp(self):
-        im = self.vision.apply_hsv_filter(self.xp_bar.get_screenshot(),self.filter)
-        xp = self.numbers.number(im)
-        return xp
-    
-    def bank_number(self):
-        im = self.vision.apply_hsv_filter(self.bank_num.get_screenshot(),self.filter)
-        number = self.numbers.number(im)
-        return number
     
     def stats(self):
         im = self.vision.apply_hsv_filter(self.health_orb.get_screenshot(),self.filter)
@@ -55,6 +48,16 @@ class Player:
 
         text = "health: " + str(health) + " run: " + str(run) + " prayer: " + str(prayer) + "."
         return text
+
+    def xp(self):
+        im = self.vision.apply_hsv_filter(self.xp_bar.get_screenshot(),self.filter)
+        xp = self.xpb.number(im)
+        return xp
+    
+    # def bank_number(self):
+    #     im = self.vision.apply_hsv_filter(self.bank_num.get_screenshot(),self.filter)
+    #     number = self.numbers.number(im)
+    #     return number
     
     def need_stam(self):
         if self.run() > 70 or self.run_boot.contains(self.stam_boot,0.9) == True:

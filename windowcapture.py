@@ -81,10 +81,10 @@ class WindowCapture:
             self.y = 523
         
         if area == 'xp_bar':
-            self.w = 56
-            self.h = 30
-            self.x = 402
-            self.y = 523
+            self.w = 138
+            self.h = 47
+            self.x = 1265
+            self.y = 103
         
         if area == 'run_boot':
             self.w = 53

@@ -12,7 +12,7 @@ import pickle
 
 
 
-class WebWalking():
+class WebWalking:
     """
     WebWalking object, pass path to pickle list and map png
     """
@@ -27,7 +27,7 @@ class WebWalking():
         self.minimap = WindowCapture(area='minimap')
         self.worldmap = worldmap
     
-    def walk(self, within: int = 1, debugger = False):
+    def walk(self, within: int = 1, debugger = True):
         print("WALKING")
         opoint = self.path[0]
         start = time.time()
