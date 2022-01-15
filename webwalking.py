@@ -189,5 +189,5 @@ class WebWalking:
         else:
             print("error")
 
-#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("tobelt")
+#WebWalking('walking_lists\\test.pkl','map\\bf.png').get_path("todispenserv2")
 #WebWalking('walking_lists\\bank.pkl','map\\bf.png').walk()

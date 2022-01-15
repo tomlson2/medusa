@@ -27,7 +27,7 @@ chatbox = Interactions(area='chatbox')
 
 to_belt = WebWalking('walking_lists\\tobelt.pkl','map\\bf.png')
 to_bank = WebWalking('walking_lists\\bank.pkl','map\\bf.png')
-to_dispenser = WebWalking('walking_lists\\dispenser.pkl','map\\bf.png')
+to_dispenser = WebWalking('walking_lists\\todispenserv2.pkl','map\\bf.png')
 
 chest = Bank('Needle\\bf_v2\\bank.png', stam = True)
 
@@ -45,12 +45,10 @@ make_adamant_bars = Vision('Needle\\make_adamant.png')
 addy_bar = Vision('Needle\\addy_bar.png')
 
 
-belt_bank = array([(802,274,16,13)])
-belt_close = array([(987,566,16,15)])
-dispenser_belt = array([(883,704,19,19)])
-dispenser_close = array([(984,556,26,22)])
-bank_dispenser = array([(1312,821,34,23)])
-bank_belt = array([(1188,987,28,16)])
+belt_bank = array([(722,119,21,14)])
+belt_close = array([(1003,564,27,25)])
+dispenser_belt = array([(841,776,35,34)])
+dispenser_close = array([(947,601,36,36)])
 
 start = time.time()
 bars = 0
@@ -76,10 +74,13 @@ def fill_bag():
 while True:
     chest.withdraw(adamant_ore,1)
     fill_bag()
-    chest.close()
     screen.click_region(belt_bank)
-    time.sleep(random.normalvariate(1,0.2))
-    empty_bag()
+    time.sleep(random.normalvariate(2,0.3))
+    inventory.click(coal_bag,1,right_click=True)
+    while(inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7)):
+        pass
+    screen.click(empty_cb,.90)
+    inventory.wait_for(coal)
     screen.click_region(belt_close)
     while(inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7)):
         pass
@@ -87,7 +88,11 @@ while True:
     chest.withdraw(coal,1)
     fill_bag()
     screen.click_region(belt_bank)
-    empty_bag()
+    inventory.click(coal_bag,1,right_click=True)
+    while(inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7)):
+        pass
+    screen.click(empty_cb,.90)
+    inventory.wait_for(coal)
     screen.click_region(belt_close)
     while(inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7)):
         pass
