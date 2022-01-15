@@ -7,7 +7,7 @@ from webwalking import WebWalking
 
 '''
 setup: 
-full north 3 zoom 
+full north 2 zoom 
 start near the start of the varrock agility course
 no tabs open, no inventory or stats, no chat
 '''
@@ -32,6 +32,7 @@ fifth_gap = Vision('Needle\\agility\\canifis\\fifth_gap.png')
 end_gap = Vision('Needle\\agility\\canifis\\end_gap.png')
 
 #jumps from marks
+mark0_jump = Vision('Needle\\agility\\canifis\\mark0_jump.png')
 mark1_jump = Vision('Needle\\agility\\canifis\\mark1_jump.png')
 mark11_jump = Vision('Needle\\agility\\canifis\\mark11_jump.png')
 mark3_jump = Vision('Needle\\agility\\canifis\\mark3_jump.png')
@@ -43,6 +44,7 @@ fall_to_start = WebWalking('walking_lists\\canifis_fall.pkl','map\\canifis_city.
 glitch = Vision('Needle\\agility\\canifis\\gap5_glitch.png')
 
 #marks
+mark0 = Vision('Needle\\agility\\canifis\\mark0.png')
 mark1 = Vision('Needle\\agility\\canifis\\mark11.png')
 mark2 = Vision('Needle\\agility\\canifis\\mark1.png')
 mark3 = Vision('Needle\\agility\\canifis\\mark3.png')
@@ -74,6 +76,17 @@ while True:
         screen_top.click(tree2, threshold=0.76)
         time.sleep(4.4)
         dead_loop_counter = 0
+        
+    if screen_top.contains(mark0, threshold=0.81):
+            print('collecting mark1... ')
+            screen_top.click(mark0, threshold=0.8)
+            time.sleep(2)
+            marks += 1
+            
+            if screen_top.contains(mark0_jump, threshold=0.71):
+                print('jumping second gap from mark... ')
+                screen_top.click(mark0_jump, threshold=0.7)
+                time.sleep(4.2)
     
     # if screen_top.contains(mark0):
     #     screen_top.click(mark0)
