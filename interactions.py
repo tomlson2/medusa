@@ -50,6 +50,35 @@ class Interactions:
 
         time.sleep(random.normalvariate(0.25,0.02))
 
+
+    def fast_click(self, item: object, threshold : float = 0.7, right_click : bool = False):
+        """
+        Finds and clicks on needle based on region of defined Interaction object.
+        """
+
+        # looks for item to click with 10 second timeout.
+        s = time.time()
+        while time.time()-s < 7:
+            # print(time.time()-s)
+            rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            if len(rectangles) > 0:
+                break
+
+        points = item.get_click_points(rectangles)
+        point = WindowCapture(area = self.area).get_screen_position(points[0])
+
+        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        
+        if right_click == True:
+            time.sleep(random.normalvariate(.72,.01))
+
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
+
+        time.sleep(random.normalvariate(0.1,0.02))
         # TODO
         # if point[0] < 964:
         #     self.wincap.x = point[0] + 65

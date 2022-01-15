@@ -122,13 +122,14 @@ while True:
     #broken pouch check and solve
     if inventory.contains(broken_large, threshold=0.65):
         print('repairing pouches...')
-        while screen.contains(xbank) == False:
-            bank1.findbank()
-            time.sleep(0.14)
+        # for no rune pouch
+        # while screen.contains(xbank) == False:
+        #     bank1.findbank()
+        #     time.sleep(0.14)
             
-        bank1.withdraw(cosmic_rune)
-        time.sleep(random.normalvariate(.1,.01))
-        screen.click(xbank)
+        # bank1.withdraw(cosmic_rune)
+        # time.sleep(random.normalvariate(.1,.01))
+        # screen.click(xbank)
         screen.click(spellbook)
         time.sleep(.4)
         left_inventory.click(npc_contact)
