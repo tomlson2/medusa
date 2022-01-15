@@ -7,6 +7,7 @@ from webwalking import WebWalking
 
 '''
 setup: 
+problems if lots of players on course
 full north 2 zoom 
 3 brightness....REEEEEEEEEEEEEEEEE
 start on course or near the start of the canifis agility course, south of tree
@@ -45,6 +46,7 @@ mark4_jump = Vision('Needle\\agility\\canifis\\mark4_jump.png')
 
 #fall stuff
 fall_check = Vision('Needle\\agility\\canifis\\fall_check.png')
+fall2_check = Vision('Needle\\agility\\canifis\\fall2_check.png')
 fall_to_start = WebWalking('walking_lists\\canifis_fall.pkl','map\\canifis_city.png')
 
 #glitch fixes
@@ -82,9 +84,9 @@ while True:
         time.sleep(4.4)
         dead_loop_counter = 0
         
-    if screen_top.contains(tree2, threshold=0.77):
+    if screen_top.contains(tree2, threshold=0.8):
         print('starting3... ')
-        screen_top.click(tree2, threshold=0.76)
+        screen_top.click(tree2, threshold=0.79)
         time.sleep(4.4)
         dead_loop_counter = 0
         
@@ -100,9 +102,9 @@ while True:
                 screen_top.click(mark0_jump, threshold=0.7)
                 time.sleep(4.2)
         
-    if screen_top.contains(first_gap, threshold=0.71):
+    if screen_top.contains(first_gap, threshold=0.75):
         print('jumping first gap... ')
-        screen_top.click(first_gap, threshold=0.7)
+        screen_top.click(first_gap, threshold=0.74)
         time.sleep(4.25)
         dead_loop_counter = 0
         
@@ -213,7 +215,7 @@ while True:
     if dead_loop_counter > 4:
         if minimap.contains(glitch,threshold=0.85) == True and screen_right.contains(fifth_gap) == False:
             print('glitched...')
-            time.sleep(15)
+            time.sleep(3)
             screen_right.click(fix_glitch)
             time.sleep(2.8)
             screen_right.click(glitch_jump, threshold=0.7)
@@ -224,12 +226,14 @@ while True:
             while chatbox.contains(tap_here):
                 chatbox.click(tap_here)
                 time.sleep(.5)
+                
+        if screen_left.contains(fall2_check):
+            fall_to_start.walk(within=3)
     
-    if dead_loop_counter > 5:
+    if dead_loop_counter > 9:
         print('dead loop protocol...')
         fall_to_start.walk(within=3)
         dead_loop_counter = 0
         
     time.sleep(0.5)
         
-    print('loop')
