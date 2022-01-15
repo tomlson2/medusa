@@ -11,7 +11,7 @@ import pickle
 
 
 
-class WebWalking():
+class WebWalking:
     """
     WebWalking object, pass path to pickle list and map png
     """
@@ -38,7 +38,13 @@ class WebWalking():
             coordinates = self.get_coordinates()
             d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
             arr = np.array(list(d))
+<<<<<<< Updated upstream
             ind = np.where(arr < 103)
+=======
+            #changed from 103, i dont know if breaks other scripts
+            #TODO add points to list (ln44) where they are a certain distance away on minimap or 
+            ind = np.where(arr < 145)
+>>>>>>> Stashed changes
             ind = ind[0].tolist()
             possible_points = self.path[ind[-5]:ind[-1]]
             point = random.choice(possible_points)

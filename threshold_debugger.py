@@ -5,7 +5,11 @@ from vision import Vision
 
 wincap = WindowCapture(area='bank_test')
 
+<<<<<<< Updated upstream
 needle = 'Needle\\iron_ore.png'
+=======
+needle = 'Needle\\broken_large_pouch.png'
+>>>>>>> Stashed changes
 
 vision = Vision(needle)
 
