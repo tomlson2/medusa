@@ -18,6 +18,7 @@ screen_bottom = Interactions('screen_bottom')
 screen_left = Interactions('screen_left')
 screen_right = Interactions('screen_right')
 inventory = Interactions(area='inventory')
+minimap = Interactions(area='minimap')
 
 #obstacles
 tree = Vision('Needle\\agility\\canifis\\tree_start.png')
@@ -41,7 +42,10 @@ mark4_jump = Vision('Needle\\agility\\canifis\\mark4_jump.png')
 #fall stuff
 fall_check = Vision('Needle\\agility\\canifis\\fall_check.png')
 fall_to_start = WebWalking('walking_lists\\canifis_fall.pkl','map\\canifis_city.png')
-glitch = Vision('Needle\\agility\\canifis\\gap5_glitch.png')
+
+glitch = Vision('Needle\\agility\\canifis\\glitched_map.png')
+fix_glitch = Vision('Needle\\agility\\canifis\\fix_glitch.png')
+glitch_jump = Vision('Needle\\agility\\canifis\\glitch_jump.png')
 
 #marks
 mark0 = Vision('Needle\\agility\\canifis\\mark0.png')
@@ -82,6 +86,7 @@ while True:
             screen_top.click(mark0, threshold=0.8)
             time.sleep(2)
             marks += 1
+            print(f'marks collected: {marks}')
             
             if screen_top.contains(mark0_jump, threshold=0.71):
                 print('jumping second gap from mark... ')
@@ -103,6 +108,7 @@ while True:
             screen_left.click(mark1, threshold=0.8)
             time.sleep(2)
             marks += 1
+            print(f'marks collected: {marks}')
             
             if screen_left.contains(mark11_jump, threshold=0.71):
                 print('jumping second gap from mark... ')
@@ -112,7 +118,7 @@ while True:
     if screen_left.contains(second_gap, threshold=0.66):
         print('jumping second gap... ')
         screen_left.click(second_gap, threshold=0.65)
-        time.sleep(4.5)
+        time.sleep(4.9)
         dead_loop_counter = 0
         
         if screen_left.contains(mark2, threshold=0.71):
@@ -120,6 +126,7 @@ while True:
             screen_left.click(mark2, threshold=0.7)
             time.sleep(2)
             marks += 1
+            print(f'marks collected: {marks}')
             
             if screen_left.contains(mark1_jump, threshold=0.63):
                 print('jumping third gap from mark... ')
@@ -137,6 +144,7 @@ while True:
             screen_bottom.click(mark3, threshold=0.6)
             time.sleep(2)
             marks += 1
+            print(f'marks collected: {marks}')
             
             if screen_bottom.contains(mark3_jump, threshold=0.61):
                 print('jumping fourth gap from mark... ')
@@ -154,6 +162,7 @@ while True:
             screen_bottom.click(mark4, threshold=0.6)
             time.sleep(2)
             marks += 1
+            print(f'marks collected: {marks}')
             
             if screen_bottom.contains(mark4_jump, threshold=0.71):
                 print('jumping pole vault from mark... ')
@@ -181,7 +190,6 @@ while True:
         current_time = (time.time() - start_time)
         current_time_format = time.strftime("%H:%M:%S", time.gmtime(current_time))
         print(f"run time: {current_time_format}")
-        print(f'marks collected: {marks}')
         
     if screen_left.contains(fall_check, threshold=0.71):
         print('failed jump... ')
@@ -195,6 +203,14 @@ while True:
     #     if screen_right.contains(glitch):
     #         screen_right.click(glitch)
     #         dead_loop_counter = 0
+    
+    if dead_loop_counter > 2:
+        if minimap.contains(glitch):
+            print('glitched...')
+            screen_right.click(fix_glitch)
+            time.sleep(2)
+            screen_right.click(glitch_jump)
+            print('glitch resolved')
     
     if dead_loop_counter > 7:
         print('dead loop protocol...')
