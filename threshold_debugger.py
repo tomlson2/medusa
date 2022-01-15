@@ -3,9 +3,9 @@ from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
 from vision import Vision
 
-wincap = WindowCapture(area='xp_bar')
+wincap = WindowCapture()
 
-needle = 'Needle\\make_adamant.png'
+needle = 'Needle\\agility\\canifis\\mark1_jump.png'
 
 vision = Vision(needle)
 
