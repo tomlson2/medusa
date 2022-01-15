@@ -163,5 +163,4 @@ class Interactions:
             if current_time > 5:
                 print("Failed to find Needle in 5 seconds")
                 break
-            time.sleep(1)
     

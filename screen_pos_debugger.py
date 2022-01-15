@@ -16,5 +16,5 @@ while True:
     if keyboard.is_pressed("z"):
         w = x2-x
         h = y2-y
-        print("self.w = "+str(w)+"\n            self.h = "+str(h)+"\n            self.x = "+str(x)+"\n            self.y = "+str(y))
+        print("self.w = "+str(w)+"\n            self.h = "+str(h)+"\n            self.x = "+str(x)+"\n            self.y = "+str(y)+"\n\n"+str(x)+","+str(y)+","+str(w)+","+str(h))
         break

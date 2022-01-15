@@ -1,4 +1,3 @@
-from numpy import empty, ndarray
 from webwalking import WebWalking
 from vision import Vision
 from player import Player
