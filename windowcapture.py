@@ -163,6 +163,32 @@ class WindowCapture:
             self.h = 579
             self.x = 113
             self.y = 468
+            
+            
+        if area == 'screen_top':
+            self.w = 1902
+            self.h = 557
+            self.x = 8  
+            self.y = 36 
+            
+        if area == 'screen_bottom':
+            self.w = 1894
+            self.h = 518
+            self.x = 12 
+            self.y = 549
+            
+        if area == 'screen_left':
+            self.w = 964
+            self.h = 1028
+            self.x = 7
+            self.y = 41
+            
+        if area == 'screen_right':
+            self.w = 980
+            self.h = 1035
+            self.x = 929
+            self.y = 36
+            
 
         
   
