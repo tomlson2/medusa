@@ -218,7 +218,7 @@ while True:
             print('glitched...')
             time.sleep(0.1)
             screen_right.click(fix_glitch)
-            time.sleep(4.4)
+            time.sleep(3.4)
             
             screen_right.wait_for(glitch_jump, threshold=0.61)
             screen_right.click(glitch_jump, threshold=0.60)
