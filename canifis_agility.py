@@ -50,6 +50,7 @@ fall2_check = Vision('Needle\\agility\\canifis\\fall2_check.png')
 fall_to_start = WebWalking('walking_lists\\canifis_fall.pkl','map\\canifis_city.png')
 
 #glitch fixes
+start_bug = Vision('Needle\\agility\\canifis\\start_bug.png')
 glitch = Vision('Needle\\agility\\canifis\\glitched_map.png')
 fix_glitch = Vision('Needle\\agility\\canifis\\fix_glitch.png')
 glitch_jump = Vision('Needle\\agility\\canifis\\glitch_jump.png')
@@ -76,7 +77,7 @@ while True:
     if screen_top.contains(tree, threshold=0.81):
         print('starting... ')
         screen_top.click(tree, threshold=0.80)
-        time.sleep(4.4)
+        time.sleep(4.1)
         dead_loop_counter = 0
         
     if screen_top.contains(tree2, threshold=0.77):
@@ -91,27 +92,28 @@ while True:
         time.sleep(4.4)
         dead_loop_counter = 0
         
-    if screen_top.contains(mark0, threshold=0.81):
-            print('collecting mark1... ')
-            screen_top.click(mark0, threshold=0.8)
+    if screen_top.contains(mark0, threshold=0.84):
+            print('collecting mark0... ')
+            time.sleep(.5)
+            screen_top.click(mark0, threshold=0.83)
             time.sleep(2)
             marks += 1
             print(f'marks collected: {marks}')
             
-            if screen_top.contains(mark0_jump, threshold=0.71):
+            if screen_top.contains(mark0_jump, threshold=0.62):
                 print('jumping first gap from mark... ')
-                screen_top.click(mark0_jump, threshold=0.7)
+                screen_top.click(mark0_jump, threshold=0.61)
                 time.sleep(4.2)
         
-    if screen_top.contains(first_gap, threshold=0.75):
+    if screen_top.contains(first_gap, threshold=0.79):
         print('jumping first gap... ')
-        screen_top.click(first_gap, threshold=0.74)
+        screen_top.click(first_gap, threshold=0.78)
         time.sleep(4.32)
         dead_loop_counter = 0
         
-        if screen_left.contains(mark1, threshold=0.71) and screen_top.contains(mark1, threshold=0.71):
+        if screen_left.contains(mark1, threshold=0.82) and screen_top.contains(mark1, threshold=0.71):
             print('collecting mark1... ')
-            screen_top.click(mark1, threshold=0.7)
+            screen_left.click(mark1, threshold=0.8)
             time.sleep(2.2)
             marks += 1
             print(f'marks collected: {marks}')
@@ -119,12 +121,12 @@ while True:
             if screen_left.contains(mark11_jump, threshold=0.71):
                 print('jumping second gap from mark... ')
                 screen_left.click(mark11_jump, threshold=0.7)
-                time.sleep(4.2)
+                time.sleep(4.5)
          
     if screen_left.contains(second_gap, threshold=0.66):
         print('jumping second gap... ')
         screen_left.click(second_gap, threshold=0.65)
-        time.sleep(5.1)
+        time.sleep(5.4)
         dead_loop_counter = 0
         
         if screen_left.contains(mark2, threshold=0.71):
@@ -151,10 +153,11 @@ while True:
             time.sleep(2)
             marks += 1
             print(f'marks collected: {marks}')
+            screen_bottom.wait_for(mark3_jump)
             
-            if screen_bottom.contains(mark3_jump, threshold=0.61):
+            if screen_bottom.contains(mark3_jump, threshold=0.70): 
                 print('jumping fourth gap from mark... ')
-                screen_bottom.click(mark3_jump, threshold=0.6)
+                screen_bottom.click(mark3_jump, threshold=0.70)
                 time.sleep(2)
         
     if screen_bottom.contains(fourth_gap, threshold=0.71):
@@ -178,7 +181,7 @@ while True:
     if screen_bottom.contains(pole_vault, threshold=0.71):
         print('jumping pole vault... ')
         screen_bottom.click(pole_vault, threshold=0.7)
-        time.sleep(5.4)
+        time.sleep(4.1)
         dead_loop_counter = 0
         
     if screen_right.contains(fifth_gap, threshold=0.71):
@@ -213,16 +216,17 @@ while True:
     #         screen_right.click(glitch)
     #         dead_loop_counter = 0
     
-    if dead_loop_counter > 4:
+    if dead_loop_counter > 2:
         if minimap.contains(glitch, threshold=0.9) == True and screen_right.contains(fifth_gap) == False:
             print('glitched...')
             time.sleep(0.1)
             screen_right.click(fix_glitch)
-            time.sleep(3.4)
+            time.sleep(2.8)
             
-            screen_right.wait_for(glitch_jump, threshold=0.61)
-            screen_right.click(glitch_jump, threshold=0.60)
+            screen_right.wait_for(glitch_jump, threshold=0.66)
+            screen_right.click(glitch_jump, threshold=0.65)
             print('glitch resolved1')
+            time.sleep(2)
             dead_loop_counter = 0
             
         if chatbox.contains(tap_here):
@@ -233,6 +237,12 @@ while True:
         if screen_left.contains(fall2_check):
             print('failed jump...')
             fall_to_start.walk(within=3)
+
+    if dead_loop_counter >3:
+        if screen_top.contains(start_bug):
+            print('rare start bug...')
+            screen_top.click(start_bug)
+            time.sleep(4.2)
     
     if dead_loop_counter > 9:
         print('dead loop protocol...')
