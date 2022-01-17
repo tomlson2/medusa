@@ -32,58 +32,58 @@ end_check = Vision('Needle\\agility\\seers\\end_check.png')
 
 mark0 = Vision('Needle\\agility\\seers\\roof0_mark.png')
 mark1 = Vision('Needle\\agility\\seers\\roof1_mark.png')
-mark2 = Vision('Needle\\agility\\seers\\roof0_mark.png')
+mark2 = Vision('Needle\\agility\\seers\\roof2_mark.png')
 mark3 = Vision('Needle\\agility\\seers\\roof0_mark.png')
 mark4 = Vision('Needle\\agility\\seers\\roof4_mark.png')
 
 mark0_jump = Vision('Needle\\agility\\seers\\mark0_jump.png')
 mark1_jump = Vision('Needle\\agility\\seers\\mark1_jump.png')
-mark2_jump = Vision('Needle\\agility\\seers\\mark0_jump.png')
+mark2_jump = Vision('Needle\\agility\\seers\\mark2_jump.png')
 mark3_jump = Vision('Needle\\agility\\seers\\mark0_jump.png')
 mark4_jump = Vision('Needle\\agility\\seers\\mark4_jump.png')
 
 mark_list = [mark0, mark1, mark2, mark3, mark4]
 mark_jumps = [mark0_jump, mark1_jump, mark2_jump, mark3_jump, mark4_jump]
 
-current_roof = 0
+current_roof = 5
 mark_count = 0
 dead_loop = 0
 
 def start0():
     global current_roof, dead_loop
-    if current_roof == 0:
-        if screen_top.contains(wall_start0, threshold=0.84):
+    if current_roof == 5:
+        if screen_right.contains(wall_start0, threshold=0.93):
             print('starting0... ')
-            screen_top.click(wall_start0, threshold=0.83)
-            time.sleep(3.2)
+            screen_right.click(wall_start0, threshold=0.93)
+            time.sleep(3.8)
             current_roof = 0
             dead_loop = 0
         elif screen_close.contains(wall_start3, threshold=0.84):
             print('starting3... ')
             screen_close.click(wall_start3, threshold=0.83)
-            time.sleep(3.2)
+            time.sleep(3.8)
             current_roof = 0
             dead_loop = 0
     return current_roof
 
 def start1():
     global current_roof, dead_loop
-    if current_roof == 0:
+    if current_roof == 5:
         if screen_top.contains(wall_start1, threshold=0.89):
             print('starting1... ')
             screen_top.click(wall_start1, threshold=0.88)
-            time.sleep(3.2)
+            time.sleep(3.8)
             current_roof = 0
             dead_loop = 0
     return current_roof
 
 def start2():
     global current_roof, dead_loop
-    if current_roof == 0:
+    if current_roof == 5:
         if screen_top.contains(wall_start2, threshold=0.63):
             print('starting2... ')
             screen_top.click(wall_start2, threshold=0.625)
-            time.sleep(3.2)
+            time.sleep(3.8)
             current_roof = 0
             dead_loop = 0
         return current_roof
@@ -94,7 +94,7 @@ def first_jump():
         if screen_top.contains(first_gap, threshold=0.71):
             print('jumping first gap... ')
             screen_top.click(first_gap, threshold=0.70)
-            time.sleep(5.4)
+            time.sleep(5.9)
             current_roof = 1
             dead_loop = 0
     return current_roof
@@ -102,10 +102,10 @@ def first_jump():
 def tightrope_walk():
     global current_roof, dead_loop
     if current_roof == 1:
-        if screen_bottom.contains(tightrope, threshold=0.71):
+        if screen_bottom.contains(tightrope, threshold=0.69):
             print('walking tightrope... ')
-            screen_bottom.click(tightrope, threshold=0.70)
-            time.sleep(4.9)
+            screen_bottom.click(tightrope, threshold=0.69)
+            time.sleep(5.6)
             current_roof = 2
             dead_loop = 0
     return current_roof
@@ -144,14 +144,21 @@ def end_jump():
             to_start.walk(within=3)
     return current_roof
 
+def end_walk():
+    global current_roof, dead_loop
+    if current_roof == 5:
+        pass
+        
+        
+
 def find_roof0():
     global current_roof
     print('finding current roof...')
-    if screen_top.contains(wall_start0, threshold=0.71):
-        current_roof = 0
+    if screen_top.contains(wall_start0, threshold=0.94):
+        current_roof = 5
     elif screen_top.contains(first_gap, threshold=0.71):
         current_roof = 0
-    elif screen_bottom.contains(tightrope, threshold=0.71):
+    elif screen_bottom.contains(tightrope, threshold=0.69):
         current_roof = 1    
     elif screen_bottom.contains(second_gap, threshold=0.71):
         current_roof = 2
@@ -161,15 +168,16 @@ def find_roof0():
         current_roof = 4
     elif screen_top.contains(fall_check, threshold=0.6):
         to_start.walk(within=3)
+        current_roof = 5
     elif minimap.contains(end_check):
         to_start.walk(within=3)
-        current_roof = 0
+        current_roof = 5
     return current_roof
 
 def find_roof1():
     global current_roof
     print('finding current roof...')
-    if screen_top.contains(mark0_jump, threshold=0.71):
+    if screen_top.contains(mark0_jump, threshold=0.94):
         screen.click(mark_jumps[0])
         current_roof += 1
     elif screen_top.contains(mark1_jump, threshold=0.71):
