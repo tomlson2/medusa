@@ -4,7 +4,7 @@ import pandas as pd
 class Price:
 
     def __init__(self):
-        r = requests.get("https://prices.runescape.wiki/api/v1/osrs/1h")
+        r = requests.get("https://prices.runescape.wiki/api/v1/osrs/5m")
 
         df = pd.read_json(r.text)
         mapping_df = pd.read_json('ge/mapping.json')
@@ -13,6 +13,8 @@ class Price:
         avgLowPrice = [e.get('avgLowPrice') for e in df.data]
         avgPrice = [int((int(b if a is None else a) + int(a if b is None else b)) / 2) for a, b in zip(avgHighPrice,avgLowPrice)]
 
+        df['avgHighPrice'] = avgHighPrice
+        df['avgLowPrice'] = avgLowPrice
         df['data'] = avgPrice
 
         df.reset_index(inplace=True)

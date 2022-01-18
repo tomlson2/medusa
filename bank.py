@@ -43,16 +43,17 @@ class Bank:
             self.findbank()
         
         if self.stam == True and Player().need_stam() == True:
-            self.bank.click(self.withdraw1, 1)
+            self.bank.click(self.withdraw1, 0.9)
             time.sleep(random.normalvariate(0.15,0.01))
             self.bank.click(self.stamina_pot)
             time.sleep(random.normalvariate(0.15,0.01))
             self.close()
             time.sleep(random.normalvariate(0.15,0.01))
-            self.inventory.click(self.stamina_pot)
-            self.findbank()
             self.inventory.click(self.stamina_pot, 1)
-            self.screen.click(self.withdraw_all)
+            self.findbank()
+            time.sleep(random.normalvariate(0.15,0.01))
+            self.inventory.click(self.stamina_pot, 1)
+            self.screen.click(self.withdraw_all, 0.9)
             time.sleep(random.normalvariate(0.15,0.01))
             
         self.bank.click(item, threshold)
