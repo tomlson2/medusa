@@ -111,7 +111,7 @@ while True:
             
         inventory.click(lobster)
         
-    bank1.withdraw(essence, threshold=0.81)
+    bank1.withdraw(essence, threshold=0.85)
     time.sleep(random.normalvariate(0.2, 0.02))
     screen.click(xbank)
     
@@ -131,7 +131,7 @@ while True:
             time.sleep(random.normalvariate(.1,.01))
             screen.click(withdraw_all)
         
-    bank1.withdraw(essence, threshold=0.81)
+    bank1.withdraw(essence, threshold=0.85)
     time.sleep(random.normalvariate(0.4, 0.02))
     screen.click(xbank)
     
@@ -183,7 +183,7 @@ while True:
         
     if inventory.contains(stamina1):
         inventory.click(stamina1)
-    bank1.withdraw(essence, threshold=0.83)
+    bank1.withdraw(essence, threshold=0.85)
     time.sleep(random.normalvariate(0.35, 0.02))
     
     #walk to altar
@@ -195,7 +195,7 @@ while True:
     
     time.sleep(random.uniform(1.95,1.99))
     inventory.fast_click(huge_pouch, right_click=True)
-    time.sleep(0.05)
+    time.sleep(0.12)
     screen.click(empty_pouch) 
     
     screen.click(altar)
