@@ -189,9 +189,13 @@ class WindowCapture:
             self.x = 929
             self.y = 36
             
+        if area == 'screen_close':
+            self.w = 582
+            self.h = 396
+            self.x = 745
+            self.y = 384
 
-        
-  
+            
 
     def get_screenshot(self):
             
