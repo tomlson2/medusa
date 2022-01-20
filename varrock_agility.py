@@ -6,6 +6,7 @@ from vision import Vision
 from webwalking import WebWalking
 
 '''
+about ~12k-14k xp/hr
 setup: 
 full north, 2 zoom, brightness 3 (middle)
 start on the path to the right of the course
