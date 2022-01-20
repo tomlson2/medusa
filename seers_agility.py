@@ -57,13 +57,21 @@ def start0():
     if current_roof == 5:
         if screen_right.contains(wall_start0, threshold=0.93):
             print('starting0... ')
-            screen_right.click(wall_start0, threshold=0.93)
+            try:
+                screen_right.click(wall_start0, threshold=0.93)
+            except IndexError:
+                print('clicking error')
+                pass
             time.sleep(4.8)
             current_roof = 0
             dead_loop = 0
-        elif screen_close.contains(wall_start3, threshold=0.88):
+        elif screen_close.contains(wall_start3, threshold=0.9):
             print('starting3... ')
-            screen_close.click(wall_start3, threshold=0.87)
+            try:
+                screen_close.click(wall_start3, threshold=0.89)
+            except IndexError:
+                print('clicking error')
+                pass
             time.sleep(4.8)
             current_roof = 0
             dead_loop = 0
@@ -72,9 +80,13 @@ def start0():
 def start1():
     global current_roof, dead_loop
     if current_roof == 5:
-        if screen_top.contains(wall_start1, threshold=0.93):
+        if screen_close.contains(wall_start1, threshold=0.98):
             print('starting1... ')
-            screen_top.click(wall_start1, threshold=0.93)
+            try:
+                screen_close.click(wall_start1, threshold=0.98)
+            except IndexError:
+                print('clicking error')
+                pass
             time.sleep(4.8)
             current_roof = 0
             dead_loop = 0
@@ -85,7 +97,11 @@ def start2():
     if current_roof == 5:
         if screen_top.contains(wall_start2, threshold=0.63):
             print('starting2... ')
-            screen_top.click(wall_start2, threshold=0.625)
+            try:
+                screen_top.click(wall_start2, threshold=0.625)
+            except IndexError:
+                time.sleep(1.54)
+                screen_top.click(wall_start2, threshold=0.625)
             time.sleep(4.8)
             current_roof = 0
             dead_loop = 0
@@ -116,9 +132,9 @@ def tightrope_walk():
 def second_jump():
     global current_roof, dead_loop
     if current_roof == 2:
-        if screen_bottom.contains(second_gap, threshold=0.61):
+        if screen_bottom.contains(second_gap, threshold=0.7):
             print('jumping second gap... ')
-            screen_bottom.click(second_gap, threshold=0.60)
+            screen_bottom.click(second_gap, threshold=0.7)
             time.sleep(5.0)
             current_roof = 3
             dead_loop = 0
@@ -150,6 +166,7 @@ def end_jump():
             print(f"run time: {current_time_format}")
             
             to_start.walk(within=3)
+            time.sleep(0.2)
     return current_roof
 
 def end_walk():
@@ -176,13 +193,16 @@ def find_roof0():
     elif screen_bottom.contains(end_edge, threshold=0.71):
         current_roof = 4
     elif screen_left.contains(fall1_check, threshold=0.65):
-        to_start.walk(within=3)
+        to_start.walk(within=2)
+        time.sleep(0.2)
         current_roof = 5
     elif screen_top.contains(fall_check, threshold=0.65):
-        to_start.walk(within=3)
+        to_start.walk(within=2)
+        time.sleep(0.2)
         current_roof = 5
     elif minimap.contains(end_check):
-        to_start.walk(within=3)
+        to_start.walk(within=2)
+        time.sleep(0.2)
         current_roof = 5
     else:
         current_roof = 5
@@ -221,7 +241,7 @@ def marks():
                 time.sleep(.59)
                 screen.click(mark_list[i],threshold=0.81)
                 print(f'collecting mark {i}')
-                time.sleep(2.5)
+                time.sleep(3.5)
                 screen.wait_for(mark_jumps[i], mark_jump_threshold[i])
                 print('jump found')
                 screen.click(mark_jumps[i], mark_jump_threshold[i])
@@ -259,13 +279,13 @@ while True:
     end_jump()
     
     dead_loop += 1
-    if dead_loop > 3:
+    if dead_loop > 6:
         find_roof0()
-    if dead_loop > 5:
+    if dead_loop > 10:
         find_roof1()
-    if dead_loop > 5:
-        to_start.walk(within=3)
+    if dead_loop > 10:
+        to_start.walk(within=2)
         dead_loop = 0
     
     print('loop')
-    time.sleep(1)
+    time.sleep(.5)

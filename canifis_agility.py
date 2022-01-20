@@ -6,6 +6,7 @@ from vision import Vision
 from webwalking import WebWalking
 
 '''
+about ~15k-17k xp/hr
 setup: 
 problems if lots of players on course
 full north 2 zoom 
@@ -169,13 +170,13 @@ while True:
         if screen_bottom.contains(mark4, threshold=0.61):
             print('collecting mark4... ')
             screen_bottom.click(mark4, threshold=0.6)
-            time.sleep(2)
+            time.sleep(3)
             marks += 1
             print(f'marks collected: {marks}')
             
-            if screen_bottom.contains(mark4_jump, threshold=0.65):
+            if screen_bottom.contains(mark4_jump, threshold=0.62):
                 print('jumping pole vault from mark... ')
-                screen_bottom.click(mark4_jump, threshold=0.64)
+                screen_bottom.click(mark4_jump, threshold=0.61)
                 time.sleep(5.2)
         
     if screen_bottom.contains(pole_vault, threshold=0.71):
@@ -220,11 +221,11 @@ while True:
         if minimap.contains(glitch, threshold=0.9) == True and screen_right.contains(fifth_gap) == False:
             print('glitched...')
             time.sleep(0.1)
-            screen_right.click(fix_glitch)
+            screen_right.click(fix_glitch, threshold=0.8)
             time.sleep(2.8)
             
-            screen_right.wait_for(glitch_jump, threshold=0.66)
-            screen_right.click(glitch_jump, threshold=0.65)
+            screen_right.wait_for(glitch_jump, threshold=0.76)
+            screen_right.click(glitch_jump, threshold=0.75)
             print('glitch resolved1')
             time.sleep(2)
             dead_loop_counter = 0
