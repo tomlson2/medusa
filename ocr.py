@@ -40,7 +40,7 @@ class Ocr:
                     retval, results, neigh_resp, dists = self.model.findNearest(roismall, k = 1)
                     for digit in results[0]:
                         num.append(int(digit))
-        print(len(num))
+        #print(len(num))
         zipped_pairs = zip(num, xlis)
         z = sorted(zipped_pairs, key = lambda x: x[1])
         num = [x[0] for x in z]
