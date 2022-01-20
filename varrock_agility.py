@@ -76,7 +76,7 @@ while True:
     if screen_left.contains(corner_gap, threshold=0.85):
         print('jumping corner gap... ')
         screen_left.click(corner_gap, threshold=0.75)
-        time.sleep(3.5)
+        time.sleep(4.0)
         dead_loop_counter = 0
     
     if screen_left.contains(balance_wall, threshold=0.75):
@@ -108,9 +108,9 @@ while True:
         time.sleep(4.2)
         dead_loop_counter = 0
         
-    if screen_top.contains(end, threshold=0.70):
+    if screen_top.contains(end, threshold=0.75):
         print('jumping off edge... ')
-        screen_top.click(end, threshold=0.70)
+        screen_top.click(end, threshold=0.75)
         time.sleep(3.7)
         
         if player.run() < 50:
