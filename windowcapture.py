@@ -5,13 +5,15 @@ class WindowCapture:
 
     # constructor
     def __init__(self, window_name='BlueStacks', area=None):
-        if window_name is None:
+
+        self.window_name = window_name
+
+        if self.window_name is None:
             self.hwnd = win32gui.GetDesktopWindow()
         else:
-            self.hwnd = win32gui.FindWindow(None, window_name)
+            self.hwnd = win32gui.FindWindow(None, self.window_name)
             if not self.hwnd:
-                raise Exception('Window not found: {}'.format(window_name))
-
+                raise Exception('Window not found: {}'.format(self.window_name))
 
         # set the window size
         win32gui.MoveWindow(self.hwnd, 0, 0, 1920, 1112, True)
@@ -196,6 +198,9 @@ class WindowCapture:
             self.y = 384
 
             
+    
+    def get_window(self):
+        return self.wind
 
     def get_screenshot(self):
             
@@ -234,3 +239,6 @@ class WindowCapture:
 
     def get_screen_position(self, pos):
         return (pos[0] + self.x, pos[1] + self.y)
+
+# class Interact(WindowCapture):
+#     pass

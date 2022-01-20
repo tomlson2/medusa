@@ -13,7 +13,7 @@ stamina_pot = price.load_price("Stamina potion(4)")
 
 steel_num = 4800
 adamant_num = 2400
-rune_num = 2000
+rune_num = 1950
 
 coffer_rate = 72000
 

@@ -6,19 +6,20 @@ from numpy import ndarray
 from hsvfilter import HsvFilter
 from vision import Vision
 from windowcapture import WindowCapture
-# from ocr import Ocr
-# import cv2 as cv
+from ocr import Ocr
+import cv2 as cv
 
 class Interactions:
     """
     Screen region object used for checking and interacting with needles.
     """
 
-    def __init__(self, area: str = None):
+    def __init__(self, area: str = None, window_name = 'BlueStacks'):
         self.area = area
-        self.wincap = WindowCapture()
+        self.window_name = window_name
+        self.wincap = WindowCapture(area = self.area, window_name = self.window_name)
         self.vision = Vision('Needle\\banana.png')
-        # self.ocr = Ocr('samples/bold12lowersamples.data', 'responses/bold12lowerresponses.data')
+        self.ocr = Ocr('samples/test.data', 'responses/test.data')
     
 
     def click(self, item: object, threshold : float = 0.7, right_click : bool = False):
@@ -30,12 +31,12 @@ class Interactions:
         s = time.time()
         while time.time()-s < 7:
             # print(time.time()-s)
-            rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            rectangles = item.find(self.vision.apply_hsv_filter(self.wincap.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
             if len(rectangles) > 0:
                 break
 
         points = item.get_click_points(rectangles)
-        point = WindowCapture(area = self.area).get_screen_position(points[0])
+        point = self.wincap.get_screen_position(points[0])
 
         hWnd = win32gui.FindWindow(None, "BlueStacks")
         lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
@@ -60,12 +61,12 @@ class Interactions:
         s = time.time()
         while time.time()-s < 7:
             # print(time.time()-s)
-            rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            rectangles = item.find(self.vision.apply_hsv_filter(self.wincap.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
             if len(rectangles) > 0:
                 break
 
         points = item.get_click_points(rectangles)
-        point = WindowCapture(area = self.area).get_screen_position(points[0])
+        point = self.wincap.get_screen_position(points[0])
 
         hWnd = win32gui.FindWindow(None, "BlueStacks")
         lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
@@ -78,22 +79,23 @@ class Interactions:
 
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
 
-        time.sleep(random.normalvariate(0.1,0.02))
+        #time.sleep(random.normalvariate(0.1,0.02))
         # TODO
-        # if point[0] < 964:
-        #     self.wincap.x = point[0] + 65
-        #     self.wincap.y = point[1] - 20
-        #     self.wincap.w = 300
-        #     self.wincap.h = 45
-        # else:
-        #     self.wincap.x = point[0] - 365
-        #     self.wincap.y = point[1] - 20
-        #     self.wincap.w = 300
-        #     self.wincap.h = 45
+        if point[0] < 964:
+            self.wincap.x = point[0] + 65
+            self.wincap.y = point[1] - 20
+            self.wincap.w = 300
+            self.wincap.h = 45
+        else:
+            self.wincap.x = point[0] - 365
+            self.wincap.y = point[1] - 20
+            self.wincap.w = 300
+            self.wincap.h = 45
 
-        # im = self.wincap.get_screenshot()
+        im = self.wincap.get_screenshot()
+        cv.imwrite(im,"needle2.png")
         
-        # print(self.ocr.text(im))
+        print(self.ocr.text(im))
 
         
     def hold_shift(self):
@@ -115,12 +117,12 @@ class Interactions:
         
         while time.time()-s < 10:
             #print(time.time()-s)
-            rectangles = item.find(self.vision.apply_hsv_filter(WindowCapture(area = self.area).get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            rectangles = item.find(self.vision.apply_hsv_filter(self.wincap.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
             if len(rectangles) > 0:
                 break
 
         points = item.get_click_points(rectangles)
-        point = WindowCapture(area = self.area).get_screen_position(points[0])
+        point = self.wincap.get_screen_position(points[0])
 
         hWnd = win32gui.FindWindow(None, "BlueStacks")
         lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
@@ -189,7 +191,7 @@ class Interactions:
         start_time = time.time()
         while self.contains(item, threshold) == False:
             current_time = (time.time() - start_time)
-            if current_time > 5:
+            if current_time > 6:
                 print("Failed to find Needle in 5 seconds")
                 break
     
