@@ -4,7 +4,7 @@ from webwalking import WebWalking
 from vision import Vision
 from player import Player
 from bank import Bank
-from interactions import Interactions
+from windowcapture import BankRegion, ChatboxRegion, Inventory, InventoryRegion, Screen, Chatbox, Bnk, ScreenRegion
 from numpy import array
 from wikiapi import Price
 import time
@@ -21,10 +21,10 @@ rune_ore_price = price.load_price('Runite ore')
 rune_bar_price = price.load_price('Runite bar')
 profit_per_rune_bar = rune_bar_price - ((coal_price * 4) + rune_ore_price)
 
-inventory = Interactions(area='inventory')
-screen = Interactions()
-bank = Interactions(area='bank')
-chatbox = Interactions(area='chatbox')
+inventory = InventoryRegion()
+screen = ScreenRegion()
+bank = BankRegion()
+chatbox = ChatboxRegion()
 
 to_belt = WebWalking('walking_lists\\tobelt.pkl','map\\bf.png')
 to_bank = WebWalking('walking_lists\\bank.pkl','map\\bf.png')

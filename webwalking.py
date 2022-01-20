@@ -1,8 +1,6 @@
-from os import stat
 import cv2 as cv
 import time
-from player import Player
-from windowcapture import WindowCapture
+from windowcapture import Minimap
 from vision import Vision
 import win32gui, win32api, win32con
 import random
@@ -23,8 +21,7 @@ class WebWalking:
                 self.path = pickle.load(pickle_load)
         except FileNotFoundError:
             self.path = ''
-
-        self.minimap = WindowCapture(area='minimap')
+            
         self.worldmap = worldmap
     
     def walk(self, within: int = 1, debugger = True):
@@ -128,7 +125,7 @@ class WebWalking:
 
 
     def get_coordinates(self):
-        self.minivision = Vision(self.minimap.get_screenshot())
+        self.minivision = Vision(Minimap().get_screenshot())
         rectangles = self.minivision.find(cv.imread(self.worldmap),1)
         coordinates = self.minivision.get_center(rectangles)
         return coordinates
@@ -150,22 +147,22 @@ class WebWalking:
             return x1,x2,y1,y2
     
 
-    @staticmethod
-    def map_images():
-        map = WindowCapture(area='map')
-        hWnd = win32gui.FindWindow(None, "BlueStacks")
-        lParam = win32api.MAKELONG(500, 400)
-        hWnd1= win32gui.FindWindowEx(hWnd, None, None, None)
+    # @staticmethod
+    # def map_images():
+    #     map = WindowCapture(area='map')
+    #     hWnd = win32gui.FindWindow(None, "BlueStacks")
+    #     lParam = win32api.MAKELONG(500, 400)
+    #     hWnd1= win32gui.FindWindowEx(hWnd, None, None, None)
 
-        i = 1
+    #     i = 1
 
-        while True:
-            cv.imwrite("map//"+str(i)+".png",map.get_screenshot())
-            for lp1 in range(4):
-                for lp in range(random.randrange(300,500)):
-                    win32gui.SendMessage(hWnd1, win32con.WM_MOUSEWHEEL, None, lParam)    
-                time.sleep(0.2)
-            i += 1
+    #     while True:
+    #         cv.imwrite("map//"+str(i)+".png",map.get_screenshot())
+    #         for lp1 in range(4):
+    #             for lp in range(random.randrange(300,500)):
+    #                 win32gui.SendMessage(hWnd1, win32con.WM_MOUSEWHEEL, None, lParam)    
+    #             time.sleep(0.2)
+    #         i += 1
 
 
     @staticmethod

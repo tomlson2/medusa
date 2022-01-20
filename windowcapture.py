@@ -1,13 +1,16 @@
 import numpy as np
-import win32gui, win32ui, win32con
+from numpy import ndarray
+import win32gui, win32api, win32ui, win32con
+import time, random
+from vision import Vision
 
+window_name = input()
 class WindowCapture:
 
     # constructor
-    def __init__(self, window_name='BlueStacks', area=None):
+    def __init__(self, window_name=window_name):
 
         self.window_name = window_name
-
         if self.window_name is None:
             self.hwnd = win32gui.GetDesktopWindow()
         else:
@@ -24,183 +27,28 @@ class WindowCapture:
         h = window_rect[3] - window_rect[1]
 
         # account for the window border and titlebar and cut them off
-        border_pixels = 1
-        titlebar_pixels = 33
-        self.w_diff = (border_pixels * 2)
-        self.h_diff = titlebar_pixels - border_pixels
-        self.cropped_x = border_pixels
-        self.cropped_y = titlebar_pixels
+        self.border_pixels = 1
+        self.titlebar_pixels = 33
+        self.w_diff = (self.border_pixels * 2)
+        self.h_diff = self.titlebar_pixels - self.border_pixels
+        x = self.border_pixels
+        y = self.titlebar_pixels
+
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h        
+
 
         self.offset_x = window_rect[0]
         self.offset_y = window_rect[1]
-        
-        if area == None:
-            self.w = w - self.w_diff
-            self.h = h - self.h_diff
-            self.x = self.cropped_x
-            self.y = self.cropped_y
-        
-        if area == 'inventory':
-            self.w = 408
-            self.h = 559
-            self.x = 1388
-            self.y = 477
 
-        if area == 'minimap':
-            self.w = 217
-            self.h = 208
-            self.x = 1604
-            self.y = 96
-
-        if area == 'chatbox':
-            self.w = 1105
-            self.h = 297
-            self.x = 29
-            self.y = 37
-        
-        if area == 'smithing':
-            self.w = 133
-            self.h = 26
-            self.x = 1658
-            self.y = 632
-        
-        if area == 'bank':
-            self.w = 1025
-            self.h = 688
-            self.x = 295
-            self.y = 376
-        
-        if area == 'sidebar_r':
-            self.w = 33
-            self.h = 243
-            self.x = 754
-            self.y = 212
-        
-        if area == 'bank_test':
-            self.w = 200
-            self.h = 89
-            self.x = 317
-            self.y = 523
-        
-        if area == 'xp_bar':
-            self.w = 138
-            self.h = 47
-            self.x = 1265
-            self.y = 103
-        
-        if area == 'run_boot':
-            self.w = 53
-            self.h = 52
-            self.x = 1515
-            self.y = 285
-
-        if area == 'character':
-            self.w = 175
-            self.h = 175
-            self.x = 305
-            self.y = 175
-        
-        if area == 'digiting':
-            self.w = 121
-            self.h = 181
-            self.x = 1439
-            self.y = 160
-        
-        if area == 'stat_orbs':
-            self.w = 80
-            self.h = 120
-            self.x = 600
-            self.y = 70
-        
-        if area =='digit':
-            self.w = 7
-            self.h = 10
-            self.x = 609
-            self.y = 119
-        
-        if area == 'health_orb':
-            self.w = 42
-            self.h = 29
-            self.x = 1446
-            self.y = 165
-
-        if area == 'prayer_orb':
-            self.w = 41
-            self.h = 28
-            self.x = 1447
-            self.y = 238
-        
-        if area == 'special_orb':
-            self.w = 43
-            self.h = 28
-            self.x = 1517
-            self.y = 360
-
-        if area == 'run_orb':
-            self.w = 45
-            self.h = 29
-            self.x = 1470
-            self.y = 306
-        
-        if area == 'map':
-            self.w = 976
-            self.h = 641
-            self.x = 274
-            self.y = 98
-        
-        if area == 'stats':
-            self.w = 406
-            self.h = 560
-            self.x = 1389
-            self.y = 474
-        
-        if area == 'inv1':
-            self.w = 50
-            self.h = 44
-            self.x = 735
-            self.y = 271
-            
-        if area == 'left_inventory':
-            self.w = 426    
-            self.h = 579
-            self.x = 113
-            self.y = 468
-            
-            
-        if area == 'screen_top':
-            self.w = 1902
-            self.h = 557
-            self.x = 8  
-            self.y = 36 
-            
-        if area == 'screen_bottom':
-            self.w = 1894
-            self.h = 518
-            self.x = 12 
-            self.y = 549
-            
-        if area == 'screen_left':
-            self.w = 964
-            self.h = 1028
-            self.x = 7
-            self.y = 41
-            
-        if area == 'screen_right':
-            self.w = 980
-            self.h = 1035
-            self.x = 929
-            self.y = 36
-            
-        if area == 'screen_close':
-            self.w = 582
-            self.h = 396
-            self.x = 745
-            self.y = 384
-
-            
+    def get_region(self):
+        return self.x, self.y, self.w, self.h
     
     def get_window(self):
-        return self.wind
+        hwnd = win32gui.FindWindowEx(self.hwnd, None, None, None)
+        return hwnd
 
     def get_screenshot(self):
             
@@ -215,7 +63,7 @@ class WindowCapture:
 
         # convert the raw data into a format opencv can read
         signedIntsArray = dataBitMap.GetBitmapBits(True)
-        img = np.fromstring(signedIntsArray, dtype='uint8')
+        img = np.frombuffer(signedIntsArray, dtype='uint8')
         img.shape = (self.h, self.w, 4)
 
         # free resources
@@ -237,8 +85,202 @@ class WindowCapture:
                 print(hex(hwnd), win32gui.GetWindowText(hwnd))
         win32gui.EnumWindows(winEnumHandler, None)
 
-    def get_screen_position(self, pos):
-        return (pos[0] + self.x, pos[1] + self.y)
 
-# class Interact(WindowCapture):
-#     pass
+class Interact(WindowCapture, Vision):
+    def __init__(self):
+        super().__init__()
+    
+    def get_screen_position(self, pos):
+        return (pos[0]+self.x-self.border_pixels, pos[1]+self.y-self.titlebar_pixels)
+    
+    def right_click(self, item: object, threshold: float = 0.7, timeout = 7):
+        self.mouse_down()
+        time.sleep(random.normalvariate(0.72,0.1))
+        self.mouse_up()
+
+    def mouse_down(self, lParam):
+        hwnd = self.get_window()
+        win32gui.SendMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+
+    def mouse_up(self, lParam):
+        hwnd = self.get_window()
+        win32gui.SendMessage(hwnd, win32con.WM_LBUTTONUP, None, lParam)
+
+    def click(self, item: object, threshold: float = 0.7, timeout = 7, right_click: bool = False):
+        # looks for item to click with _ second timeout.
+        s = time.time()
+        while time.time()-s < timeout:
+            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            if len(rectangles) > 0:
+                break
+
+        points = item.get_click_points(rectangles)
+        point = self.get_screen_position(points[0])
+        print(point)
+        lParam = win32api.MAKELONG(point[0], point[1])
+
+        self.mouse_down(lParam)
+        if right_click == True:
+            time.sleep(random.normalvariate(0.8,0.01))
+        self.mouse_up(lParam)
+
+        time.sleep(random.normalvariate(0.25,0.02))
+
+
+    def fast_click(self, item: object, threshold: float = 0.7, timeout = 7, right_click: bool = False):
+        # looks for item to click with _ second timeout.
+        s = time.time()
+        while time.time()-s < timeout:
+            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            if len(rectangles) > 0:
+                break
+
+        points = item.get_click_points(rectangles)
+        point = self.get_screen_position(points[0])
+        print(point)
+        lParam = win32api.MAKELONG(point[0], point[1])
+
+        self.mouse_down(lParam)
+        if right_click == True:
+            time.sleep(random.normalvariate(0.8,0.01))
+        self.mouse_up(lParam)
+
+        time.sleep(random.normalvariate(0.15,0.02))
+        
+    def hold_shift(self):
+        hwnd = self.get_window()
+        win32gui.SendMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_SHIFT, None)
+        
+    def release_shift(self):
+        hwnd = self.get_window()
+        win32gui.SendMessage(hwnd, win32con.WM_KEYUP, win32con.VK_SHIFT, None)
+                        
+    def shift_click(self, item : object, threshold : float = 0.7):
+
+        s = time.time()
+        
+        while time.time()-s < 10:
+            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            if len(rectangles) > 0:
+                break
+
+        points = item.get_click_points(rectangles)
+        point = self.get_screen_position(points[0])
+
+        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        
+        #vk_shift is shift key
+        #press keys
+        #for shift to work window has to be focused! IDK WHY OR HOW TO FIX
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYDOWN, win32con.VK_SHIFT, lParam)
+        time.sleep(random.normalvariate(.15, 0.001))
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        #release keys
+        time.sleep(.05)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, lParam)
+        time.sleep(random.normalvariate(.15, 0.005))
+        win32gui.SendMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, lParam)
+
+    def click_point(self, point : tuple):
+        hWnd = win32gui.FindWindow(None, self.window_name)
+        lParam = win32api.MAKELONG(point[0], point[1])
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
+
+        time.sleep(random.normalvariate(0.2,0.02))
+
+    def click_region(self, rectangle : ndarray, right_click : bool = False):
+        
+        points = self.get_click_points(rectangle)
+        point = self.get_screen_position(points[0])
+
+        hWnd = win32gui.FindWindow(None, self.window_name)
+        lParam = win32api.MAKELONG(point[0], point[1])
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        
+        if right_click == True:
+            time.sleep(random.normalvariate(.72,.01))
+
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
+
+        time.sleep(random.normalvariate(0.25,0.03))
+    
+    def contains(self, item: object, threshold: float = 0.7) -> bool:
+        """
+        Checks if screen region contains certain needle and returns a boolean value
+        """
+        if len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)) > 0:
+            return True
+        else:
+            return False
+    
+    def amount(self, item, threshold):
+        return len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold))
+
+    def wait_for(self, item : object, threshold : float = 0.7):
+        """
+        Waits for something to appear on screen region with a 10 second timeout period.
+        """
+        start_time = time.time()
+        while self.contains(item, threshold) == False:
+            current_time = (time.time() - start_time)
+            if current_time > 6:
+                print("Failed to find Needle in 5 seconds")
+                break
+class CustomRegion(Interact):
+
+    def __init__(self, x, y, w, h):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+          
+class InventoryRegion(Interact):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 408
+        self.h = 559
+        self.x = 1388
+        self.y = 477
+    
+    def drink_potion(self):
+        self.click()        
+class ScreenRegion(Interact):
+
+    def __init__(self):
+        super().__init__()
+class ChatboxRegion(Interact):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 1105
+        self.h = 297
+        self.x = 29
+        self.y = 37
+
+class BankRegion(Interact):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 1025
+        self.h = 688
+        self.x = 295
+        self.y = 376
+
+
+class MinimapRegion(Interact):
+    def __init__(self):
+        super().__init__()
+        self.w = 217
+        self.h = 208
+        self.x = 1604
+        self.y = 96

@@ -1,7 +1,6 @@
 from win32con import STATUS_ABANDONED_WAIT_0
 from vision import Vision
-from interactions import Interactions
-from windowcapture import WindowCapture
+from windowcapture import Bnk, Screen, Inventory, Chatbox
 from player import Player
 import time
 import random
@@ -16,12 +15,10 @@ class Bank:
 
     def __init__(self, bank_needle : str, stam : bool = False):
 
-        self.screen = Interactions()
-        self.inventory = Interactions(area='inventory')
-        self.bank = Interactions(area='bank')
-        self.chatbox = Interactions(area='chatbox')
-        self.sidebar_r = Interactions(area='sidebar_r')
-        self.wincap = WindowCapture('BlueStacks')
+        self.screen = Screen()
+        self.inventory = Inventory()
+        self.bank = Bnk()
+        self.chatbox = Chatbox()
 
         self.stam = stam
 
