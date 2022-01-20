@@ -108,9 +108,9 @@ while True:
         time.sleep(4.2)
         dead_loop_counter = 0
         
-    if screen_top.contains(end, threshold=0.88):
+    if screen_top.contains(end, threshold=0.70):
         print('jumping off edge... ')
-        screen_top.click(end, threshold=0.88)
+        screen_top.click(end, threshold=0.70)
         time.sleep(3.7)
         
         if player.run() < 50:
