@@ -39,7 +39,7 @@ tap_here = Vision('Needle\\tap_here_to_continue.png')
 teleport_to_moonclan = Vision('Needle\\teleport_to_moonclan.png')
 npc_contact = Vision('Needle\\npc_contact.png')
 player = Player()
-bank_region = array([(924,474,52,71)])
+bank_region = array([(924,474,44,60)])
 
 #items
 essence = Vision('Needle\\pure_essence.png')
@@ -111,7 +111,7 @@ while True:
             
         inventory.click(lobster)
         
-    bank1.withdraw(essence, threshold=0.81)
+    bank1.withdraw(essence, threshold=0.85)
     time.sleep(random.normalvariate(0.2, 0.02))
     screen.click(xbank)
     
@@ -123,7 +123,7 @@ while True:
     time.sleep(0.84)
            
     #stamina check and withdraw
-    if player.run() <= 40:
+    if player.run() <= 70:
         print(f'run energy: {player.run()}')
         if screen.contains(stamina1, threshold=0.60):
             screen.click(withdraw1)
@@ -131,7 +131,7 @@ while True:
             time.sleep(random.normalvariate(.1,.01))
             screen.click(withdraw_all)
         
-    bank1.withdraw(essence, threshold=0.81)
+    bank1.withdraw(essence, threshold=0.85)
     time.sleep(random.normalvariate(0.4, 0.02))
     screen.click(xbank)
     
@@ -183,29 +183,29 @@ while True:
         
     if inventory.contains(stamina1):
         inventory.click(stamina1)
-    bank1.withdraw(essence, threshold=0.83)
-    time.sleep(random.normalvariate(0.35, 0.02))
+    bank1.withdraw(essence, threshold=0.85)
+    time.sleep(random.normalvariate(0.25, 0.02))
     
     #walk to altar
     print('walking to astral altar...')
     to_altar.walk(5)
-    time.sleep(random.normalvariate(.44, 0.02))
+    time.sleep(random.normalvariate(.54, 0.02))
     #craft runes at altar
     screen.click(altar)
     
-    time.sleep(random.uniform(1.95,1.99))
+    time.sleep(random.uniform(1.90,1.94))
     inventory.fast_click(huge_pouch, right_click=True)
-    time.sleep(0.05)
+    time.sleep(0.4)
     screen.click(empty_pouch) 
     
     screen.click(altar)
     
     #mandatory sleep waiting for runes to craft
-    time.sleep(random.uniform(1.9,1.92))
+    time.sleep(random.uniform(1.8,1.82))
     time.sleep(0.66)
     
     inventory.fast_click(med_pouch, right_click=True)
-    time.sleep(0.05)
+    time.sleep(0.25)
     screen.click(empty_pouch) 
     inventory.fast_click(small_pouch, right_click=True)
     time.sleep(0.25)
