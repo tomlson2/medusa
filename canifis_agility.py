@@ -246,10 +246,11 @@ while True:
             screen_top.click(start_bug)
             time.sleep(4.2)
     
-    if dead_loop_counter > 9:
-        print('dead loop protocol...')
-        fall_to_start.walk(within=3)
-        dead_loop_counter = 0
+    # comment if going afk
+    # if dead_loop_counter > 9:
+    #     print('dead loop protocol...')
+    #     fall_to_start.walk(within=3)
+    #     dead_loop_counter = 0
         
     time.sleep(0.5)
         
