@@ -1,20 +1,20 @@
 import time
 from player import Player
-from interactions import Interactions
 from vision import Vision
+from windowcapture import ScreenRegion, InventoryRegion, CustomRegion, ChatboxRegion, MinimapRegion
 from webwalking import WebWalking
 
 
 player = Player()
-screen = Interactions()
-screen_top = Interactions('screen_top')
-screen_bottom = Interactions('screen_bottom')
-screen_left = Interactions('screen_left')
-screen_right = Interactions('screen_right')
-screen_close = Interactions('screen_close')
-inventory = Interactions(area='inventory')
-minimap = Interactions(area='minimap')
-chatbox = Interactions(area='chatbox')
+screen = ScreenRegion()
+screen_top = CustomRegion(1902, 557, 8, 36)
+screen_bottom = CustomRegion(1894, 518, 12, 549)
+screen_left = CustomRegion(964, 1028, 7, 41)
+screen_right = CustomRegion(980, 1035, 929, 36)
+screen_close = CustomRegion(582, 396, 745, 384)
+inventory = InventoryRegion()
+minimap = MinimapRegion()
+chatbox = ChatboxRegion()
 
 to_start = WebWalking('walking_lists\\to_seers.pkl','map\\seers_agility.png')
 

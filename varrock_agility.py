@@ -1,7 +1,6 @@
 import time
-
 from player import Player
-from interactions import Interactions
+from windowcapture import ScreenRegion, InventoryRegion, CustomRegion
 from vision import Vision
 from webwalking import WebWalking
 
@@ -13,12 +12,12 @@ start on the path to the right of the course
 no tabs open, no inventory or stats, no chat
 '''
 
-screen = Interactions()
-screen_top = Interactions('screen_top')
-screen_bottom = Interactions('screen_bottom')
-screen_left = Interactions('screen_left')
-screen_right = Interactions('screen_right')
-inventory = Interactions(area='inventory')
+screen = ScreenRegion()
+screen_top = CustomRegion(1902, 557, 8, 36)
+screen_bottom = CustomRegion(1894, 518, 12, 549)
+screen_left = CustomRegion(964, 1028, 7, 41)
+screen_right = CustomRegion(980, 1035, 929, 36)
+inventory = InventoryRegion()
 
 to_start = WebWalking('walking_lists\\end_to_start.pkl','map\\varrock_agility.png')
 fall2_to_start = WebWalking('walking_lists\\fall2_to_start.pkl','map\\varrock_agility.png')
@@ -68,15 +67,15 @@ while True:
         dead_loop_counter = 0
     
     
-    if screen_left.contains(clothes_line, threshold=0.83):
+    if screen_left.contains(clothes_line, threshold=0.7):
         print('jumping clothes line... ')
-        screen_left.click(clothes_line, threshold=0.82)
+        screen_left.click(clothes_line, threshold=0.7)
         time.sleep(8.1)
         dead_loop_counter = 0
         
-    if screen_left.contains(corner_gap, threshold=0.85):
+    if screen_left.contains(corner_gap, threshold=0.78):
         print('jumping corner gap... ')
-        screen_left.click(corner_gap, threshold=0.75)
+        screen_left.click(corner_gap, threshold=0.76)
         time.sleep(4.0)
         dead_loop_counter = 0
     
@@ -91,15 +90,15 @@ while True:
     #     screen_bottom.click(leap_gap, threshold=0.75)
     #     time.sleep(1.8)
         
-    if screen_right.contains(big_gap, threshold=0.82):
+    if screen_right.contains(big_gap, threshold=0.8):
         print('leaping big gap... ')
-        screen_right.click(big_gap, threshold=0.75)
+        screen_right.click(big_gap, threshold=0.8)
         time.sleep(9.2)
         dead_loop_counter = 0
         
-    if screen_right.contains(red_gap, threshold=0.85):
+    if screen_right.contains(red_gap, threshold=0.72):
         print('leaping red gap... ')
-        screen_right.click(red_gap, threshold=0.75)
+        screen_right.click(red_gap, threshold=0.72)
         time.sleep(5.6)
         dead_loop_counter = 0
         
@@ -112,14 +111,14 @@ while True:
     if screen_top.contains(end, threshold=0.75):
         print('jumping off edge... ')
         screen_top.click(end, threshold=0.75)
-        time.sleep(3.7)
+        time.sleep(4.2)
         
         if player.run() < 50:
             print('low run energy')
             screen_right.click(bag)
-            time.sleep(0.34)
-            inventory.click(stamina)
-            time.sleep(0.3)
+            time.sleep(0.74)
+            inventory.click(stamina,threshold=0.6)
+            time.sleep(0.7)
             screen_right.click(bag)
         
         current_time = (time.time() - start_time)
@@ -128,9 +127,9 @@ while True:
         
         dead_loop_counter = 0
         
-    if screen_right.contains(leap_gap, threshold=0.92):
+    if screen_right.contains(leap_gap, threshold=0.90):
         print('leaping small gap... ')
-        screen_right.click(leap_gap, threshold=0.92)
+        screen_right.click(leap_gap, threshold=0.90)
         time.sleep(3.2)
         dead_loop_counter = 0
         

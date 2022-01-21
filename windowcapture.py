@@ -86,7 +86,7 @@ class WindowCapture:
         win32gui.EnumWindows(winEnumHandler, None)
 
 
-class Interact(WindowCapture, Vision):
+class Interactions(WindowCapture, Vision):
     def __init__(self):
         super().__init__()
     
@@ -167,7 +167,7 @@ class Interact(WindowCapture, Vision):
         points = item.get_click_points(rectangles)
         point = self.get_screen_position(points[0])
 
-        hWnd = win32gui.FindWindow(None, "BlueStacks")
+        hWnd = win32gui.FindWindow(None, self.window_name)
         lParam = win32api.MAKELONG(point[0]-1, point[1]-33)
 
         hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
@@ -234,16 +234,17 @@ class Interact(WindowCapture, Vision):
             if current_time > 6:
                 print("Failed to find Needle in 5 seconds")
                 break
-class CustomRegion(Interact):
+class CustomRegion(Interactions):
 
-    def __init__(self, x, y, w, h):
+    def __init__(self, w1, h1, x1, y1):
         super().__init__()
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+        self.w = w1
+        self.h = h1
+        self.x = x1
+        self.y = y1
+
           
-class InventoryRegion(Interact):
+class InventoryRegion(Interactions):
 
     def __init__(self):
         super().__init__()
@@ -254,11 +255,11 @@ class InventoryRegion(Interact):
     
     def drink_potion(self):
         self.click()        
-class ScreenRegion(Interact):
+class ScreenRegion(Interactions):
 
     def __init__(self):
         super().__init__()
-class ChatboxRegion(Interact):
+class ChatboxRegion(Interactions):
 
     def __init__(self):
         super().__init__()
@@ -267,7 +268,7 @@ class ChatboxRegion(Interact):
         self.x = 29
         self.y = 37
 
-class BankRegion(Interact):
+class BankRegion(Interactions):
 
     def __init__(self):
         super().__init__()
@@ -277,7 +278,7 @@ class BankRegion(Interact):
         self.y = 376
 
 
-class MinimapRegion(Interact):
+class MinimapRegion(Interactions):
     def __init__(self):
         super().__init__()
         self.w = 217

@@ -1,6 +1,6 @@
 from win32con import STATUS_ABANDONED_WAIT_0
 from vision import Vision
-from windowcapture import Bnk, Screen, Inventory, Chatbox
+from windowcapture import BankRegion, ChatboxRegion, InventoryRegion, ScreenRegion
 from player import Player
 import time
 import random
@@ -15,10 +15,10 @@ class Bank:
 
     def __init__(self, bank_needle : str, stam : bool = False):
 
-        self.screen = Screen()
-        self.inventory = Inventory()
-        self.bank = Bnk()
-        self.chatbox = Chatbox()
+        self.screen = ScreenRegion()
+        self.inventory = InventoryRegion()
+        self.bank = BankRegion()
+        self.chatbox = ChatboxRegion()
 
         self.stam = stam
 

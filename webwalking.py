@@ -1,6 +1,5 @@
 import cv2 as cv
 import time
-from windowcapture import Minimap
 from vision import Vision
 import win32gui, win32api, win32con
 import random
@@ -8,13 +7,16 @@ import numpy as np
 import win32gui, win32con
 import pickle
 
+from windowcapture import MinimapRegion, WindowCapture
 
 
-class WebWalking:
+
+class WebWalking(WindowCapture):
     """
     WebWalking object, pass path to pickle list and map png
     """
     def __init__(self, path: str, worldmap: str):
+        super().__init__()
 
         try:
             with open(path, 'rb') as pickle_load:
@@ -24,7 +26,7 @@ class WebWalking:
             
         self.worldmap = worldmap
     
-    def walk(self, within: int = 1, debugger = True):
+    def walk(self, within: int = 1, debugger = True, ind_len = -4):
         print("WALKING")
         opoint = self.path[0]
         start = time.time()
@@ -39,9 +41,9 @@ class WebWalking:
             arr = np.array(list(d))
             #changed from 103 to 138, i dont know if breaks other scripts
             #TODO add points to list (ln44) where they are a certain distance away on minimap or 
-            ind = np.where(arr < 106)
+            ind = np.where(arr < 160)
             ind = ind[0].tolist()
-            possible_points = self.path[ind[-4]:ind[-1]]
+            possible_points = self.path[ind[ind_len]:ind[-1]]
             point = random.choice(possible_points)
             
             if debugger == True:
@@ -70,7 +72,7 @@ class WebWalking:
             opoint = point
 
             if current - start > random.normalvariate(4,0.1):
-                hWnd = win32gui.FindWindow(None, "BlueStacks")
+                hWnd = win32gui.FindWindow(None, self.window_name)
                 # TODO Click point within 2 pixels, not exact
                 lParam = win32api.MAKELONG(1716+rel_point[0], 185+rel_point[1])
                 hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
@@ -125,7 +127,7 @@ class WebWalking:
 
 
     def get_coordinates(self):
-        self.minivision = Vision(Minimap().get_screenshot())
+        self.minivision = Vision(MinimapRegion().get_screenshot())
         rectangles = self.minivision.find(cv.imread(self.worldmap),1)
         coordinates = self.minivision.get_center(rectangles)
         return coordinates
@@ -186,5 +188,5 @@ class WebWalking:
         else:
             print("error")
 
-#WebWalking('walking_lists\\bank.pkl','map\\bf.png').get_path("bank")
-#WebWalking('walking_lists\\bank.pkl','map\\bf.png').walk()
+if __name__ == '__main__':
+    WebWalking('walking_lists\\bank.pkl','map\\bf.png').get_path("todispenserv2.py")

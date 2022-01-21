@@ -69,7 +69,6 @@ class Ocr:
                     roismall = roismall.reshape((1,100))
                     roismall = np.float32(roismall)
                     retval, results, neigh_resp, dists = self.model.findNearest(roismall, k = 1)
-                    print(len(results[0]))
                     for digit in results[0]:
                         num.append(chr(digit))
         zipped_pairs = zip(num, xlis)
@@ -77,12 +76,11 @@ class Ocr:
         num = [x[0] for x in z]
         xlis = [x[1] for x in z]
         diff = np.diff(xlis)
-        print(xlis)
-        ind = [n for n,i in enumerate(diff) if i>20]
-        d = 0
-        for i in ind:
-            d += 1
-            num.insert(i+d," ")
+        # ind = [n for n,i in enumerate(diff) if i>20]
+        # d = 0
+        # for i in ind:
+        #     d += 1
+        #     num.insert(i+d," ")
         
         res = ''.join(map(str, num))
         return str(res)

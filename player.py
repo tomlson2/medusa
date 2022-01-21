@@ -1,6 +1,5 @@
 from hsvfilter import HsvFilter
 from windowcapture import WindowCapture
-from interactions import Interactions
 from vision import Vision
 from ocr import Ocr
 
@@ -57,8 +56,14 @@ class Player(WindowCapture, Vision):
         return text
 
     def xp(self):
+
+        self.w = 138
+        self.h = 47
+        self.x = 1265
+        self.y = 103
+
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        xp = self.xpb.number(im)
+        xp = self.xpb.text(im)
         return xp
     
     # def bank_number(self):
