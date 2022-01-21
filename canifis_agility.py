@@ -98,7 +98,7 @@ while True:
             print('collecting mark0... ')
             time.sleep(.5)
             screen_top.click(mark0, threshold=0.83)
-            time.sleep(2)
+            time.sleep(3.2)
             marks += 1
             print(f'marks collected: {marks}')
             
@@ -116,7 +116,7 @@ while True:
         if screen_left.contains(mark1, threshold=0.82) and screen_top.contains(mark1, threshold=0.71):
             print('collecting mark1... ')
             screen_left.click(mark1, threshold=0.8)
-            time.sleep(2.2)
+            time.sleep(3.2)
             marks += 1
             print(f'marks collected: {marks}')
             
@@ -134,14 +134,14 @@ while True:
         if screen_left.contains(mark2, threshold=0.71):
             print('collecting mark2... ')
             screen_left.click(mark2, threshold=0.7)
-            time.sleep(2.1)
+            time.sleep(3.2)
             marks += 1
             print(f'marks collected: {marks}')
             
             screen_left.wait_for(mark1_jump, threshold=0.65)
             print('jumping third gap from mark... ')
             screen_left.click(mark1_jump, threshold=0.64)
-            time.sleep(2)
+            time.sleep(5)
         
     if screen_left.contains(third_gap, threshold=0.63):
         print('jumping third gap... ')
@@ -152,7 +152,7 @@ while True:
         if screen_bottom.contains(mark3, threshold=0.61):
             print('collecting mark3... ')
             screen_bottom.click(mark3, threshold=0.6)
-            time.sleep(3)
+            time.sleep(3.3)
             marks += 1
             print(f'marks collected: {marks}')
             screen_bottom.wait_for(mark3_jump)
@@ -218,17 +218,17 @@ while True:
     #         screen_right.click(glitch)
     #         dead_loop_counter = 0
     
-    if dead_loop_counter > 2:
+    if dead_loop_counter > 3:
         if minimap.contains(glitch, threshold=0.9) == True and screen_right.contains(fifth_gap) == False:
             print('glitched...')
             time.sleep(0.1)
             screen_right.click(fix_glitch, threshold=0.8)
-            time.sleep(2.8)
+            time.sleep(3.8)
             
             screen_right.wait_for(glitch_jump, threshold=0.76)
             screen_right.click(glitch_jump, threshold=0.75)
             print('glitch resolved1')
-            time.sleep(2)
+            time.sleep(3)
             dead_loop_counter = 0
             
         if chatbox.contains(tap_here):
@@ -240,7 +240,7 @@ while True:
             print('failed jump...')
             fall_to_start.walk(within=3)
 
-    if dead_loop_counter >3:
+    if dead_loop_counter > 4:
         if screen_top.contains(start_bug):
             print('rare start bug...')
             screen_top.click(start_bug)
