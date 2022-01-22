@@ -285,7 +285,7 @@ def steel():
                 break
             except TypeError():
                 pass
-        time.sleep(random.normalvariate(0.65,0.002))
+        time.sleep(random.normalvariate(0.25,0.002))
         try:
             screen.click_region(dispenser_close)
             try:

@@ -5,7 +5,7 @@ from vision import Vision
 
 wincap = WindowCapture()
 
-needle = 'Needle\\agility\\canifis\\mark1_jump.png'
+needle = 'Needle\\motherlode\\vein.png'
 
 vision = Vision(needle)
 
@@ -21,9 +21,9 @@ cv.createTrackbar('Match Threshold', 'Threshold', 70, 100, nothing)
 
 while True:
     threshold = (cv.getTrackbarPos('Match Threshold', "Threshold") * .01)
-    hsv_filter = vision.get_hsv_filter_from_controls()
-    edited_needle = Vision(needle, hsv_filter=HsvFilter())
-    screenshot = vision.apply_hsv_filter(wincap.get_screenshot(),hsv_filter=hsv_filter)
+    hsv_filter1 = vision.get_hsv_filter_from_controls()
+    edited_needle = Vision(needle, hsv_filter=hsv_filter1)
+    screenshot = vision.apply_hsv_filter(wincap.get_screenshot(),hsv_filter=hsv_filter1)
     rectangles = edited_needle.find(screenshot, threshold=threshold)
     edited_image = vision.draw_rectangles(screenshot,rectangles=rectangles)
     edited_image = cv.putText(edited_image,"Threshold = " + str(round(threshold,4)),(50,40),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)

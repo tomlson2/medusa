@@ -224,15 +224,15 @@ class Interactions(WindowCapture, Vision):
     def amount(self, item, threshold):
         return len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold))
 
-    def wait_for(self, item : object, threshold : float = 0.7):
+    def wait_for(self, item : object, threshold : float = 0.7, time: int = 5):
         """
         Waits for something to appear on screen region with a 10 second timeout period.
         """
         start_time = time.time()
         while self.contains(item, threshold) == False:
             current_time = (time.time() - start_time)
-            if current_time > 6:
-                print("Failed to find Needle in 5 seconds")
+            if current_time > time:
+                print(f"Failed to find Needle in {time} seconds")
                 break
 class CustomRegion(Interactions):
 
