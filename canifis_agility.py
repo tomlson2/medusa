@@ -186,7 +186,7 @@ while True:
         time.sleep(4.1)
         dead_loop_counter = 0
         
-    if screen_right.contains(fifth_gap, threshold=0.71):
+    if screen_right.contains(fifth_gap, threshold=0.7):
         print('jumping fifth gap... ')
         screen_right.click(fifth_gap, threshold=0.7)
         time.sleep(5.2)
@@ -218,15 +218,15 @@ while True:
     #         screen_right.click(glitch)
     #         dead_loop_counter = 0
     
-    if dead_loop_counter > 3:
+    if dead_loop_counter > 4:
         if minimap.contains(glitch, threshold=0.9) == True and screen_right.contains(fifth_gap) == False:
             print('glitched...')
             time.sleep(0.1)
             screen_right.click(fix_glitch, threshold=0.8)
-            time.sleep(3.8)
+            time.sleep(4.5)
             
-            screen_right.wait_for(glitch_jump, threshold=0.76)
-            screen_right.click(glitch_jump, threshold=0.75)
+            screen_right.wait_for(glitch_jump, threshold=0.8)
+            screen_right.click(glitch_jump, threshold=0.8)
             print('glitch resolved1')
             time.sleep(3)
             dead_loop_counter = 0
@@ -240,10 +240,10 @@ while True:
             print('failed jump...')
             fall_to_start.walk(within=3)
 
-    if dead_loop_counter > 4:
-        if screen_top.contains(start_bug):
+    if dead_loop_counter > 5:
+        if screen_top.contains(start_bug, threshold=0.8):
             print('rare start bug...')
-            screen_top.click(start_bug)
+            screen_top.click(start_bug, threshold=0.8)
             time.sleep(4.2)
     
     # comment if going afk
@@ -251,6 +251,9 @@ while True:
     #     print('dead loop protocol...')
     #     fall_to_start.walk(within=3)
     #     dead_loop_counter = 0
+        
+    if dead_loop_counter > 20:
+        break
         
     time.sleep(0.5)
         
