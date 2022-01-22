@@ -241,7 +241,7 @@ def marks():
                 time.sleep(.59)
                 screen.click(mark_list[i],threshold=0.81)
                 print(f'collecting mark {i}')
-                time.sleep(3.5)
+                time.sleep(4)
                 screen.wait_for(mark_jumps[i], mark_jump_threshold[i])
                 print('jump found')
                 screen.click(mark_jumps[i], mark_jump_threshold[i])
@@ -285,6 +285,7 @@ while True:
         find_roof1()
     if dead_loop > 10:
         to_start.walk(within=2)
+        time.sleep(0.24)
         dead_loop = 0
     
     print('loop')
