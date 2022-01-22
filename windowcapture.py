@@ -4,7 +4,7 @@ import win32gui, win32api, win32ui, win32con
 import time, random
 from vision import Vision
 
-window_name = input()
+window_name = input('client name: ')
 class WindowCapture:
 
     # constructor
@@ -116,7 +116,7 @@ class Interactions(WindowCapture, Vision):
 
         points = item.get_click_points(rectangles)
         point = self.get_screen_position(points[0])
-        print(point)
+        #print(point)
         lParam = win32api.MAKELONG(point[0], point[1])
 
         self.mouse_down(lParam)
@@ -254,7 +254,49 @@ class InventoryRegion(Interactions):
         self.y = 477
     
     def drink_potion(self):
-        self.click()        
+        self.click()
+        
+    def drop_click(self, item : object, quantity : int, threshold=0.7):
+        '''
+        must have drop mode on before call
+        '''
+        rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+        for i in range(quantity):
+            points = item.get_click_points(rectangles)
+            point = self.get_screen_position(points[i])
+            lParam = win32api.MAKELONG(point[0], point[1])
+            self.mouse_down(lParam)
+            self.mouse_up(lParam)
+            time.sleep(random.normalvariate(0.31, 0.02))
+            
+    def drop_list(self, list : list, threshold=0.7):
+        '''
+        drops everything in inventory of param list
+        must have drop mode on before call
+        gets the click points of all the items of the list to drop
+        then sorts the list and drops them
+        '''
+        point_list = []
+        # get all rectangles
+        for i in range(len(list)):
+            rectangles = (list[i].find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=list[i].get_hsv_filter()),threshold))
+            points = list[i].get_click_points(rectangles)
+            point_list.extend(points)
+        
+        # remove empty tuples
+        point_list = [t for t in point_list if t]
+        # sort rectangles
+        point_list.sort(key = lambda x: x[0])
+    
+        #drop items in sorted order
+        for i in range(len(point_list)):
+            point = self.get_screen_position(point_list[i])
+            lParam = win32api.MAKELONG(point[0], point[1])
+            self.mouse_down(lParam)
+            self.mouse_up(lParam)
+            time.sleep(random.normalvariate(0.31, 0.02))
+        
+    
 class ScreenRegion(Interactions):
 
     def __init__(self):
