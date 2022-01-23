@@ -125,6 +125,12 @@ class Interactions(WindowCapture, Vision):
         self.mouse_up(lParam)
 
         time.sleep(random.normalvariate(0.25,0.02))
+    
+    def drag(self):
+        lParam1 = win32api.MAKELONG(100, 100)
+        self.mouse_down(lParam1)
+        lParam2 = win32api.MAKELONG(300, 300)
+        self.mouse_up(lParam2)
 
 
     def fast_click(self, item: object, threshold: float = 0.7, timeout = 7, right_click: bool = False):

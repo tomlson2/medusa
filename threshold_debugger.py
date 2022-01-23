@@ -5,7 +5,7 @@ from vision import Vision
 
 wincap = WindowCapture()
 
-needle = 'Needle\\motherlode\\vein.png'
+needle = 'Needle\\aio_mining\\bot_rock.png'
 
 vision = Vision(needle)
 
@@ -16,7 +16,7 @@ cv.namedWindow("Threshold", cv.WINDOW_NORMAL)
 def nothing(position):
     pass
 
-cv.createTrackbar('Match Threshold', 'Threshold', 70, 100, nothing)
+cv.createTrackbar('Match Threshold', 'Threshold', 85, 100, nothing)
 
 
 while True:
