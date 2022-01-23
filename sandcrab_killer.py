@@ -1,13 +1,12 @@
 import time
 import random
 from webwalking import WebWalking
-from interactions import Interactions
 from player import Player
-from bank import Bank
 from vision import Vision
+from windowcapture import InventoryRegion, WindowCapture
 
 
-inventory = Interactions(area='inventory')
+inventory = InventoryRegion()
 player = Player()
 
 potato = Vision('Needle\\sandcrab\\potato.png')
@@ -35,11 +34,11 @@ while True:
                 inventory.fast_click(potato)
                 time.sleep(random.normalvariate(0.8, 0.13))
     
-    if (time.time() - potion_timer) >= 300:
+    if (time.time() - potion_timer) >= 400:
         print('drinking potions...')
         if inventory.contains(attack_potion):
             inventory.fast_click(attack_potion)
-        time.sleep(1.2)
+        time.sleep(.2)
         if inventory.contains(strength_potion):
             inventory.fast_click(strength_potion)
         potion_timer = time.time()

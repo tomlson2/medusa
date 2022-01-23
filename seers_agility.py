@@ -124,7 +124,7 @@ def tightrope_walk():
         if screen_bottom.contains(tightrope, threshold=0.69):
             print('walking tightrope... ')
             screen_bottom.click(tightrope, threshold=0.69)
-            time.sleep(8.75)
+            time.sleep(9.7)
             current_roof = 2
             dead_loop = 0
     return current_roof

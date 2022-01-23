@@ -31,7 +31,6 @@ strange = Vision('Needle\\thieving\\fruit_stall\\strange.png')
 strawberry = Vision('Needle\\thieving\\fruit_stall\\strawberry.png')
 
 fruit_list = [apple, bannana, golo, jangerberries, lemon, lime, papaya, pineapple, redberries, strange, strawberry]
-
 start_time = time.time()
 fruit_counter = 0
 
@@ -51,7 +50,7 @@ while True:
         time.sleep(random.normalvariate(3.2, 0.07))
         
     print('dropping junk...')
-    inventory.drop_list(fruit_list)
+    inventory.drop_list_vert(fruit_list)
     fruit_counter = 0
     
     # time
