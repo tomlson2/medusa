@@ -275,12 +275,12 @@ class InventoryRegion(Interactions):
             self.mouse_up(lParam)
             time.sleep(random.normalvariate(0.31, 0.02))
             
-    def drop_list(self, list : list, threshold=0.7):
+    def drop_list_vert(self, list : list, threshold=0.7):
         '''
-        drops everything in inventory of param list
-        must have drop mode on before call
-        gets the click points of all the items of the list to drop
-        then sorts the list and drops them
+        drops everything in inventory vertically of param list.
+        must have drop mode on before call.
+        gets the click points of all the items of the list to drop.
+        then sorts the list and drops them.
         '''
         point_list = []
         # get all rectangles
@@ -293,10 +293,33 @@ class InventoryRegion(Interactions):
         point_list = [t for t in point_list if t]
         # sort rectangles
         point_list.sort(key = lambda x: x[0])
-    
+        point_list0 = []
+        point_list1 = []
+        point_list2 = []
+        point_list3 = []
+
+        for t in point_list:
+            if t[0] < 100:
+                point_list0.append(t)
+            elif t[0] < 200:
+                point_list1.append(t)
+            elif t[0] < 300:
+                point_list2.append(t)
+            elif t[0] < 400:
+                point_list3.append(t)
+        
+        list_list = [point_list0, point_list1, point_list2, point_list3]
+        for l in list_list:
+            l.sort(key = lambda x: x[1])
+        
+        final_list = []
+        for l in list_list:
+            final_list.extend(l)
+
+        print(f'dropping {len(final_list)} items')
         #drop items in sorted order
         for i in range(len(point_list)):
-            point = self.get_screen_position(point_list[i])
+            point = self.get_screen_position(final_list[i])
             lParam = win32api.MAKELONG(point[0], point[1])
             self.mouse_down(lParam)
             self.mouse_up(lParam)
