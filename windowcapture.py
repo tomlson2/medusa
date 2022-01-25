@@ -126,6 +126,31 @@ class Interactions(WindowCapture, Vision):
 
         time.sleep(random.normalvariate(0.25,0.02))
     
+    def click_list(self, items: list, threshold: float = 0.7, timeout = 7, right_click: bool = False):
+        # looks for item to click with _ second timeout.
+        s = time.time()
+        while time.time()-s < timeout:
+            for item in items:
+                rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+                if len(rectangles) > 0:
+                    break
+            if len(rectangles) > 0:
+                break
+
+        points = item.get_click_points(rectangles)
+        point = self.get_screen_position(points[0])
+        #print(point)
+        lParam = win32api.MAKELONG(point[0], point[1])
+
+        self.mouse_down(lParam)
+        if right_click == True:
+            time.sleep(random.normalvariate(0.8,0.01))
+        self.mouse_up(lParam)
+
+        time.sleep(random.normalvariate(0.25,0.02))
+
+        return item
+    
     def drag(self):
         lParam1 = win32api.MAKELONG(100, 100)
         self.mouse_down(lParam1)

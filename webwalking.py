@@ -6,7 +6,6 @@ import random
 import numpy as np
 import win32gui, win32con
 import pickle
-
 from windowcapture import MinimapRegion, WindowCapture
 
 
@@ -15,7 +14,7 @@ class WebWalking(WindowCapture):
     """
     WebWalking object, pass path to pickle list and map png
     """
-    def __init__(self, path: str, worldmap: str):
+    def __init__(self, path: str, worldmap: str, orientation: str = 'North'):
         super().__init__()
 
         try:
@@ -23,8 +22,17 @@ class WebWalking(WindowCapture):
                 self.path = pickle.load(pickle_load)
         except FileNotFoundError:
             self.path = ''
-            
+        
         self.worldmap = worldmap
+        if orientation == 'North':
+            self.rotate_code = None
+        if orientation == 'South':
+            self.rotate_code = cv.ROTATE_180
+        if orientation == 'East':
+            self.rotate_code = cv.ROTATE_90_COUNTERCLOCKWISE
+        if orientation == 'West':
+            self.rotate_code = cv.ROTATE_90_CLOCKWISE
+            
     
     def walk(self, within: int = 1, debugger = True, ind_len = -4):
         print("WALKING")
@@ -97,7 +105,10 @@ class WebWalking(WindowCapture):
 
         x = 10
         y = 20
-        im = cv.imread(self.worldmap)
+        if self.rotate_code == None:
+            im = cv.imread(self.worldmap)
+        else:
+            im = cv.rotate(cv.imread(self.worldmap), self.rotate_code)
         for coord in self.path:
             im = cv.putText(im, str(coord), ((x,y)),cv.FONT_HERSHEY_PLAIN,1,(255,255,255),1)
             y = y+20
@@ -107,7 +118,10 @@ class WebWalking(WindowCapture):
     def get_path(self,name):
         path = []
         while True:
-            im = cv.imread(self.worldmap)
+            if self.rotate_code == None:
+                im = cv.imread(self.worldmap)
+            else:
+                im = cv.rotate(cv.imread(self.worldmap), self.rotate_code)
             coordinates = self.get_coordinates()
             for coords in path:
                 cv.drawMarker(im, coords, (255,255,255),markerType=cv.MARKER_SQUARE, markerSize=2)
@@ -128,7 +142,10 @@ class WebWalking(WindowCapture):
 
     def get_coordinates(self):
         self.minivision = Vision(MinimapRegion().get_screenshot())
-        rectangles = self.minivision.find(cv.imread(self.worldmap),1)
+        if self.rotate_code == None:
+            rectangles = self.minivision.find(cv.imread(self.worldmap),1)
+        else:
+            rectangles = self.minivision.find(cv.rotate(cv.imread(self.worldmap),self.rotate_code))
         coordinates = self.minivision.get_center(rectangles)
         return coordinates
 
@@ -189,4 +206,4 @@ class WebWalking(WindowCapture):
             print("error")
 
 if __name__ == '__main__':
-    WebWalking('walking_lists\\bank.pkl','map\\bf.png').get_path("todispenserv2.py")
+    WebWalking('walking_lists\\bank.pkl','map\\motherlode2.png').get_path("motherlode.py")

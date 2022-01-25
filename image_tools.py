@@ -71,4 +71,16 @@ def pad(path,h,w):
     bw = w-y
     bh = h-x
     resized_im = cv.copyMakeBorder(im, bh, bh, bw, bw, borderType=cv.BORDER_CONSTANT)
-    cv.imwrite(path,resized_im)
+    cv.imwrite(path+"//padded",resized_im)
+
+def add_margin(pil_img, top, right, bottom, left, color):
+    width, height = pil_img.size
+    new_width = width + right + left
+    new_height = height + top + bottom
+    result = Image.new(pil_img.mode, (new_width, new_height), color)
+    result.paste(pil_img, (left, top))
+    return result
+
+im = Image.open('map/motherlode.png')
+imnew = add_margin(im,100, 100, 100, 100, color=(85,73,41))
+imnew.save('map/motherlode2.png')
