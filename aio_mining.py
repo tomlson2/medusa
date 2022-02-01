@@ -5,6 +5,7 @@ from turtle import Screen
 from player import Player
 from vision import Vision
 from windowcapture import InventoryRegion, ChatboxRegion, CustomRegion, ScreenRegion
+from hsvfilter import HsvFilter
 
 
 '''
@@ -20,17 +21,31 @@ inventory = InventoryRegion()
 chatbox = ChatboxRegion()
 screen = ScreenRegion()
 
-top_rock = CustomRegion(731,261,326,256)
-bot_rock = CustomRegion(731,757,382,344)
-left_rock = CustomRegion(457,533,369,320)
+top_rock = CustomRegion(363,354,746,204)
+right_rock = CustomRegion(341,337,1025,456)
+left_rock = CustomRegion(248,315,538,489)
+
+top_rock_region = ([(912,317,149,155)])
+right_rock_region = ([(1115,573,122,116)])
+left_rock_region = ([(660,542,135,156)])
+
+drop_filter = HsvFilter(vMin=180, sAdd=145, vAdd=136)
 
 iron_ore = Vision('Needle\\aio_mining\\iron_ore.png')
-top_rockv = Vision('Needle\\aio_mining\\top_rock.png')
-bot_rockv = Vision('Needle\\aio_mining\\bot_rock.png')
-left_rockv = Vision('Needle\\aio_mining\\left_rock.png')
+# top_rockv = Vision('Needle\\aio_mining\\top_rock.png')
+# bot_rockv = Vision('Needle\\aio_mining\\bot_rock.png')
+# left_rockv = Vision('Needle\\aio_mining\\left_rock.png')
+
+top_rockv = Vision('Needle\\aio_mining\\top_rock1.png')
+right_rockv = Vision('Needle\\aio_mining\\right_rock1.png')
+left_rockv = Vision('Needle\\aio_mining\\left_rock1.png')
 tap_here = Vision('Needle\\tap_here_to_continue.png')
 gem = Vision('Needle\\aio_mining\\gem.png')
 gem2 = Vision('Needle\\aio_mining\\gem2.png')
+gem3 = Vision('Needle\\aio_mining\\gem3.png')
+clue = Vision('Needle\\aio_mining\\clue.png')
+drop = Vision('Needle\\aio_mining\\drop.png',hsv_filter=drop_filter)
+no_drop = Vision('Needle\\aio_mining\\no_drop.png')
 
 # login/logout needles
 
@@ -70,36 +85,43 @@ def break_handler(start, hours_until_break):
         pass
 
 print('------starting mining------')
+inventory.is_full()
 while True:
     count = random.randrange(17,23)
     while inventory.amount(iron_ore, 0.7) < count:
         current_ore = inventory.amount(iron_ore, 0.7)
         while current_ore == inventory.amount(iron_ore, 0.7):
+            if screen.contains(inventory_closed, 0.95):
+                print('inventory needs to be opened')
+                screen.click(inventory_closed)
             if top_rock.contains(top_rockv, 0.93):
-                top_rock.click(top_rockv, 0.93)
+                screen.click_region(top_rock_region)
                 # sleep so mouse click confirmation doesnt cover the tree
                 time.sleep(0.75)
                 loop_start = time.time()
-                while top_rock.contains(top_rockv, 0.95):
+                while top_rock.contains(top_rockv, 0.93):
                     if chatbox.contains(tap_here) or (time.time() - loop_start > 15):
+                        time.sleep(random.normalvariate(0.4,0.05))
                         break
                 
-            elif left_rock.contains(left_rockv, 0.95):
-                left_rock.click(left_rockv, 0.95)
+            elif left_rock.contains(left_rockv, 0.93):
+                screen.click_region(left_rock_region)
                 # sleep so mouse click confirmation doesnt cover the tree
                 time.sleep(0.75)
                 loop_start = time.time()
                 while left_rock.contains(left_rockv, 0.95):
                     if chatbox.contains(tap_here) or (time.time() - loop_start > 15):
+                        time.sleep(random.normalvariate(0.4,0.05))
                         break
             
-            elif bot_rock.contains(bot_rockv, 0.95):
-                bot_rock.click(bot_rockv, 0.95)
+            elif right_rock.contains(right_rockv, 0.93):
+                screen.click_region(right_rock_region)
                 # sleep so mouse click confirmation doesnt cover the tree
                 time.sleep(0.75)
                 loop_start = time.time()
-                while bot_rock.contains(bot_rockv, 0.95):
+                while right_rock.contains(right_rockv, 0.95):
                     if chatbox.contains(tap_here) or (time.time() - loop_start > 15):
+                        time.sleep(random.normalvariate(0.4,0.05))
                         break
             
             if inventory.amount(iron_ore, 0.7) > current_ore:
@@ -107,7 +129,12 @@ while True:
                 break
 
     print('dropping ore...')
-    inventory.drop_list_vert(list=[gem, gem2, iron_ore])
+    if screen.contains(drop, 0.85):
+        pass
+    else:
+        screen.click(no_drop)
+        time.sleep(0.5)
+    inventory.drop_list_vert(list=[gem, gem2, gem3, clue, iron_ore])
     current_time = (time.time() - start_time)
     current_time_format = time.strftime("%H:%M:%S", time.gmtime(current_time))
     print(f"run time: {current_time_format}")

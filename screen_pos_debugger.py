@@ -4,6 +4,8 @@ import time
 
 made = False
 
+# qqzqqzqqzqqzqqzqqzqqzqqzqqz
+
 while True:
     if keyboard.is_pressed("q"):
         if made == True:

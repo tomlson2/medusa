@@ -3,6 +3,8 @@ from numpy import ndarray
 import win32gui, win32api, win32ui, win32con
 import time, random
 from vision import Vision
+import cv2 as cv
+import sys
 
 window_name = input('client name: ')
 class WindowCapture:
@@ -286,7 +288,23 @@ class InventoryRegion(Interactions):
     
     def drink_potion(self):
         self.click()
-        
+    
+    def num_items(self):
+        im = self.get_screenshot()
+        gray = cv.cvtColor(im,cv.COLOR_BGR2GRAY)
+        blur = cv.GaussianBlur(gray,(5,5),0)
+        mask = cv.adaptiveThreshold(blur,255,1,1,11,2)
+        contours, _ = cv.findContours(mask, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
+        rectangles = []
+        for cnt in contours:
+            if 7500 > cv.contourArea(cnt) > 350:
+                x, y, w, h = cv.boundingRect(cnt)
+                if w<500 and h<500:
+                    rectangles.append([x, y, w, h])
+                    rectangles.append([x, y, w, h])
+        rects, weights = cv.groupRectangles(rectangles, groupThreshold=1, eps=1)
+        return len(rects)
+
     def drop_click(self, item : object, quantity : int, threshold=0.7):
         '''
         must have drop mode on before call
