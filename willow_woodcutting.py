@@ -2,7 +2,7 @@ import time
 import random
 from player import Player
 from vision import Vision
-from windowcapture import InventoryRegion, ChatboxRegion, MinimapRegion, CustomRegion, ScreenRegion, WindowCapture
+from windowcapture import InventoryRegion, ChatboxRegion, CustomRegion
 
 
 '''

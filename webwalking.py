@@ -6,7 +6,7 @@ import random
 import numpy as np
 import win32gui, win32con
 import pickle
-from windowcapture import MinimapRegion, WindowCapture
+from windowcapture import MinimapRegion, WindowCapture, RunOrb
 
 
 
@@ -32,8 +32,22 @@ class WebWalking(WindowCapture):
             self.rotate_code = cv.ROTATE_90_COUNTERCLOCKWISE
         if orientation == 'West':
             self.rotate_code = cv.ROTATE_90_CLOCKWISE
-            
     
+    def walk_once(self, dist = 100):
+        coordinates = self.get_coordinates()
+        d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
+        arr = np.array(list(d))
+        ind = np.where(arr < dist)
+        ind = ind[0].tolist()
+        possible_points = self.path[ind[-6]:ind[-1]]
+        rel_point = self.get_relative_point(coordinates, random.choice(possible_points))
+        hWnd = win32gui.FindWindow(None, self.window_name)
+        lParam = win32api.MAKELONG(1716+rel_point[0], 185+rel_point[1])
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
+        time.sleep(0.25)
+
     def walk(self, within: int = 1, debugger = True, ind_len = -4):
         print("WALKING")
         opoint = self.path[0]
@@ -79,7 +93,12 @@ class WebWalking(WindowCapture):
 
             opoint = point
 
-            if current - start > random.normalvariate(4,0.1):
+            if Player().is_running():
+                click_wait = 4
+            else:
+                click_wait = 7
+
+            if current - start > random.normalvariate(click_wait,0.1):
                 hWnd = win32gui.FindWindow(None, self.window_name)
                 # TODO Click point within 2 pixels, not exact
                 lParam = win32api.MAKELONG(1716+rel_point[0], 185+rel_point[1])
@@ -145,7 +164,7 @@ class WebWalking(WindowCapture):
         if self.rotate_code == None:
             rectangles = self.minivision.find(cv.imread(self.worldmap),1)
         else:
-            rectangles = self.minivision.find(cv.rotate(cv.imread(self.worldmap),self.rotate_code))
+            rectangles = self.minivision.find(cv.rotate(cv.imread(self.worldmap),self.rotate_code),1)
         coordinates = self.minivision.get_center(rectangles)
         return coordinates
 
@@ -164,26 +183,7 @@ class WebWalking(WindowCapture):
             y2 = self.path[-1][1] + pixels
 
             return x1,x2,y1,y2
-    
-
-    # @staticmethod
-    # def map_images():
-    #     map = WindowCapture(area='map')
-    #     hWnd = win32gui.FindWindow(None, "BlueStacks")
-    #     lParam = win32api.MAKELONG(500, 400)
-    #     hWnd1= win32gui.FindWindowEx(hWnd, None, None, None)
-
-    #     i = 1
-
-    #     while True:
-    #         cv.imwrite("map//"+str(i)+".png",map.get_screenshot())
-    #         for lp1 in range(4):
-    #             for lp in range(random.randrange(300,500)):
-    #                 win32gui.SendMessage(hWnd1, win32con.WM_MOUSEWHEEL, None, lParam)    
-    #             time.sleep(0.2)
-    #         i += 1
-
-
+            
     @staticmethod
     def map_stitching():
         image_paths = ["map//one.png","map//two.png"]
@@ -206,4 +206,4 @@ class WebWalking(WindowCapture):
             print("error")
 
 if __name__ == '__main__':
-    WebWalking('walking_lists\\bank.pkl','map\\motherlode2.png').get_path("motherlode.py")
+    WebWalking('','map\\motherlode2.png',orientation='West').get_path("to_left")

@@ -1,10 +1,10 @@
 from hsvfilter import HsvFilter
-from windowcapture import WindowCapture
+from windowcapture import Interactions, WindowCapture
 from vision import Vision
 from ocr import Ocr
 
 
-class Player(WindowCapture, Vision):
+class Player(Interactions, Vision):
 
     def __init__(self) -> None:
         super().__init__()
@@ -36,7 +36,6 @@ class Player(WindowCapture, Vision):
 
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
         run = self.orbs.number(im)
-        print(run)
         return run
 
     def prayer(self):

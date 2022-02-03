@@ -1,11 +1,11 @@
 import cv2 as cv
 from hsvfilter import HsvFilter
-from windowcapture import WindowCapture, CustomRegion
+from windowcapture import PlayerRegion, ScreenRegion, WindowCapture, CustomRegion
 from vision import Vision
 
-wincap = WindowCapture()
+wincap = PlayerRegion()
 
-needle = 'Needle\\aio_mining\\drop.png'
+needle = 'Needle\\motherlode\\deposit.png'
 
 vision = Vision(needle)
 

@@ -36,7 +36,11 @@ class Vision:
 
     def get_image(self):
         return self.needle_img
-        
+    
+    def get_center_rectangles(self, rectangles):
+        idx = np.abs(rectangles[:,0] - 980).argsort()
+        rectangles = rectangles.take(idx, 0)
+        return rectangles, idx
 
     def find(self, haystack_img, threshold=0.5, max_results=30):
         # run the OpenCV algorithm

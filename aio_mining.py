@@ -26,7 +26,7 @@ right_rock = CustomRegion(341,337,1025,456)
 left_rock = CustomRegion(248,315,538,489)
 
 top_rock_region = ([(912,317,149,155)])
-right_rock_region = ([(1115,573,122,116)])
+right_rock_region = ([(1115,573,122,100)])
 left_rock_region = ([(660,542,135,156)])
 
 drop_filter = HsvFilter(vMin=180, sAdd=145, vAdd=136)
@@ -85,9 +85,8 @@ def break_handler(start, hours_until_break):
         pass
 
 print('------starting mining------')
-inventory.is_full()
 while True:
-    count = random.randrange(17,23)
+    count = random.randrange(23,25)
     while inventory.amount(iron_ore, 0.7) < count:
         current_ore = inventory.amount(iron_ore, 0.7)
         while current_ore == inventory.amount(iron_ore, 0.7):

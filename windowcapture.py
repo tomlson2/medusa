@@ -1,3 +1,4 @@
+from charset_normalizer import detect
 import numpy as np
 from numpy import ndarray
 import win32gui, win32api, win32ui, win32con
@@ -131,17 +132,25 @@ class Interactions(WindowCapture, Vision):
     def click_list(self, items: list, threshold: float = 0.7, timeout = 7, right_click: bool = False):
         # looks for item to click with _ second timeout.
         s = time.time()
+        matches = np.empty((0,4),int)
+        inxlst = []
         while time.time()-s < timeout:
-            for item in items:
+            for inx, item in enumerate(items):
                 rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+                for rect in rectangles:
+                    inxlst.append(inx)
                 if len(rectangles) > 0:
-                    break
-            if len(rectangles) > 0:
+                    matches = np.append(matches, rectangles, axis=0)
+            if len(matches) > 0:
                 break
+        
+        rectangles, idx = self.get_center_rectangles(matches)
+
+        inxlst = [inxlst[i] for i in idx.tolist()]
 
         points = item.get_click_points(rectangles)
         point = self.get_screen_position(points[0])
-        #print(point)
+
         lParam = win32api.MAKELONG(point[0], point[1])
 
         self.mouse_down(lParam)
@@ -150,8 +159,7 @@ class Interactions(WindowCapture, Vision):
         self.mouse_up(lParam)
 
         time.sleep(random.normalvariate(0.25,0.02))
-
-        return item
+        return items[inxlst[0]]
     
     def drag(self):
         lParam1 = win32api.MAKELONG(100, 100)
@@ -245,11 +253,19 @@ class Interactions(WindowCapture, Vision):
 
         time.sleep(random.normalvariate(0.25,0.03))
     
-    def contains(self, item: object, threshold: float = 0.7) -> bool:
+    def contains(self, item: object, threshold: float = 0.7, screenshots = 1) -> bool:
         """
         Checks if screen region contains certain needle and returns a boolean value
         """
-        if len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)) > 0:
+        found = 0
+        not_found = 0
+        for _ in range(screenshots):
+            if len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)) > 0:
+                found += 1
+            else:
+                not_found += 1
+            time.sleep(0.01)
+        if (found/screenshots) > .25:
             return True
         else:
             return False
@@ -289,7 +305,7 @@ class InventoryRegion(Interactions):
     def drink_potion(self):
         self.click()
     
-    def num_items(self):
+    def is_full(self):
         im = self.get_screenshot()
         gray = cv.cvtColor(im,cv.COLOR_BGR2GRAY)
         blur = cv.GaussianBlur(gray,(5,5),0)
@@ -297,7 +313,7 @@ class InventoryRegion(Interactions):
         contours, _ = cv.findContours(mask, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
         rectangles = []
         for cnt in contours:
-            if 7500 > cv.contourArea(cnt) > 350:
+            if 7500 > cv.contourArea(cnt) > 650:
                 x, y, w, h = cv.boundingRect(cnt)
                 if w<500 and h<500:
                     rectangles.append([x, y, w, h])
@@ -366,7 +382,7 @@ class InventoryRegion(Interactions):
             lParam = win32api.MAKELONG(point[0], point[1])
             self.mouse_down(lParam)
             self.mouse_up(lParam)
-            time.sleep(random.normalvariate(0.31, 0.02))
+            time.sleep(random.normalvariate(0.21, 0.02))
         
     
 class ScreenRegion(Interactions):
@@ -382,6 +398,43 @@ class ChatboxRegion(Interactions):
         self.x = 29
         self.y = 37
 
+class PlayerRegion(Interactions):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 206
+        self.h = 297
+        self.x = 838
+        self.y = 386
+    
+    def is_animating(self):
+        object_detector = cv.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
+        found = False
+        im = self.get_screenshot()
+        mask = object_detector.apply(im)
+        for _ in range(40):
+            im = self.get_screenshot()
+            mask = object_detector.apply(im)
+            contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+            stencil = np.zeros(im.shape).astype(im.dtype)
+            cv.fillPoly(stencil, contours, [255, 255, 255])
+            stenciled_im = cv.bitwise_and(im, stencil)
+            big = 0
+            total = 0
+            for cnt in contours:
+                area = cv.contourArea(cnt)
+                if area > 1000:
+                    found = True
+                    break
+                else:
+                    pass
+            time.sleep(0.05)
+        if found == True:
+            return True
+        else:
+            return False
+            
+
 class BankRegion(Interactions):
 
     def __init__(self):
@@ -393,9 +446,25 @@ class BankRegion(Interactions):
 
 
 class MinimapRegion(Interactions):
+
     def __init__(self):
         super().__init__()
         self.w = 217
         self.h = 208
         self.x = 1604
         self.y = 96
+
+class RunOrb(Interactions):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 70
+        self.h = 63
+        self.x = 1507
+        self.y = 281        
+    
+    def is_active(self):
+        if self.contains(Vision('Needle\\orbs\\run_boot.png'),0.8):
+            return True
+        else:
+            return False
