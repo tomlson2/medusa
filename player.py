@@ -23,6 +23,11 @@ class Player(Interactions, Vision):
         self.choose_option = Ocr('samples/bold12lowersamples.data', 'responses/bold12lowerresponses.data')
 
     def health(self):
+        self.w = 42
+        self.h = 27
+        self.x = 1449
+        self.y = 166
+
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
         health = self.orbs.number(im)
         return health

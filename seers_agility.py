@@ -5,6 +5,15 @@ from windowcapture import ScreenRegion, InventoryRegion, CustomRegion, ChatboxRe
 from webwalking import WebWalking
 
 
+'''
+about ~34k xp/hr
+------way better on low population course------
+zoom 1, brightness 2
+north, full tilt
+start either right after an obstacle or near start
+'''
+
+
 player = Player()
 screen = ScreenRegion()
 screen_top = CustomRegion(1902, 557, 8, 36)
@@ -132,10 +141,10 @@ def tightrope_walk():
 def second_jump():
     global current_roof, dead_loop
     if current_roof == 2:
-        if screen_bottom.contains(second_gap, threshold=0.7):
+        if screen_bottom.contains(second_gap, threshold=0.65):
             print('jumping second gap... ')
-            screen_bottom.click(second_gap, threshold=0.7)
-            time.sleep(5.0)
+            screen_bottom.click(second_gap, threshold=0.65)
+            time.sleep(5.5)
             current_roof = 3
             dead_loop = 0
     return current_roof
@@ -143,9 +152,9 @@ def second_jump():
 def third_jump():
     global current_roof, dead_loop
     if current_roof == 3:
-        if screen_bottom.contains(third_gap, threshold=0.74):
+        if screen_bottom.contains(third_gap, threshold=0.73):
             print('jumping third gap... ')
-            screen_bottom.click(third_gap, threshold=0.73)
+            screen_bottom.click(third_gap, threshold=0.725)
             time.sleep(5.2)
             current_roof = 4
             dead_loop = 0
@@ -186,9 +195,9 @@ def find_roof0():
         current_roof = 0
     elif screen_bottom.contains(tightrope, threshold=0.69):
         current_roof = 1    
-    elif screen_bottom.contains(second_gap, threshold=0.71):
+    elif screen_bottom.contains(second_gap, threshold=0.65):
         current_roof = 2
-    elif screen_bottom.contains(third_gap, threshold=0.71):
+    elif screen_bottom.contains(third_gap, threshold=0.65):
         current_roof = 3
     elif screen_bottom.contains(end_edge, threshold=0.71):
         current_roof = 4
@@ -267,6 +276,7 @@ while True:
     time.sleep(0.1)
     marks()
     first_jump()
+    time.sleep(0.14)
     marks()
     time.sleep(.35)
     tightrope_walk()

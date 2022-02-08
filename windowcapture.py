@@ -108,7 +108,7 @@ class Interactions(WindowCapture, Vision):
         hwnd = self.get_window()
         win32gui.SendMessage(hwnd, win32con.WM_LBUTTONUP, None, lParam)
 
-    def click(self, item: object, threshold: float = 0.7, timeout = 7, right_click: bool = False):
+    def click(self, item: object, threshold: float = 0.7, timeout = 7, right_click: bool = False, ind = 0):
         # looks for item to click with _ second timeout.
         s = time.time()
         while time.time()-s < timeout:
@@ -117,7 +117,7 @@ class Interactions(WindowCapture, Vision):
                 break
 
         points = item.get_click_points(rectangles)
-        point = self.get_screen_position(points[0])
+        point = self.get_screen_position(points[ind])
         #print(point)
         lParam = win32api.MAKELONG(point[0], point[1])
 
@@ -302,6 +302,7 @@ class Interactions(WindowCapture, Vision):
             if current_time > t:
                 print(f"Failed to find Needle in {t} seconds")
                 break
+            
 class CustomRegion(Interactions):
 
     def __init__(self, w1, h1, x1, y1):
@@ -352,6 +353,21 @@ class InventoryRegion(Interactions):
             self.mouse_down(lParam)
             self.mouse_up(lParam)
             time.sleep(random.normalvariate(0.31, 0.02))
+            
+    def drop_click_vert(self, item : object, quantity : int, threshold=0.7):
+        '''
+        vertical dropping, drop mode must be on
+        '''
+        rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+        points = item.get_click_points(rectangles)
+        points.sort(key = lambda x: x[0])
+        for i in range(quantity):
+            point = self.get_screen_position(points[i])
+            lParam = win32api.MAKELONG(point[0], point[1])
+            self.mouse_down(lParam)
+            self.mouse_up(lParam)
+            time.sleep(random.normalvariate(0.31, 0.02))
+        
             
     def drop_list_vert(self, list : list, threshold=0.7):
         '''
@@ -408,6 +424,7 @@ class ScreenRegion(Interactions):
 
     def __init__(self):
         super().__init__()
+        
 class ChatboxRegion(Interactions):
 
     def __init__(self):

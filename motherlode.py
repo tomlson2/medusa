@@ -1,6 +1,4 @@
-from numpy.core.multiarray import empty
-from pandas.core.indexes.base import Index
-from sqlalchemy import true
+
 from webwalking import WebWalking
 from vision import Vision
 from hsvfilter import HsvFilter

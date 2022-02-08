@@ -7,7 +7,7 @@ from webwalking import WebWalking
 '''
 about ~12k-14k xp/hr
 setup: 
-full north, 2 zoom, brightness 3 (middle)
+full north, 1 zoom, brightness 2 (middle)
 start on the path to the right of the course
 no tabs open, no inventory or stats, no chat
 '''
@@ -149,7 +149,7 @@ while True:
         if player.run() < 50:
             print('low run energy')
             screen_right.click(bag)
-            time.sleep(0.74)
+            time.sleep(1.74)
             inventory.click(stamina,threshold=0.6)
             time.sleep(0.7)
             screen_right.click(bag)
@@ -173,12 +173,6 @@ while True:
         to_start.walk(within=3)
         time.sleep(.45)
         dead_loop_counter = 0
-        
-    if screen_left.contains(fall2_check):
-        print('ive fallen and cant get up...')
-        fall2_to_start.walk(within=3)
-        time.sleep(.45)
-        
         
     if dead_loop_counter > 5:
         print('loop broken, walking to start...')

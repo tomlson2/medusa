@@ -2,6 +2,7 @@ import time
 
 from player import Player
 from vision import Vision
+from numpy import array
 from windowcapture import InventoryRegion, BankRegion, ChatboxRegion, MinimapRegion, CustomRegion, ScreenRegion
 from webwalking import WebWalking
 
@@ -9,8 +10,8 @@ from webwalking import WebWalking
 about ~15k-17k xp/hr
 setup: 
 problems if lots of players on course
-full north 2 zoom 
-3 brightness....REEEEEEEEEEEEEEEEE
+full north 1 zoom 
+2 brightness....REEEEEEEEEEEEEEEEE
 start on course or near the start of the canifis agility course, south of tree
 no tabs open, no inventory or stats, no chat
 '''
@@ -26,6 +27,8 @@ screen_right = CustomRegion(980, 1035, 929, 36)
 inventory = InventoryRegion()
 minimap = MinimapRegion()
 chatbox = ChatboxRegion()
+
+mark0_jump_region = array([(910,383,74,70)])
 
 #obstacles
 tree = Vision('Needle\\agility\\canifis\\tree_start.png')
@@ -66,6 +69,24 @@ mark2 = Vision('Needle\\agility\\canifis\\mark1.png')
 mark3 = Vision('Needle\\agility\\canifis\\mark3.png')
 mark4 = Vision('Needle\\agility\\canifis\\mark4.png')
 
+def mark0_check():
+    global marks
+    if screen_top.contains(mark0, threshold=0.75):
+        print('collecting mark0... ')
+        time.sleep(.5)
+        screen_top.click(mark0, threshold=0.75)
+        time.sleep(4.2)
+        marks += 1
+        print(f'marks collected: {marks}')
+            
+        if screen_top.contains(mark0_jump, threshold=0.65):
+            print('jumping first gap from mark... ')
+            screen_top.click(mark0_jump, threshold=0.65)
+            time.sleep(4.2)
+    else:
+        pass
+        
+
 # WebWalking('walking_lists\\canifis_fall.pkl','map\\canifis_city.png').get_path("canifis_fall")
 # time.sleep(10)
 
@@ -79,19 +100,21 @@ while True:
     if screen_top.contains(tree, threshold=0.81):
         print('starting... ')
         screen_top.click(tree, threshold=0.80)
-        time.sleep(4.1)
+        time.sleep(5.9)
         dead_loop_counter = 0
+        mark0_check()
         
     if screen_top.contains(tree2, threshold=0.77):
         print('starting2... ')
         screen_top.click(tree2, threshold=0.76)
-        time.sleep(4.4)
+        time.sleep(5.7)
         dead_loop_counter = 0
+        mark0_check()
         
     if screen_top.contains(covered_start, threshold=0.8):
         print('starting3... ')
         screen_top.click(covered_start, threshold=0.79)
-        time.sleep(4.4)
+        time.sleep(5.9)
         dead_loop_counter = 0
         
     if screen_top.contains(mark0, threshold=0.84):
@@ -175,9 +198,9 @@ while True:
             marks += 1
             print(f'marks collected: {marks}')
             
-            if screen_bottom.contains(mark4_jump, threshold=0.62):
+            if screen_bottom.contains(mark4_jump, threshold=0.60):
                 print('jumping pole vault from mark... ')
-                screen_bottom.click(mark4_jump, threshold=0.61)
+                screen_bottom.click(mark4_jump, threshold=0.60)
                 time.sleep(5.2)
         
     if screen_bottom.contains(pole_vault, threshold=0.71):
@@ -253,6 +276,7 @@ while True:
     #     dead_loop_counter = 0
         
     if dead_loop_counter > 20:
+        print('breaking')
         break
         
     time.sleep(0.5)
