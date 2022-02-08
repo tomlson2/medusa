@@ -112,7 +112,7 @@ class Interactions(WindowCapture, Vision):
         # looks for item to click with _ second timeout.
         s = time.time()
         while time.time()-s < timeout:
-            rectangles = self.get_rectangles()
+            rectangles = self.get_rectangles(item, threshold)
             if len(rectangles) > 0:
                 break
 
@@ -143,7 +143,7 @@ class Interactions(WindowCapture, Vision):
         inxlst = []
         while time.time()-s < timeout:
             for inx, item in enumerate(items):
-                rectangles = self.get_rectangles()
+                rectangles = self.get_rectangles(item, threshold)
                 for rect in rectangles:
                     inxlst.append(inx)
                 if len(rectangles) > 0:
@@ -191,11 +191,11 @@ class Interactions(WindowCapture, Vision):
         # looks for item to click with _ second timeout.
         s = time.time()
         while time.time()-s < timeout:
-            rectangles = rectangles = self.get_rectangles()
+            rectangles = rectangles = self.get_rectangles(item, threshold)
             if len(rectangles) > 0:
                 break
 
-        points = item.get_click_points(rectangles)
+        points = self.get_click_points(rectangles)
         point = self.get_screen_position(points[0])
         print(point)
         lParam = win32api.MAKELONG(point[0], point[1])
@@ -220,11 +220,11 @@ class Interactions(WindowCapture, Vision):
         s = time.time()
         
         while time.time()-s < 10:
-            rectangles = rectangles = self.get_rectangles()
+            rectangles = rectangles = self.get_rectangles(item, threshold)
             if len(rectangles) > 0:
                 break
 
-        points = item.get_click_points(rectangles)
+        points = self.get_click_points(rectangles)
         point = self.get_screen_position(points[0])
 
         hWnd = win32gui.FindWindow(None, self.window_name)

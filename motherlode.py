@@ -66,12 +66,14 @@ print("Starting script")
 def handle_rockfalls():
     print("Rockfall handler...")
     num_falls = screen.amount(rockfalls, 0.4)
-    print(num_falls)
-    while screen.amount(rockfalls, 0.4) > 1:
-        print("Clicking rockfall")
-        screen.click(rockfalls,0.5,timeout=0.5)
-        time.sleep(5)
-print(to_rockfall.coords_change())
+    while True:
+        while screen.amount(rockfalls, 0.4) > 1:
+            print("Clicking rockfall")
+            screen.click(rockfalls,0.5,timeout=0.5)
+            time.sleep(5)
+        to_rocks.walk_once(dist=75)
+        if to_rocks.coords_change(threshold=3) == True:
+            break
 
 while True:
     keep_mining = True
@@ -81,7 +83,6 @@ while True:
     to_rockfall.walk(within=4)
     time.sleep(1)
     handle_rockfalls()
-
     print("Walking to mining area")
     to_rocks.walk(within=6, ind_len=-6)
     right = True
