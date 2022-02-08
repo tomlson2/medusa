@@ -71,6 +71,7 @@ def handle_rockfalls():
         print("Clicking rockfall")
         screen.click(rockfalls,0.5,timeout=0.5)
         time.sleep(5)
+print(to_rockfall.coords_change())
 
 while True:
     keep_mining = True

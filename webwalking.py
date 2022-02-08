@@ -3,6 +3,7 @@ import time
 from vision import Vision
 import win32gui, win32api, win32con
 import random
+from math import sqrt
 import numpy as np
 import win32gui, win32con
 import pickle
@@ -48,10 +49,17 @@ class WebWalking(WindowCapture):
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
         time.sleep(0.25)
     
+    @staticmethod
+    def distance(coords1, coords2):
+        x1,y1 = coords1
+        x2,y2 = coords2
+        dist = sqrt(abs((x2-x1)^2 + (y2-y1)^2))
+        return dist
+
     def coords_change(self, threshold = 3):
         starting = self.get_coordinates()
-        time.sleep(2)
-        if self.get_coordinates == starting:
+        time.sleep(2)   
+        if self.distance(starting, self.get_coordinates()) > threshold:
             return False
         else:
             return True
