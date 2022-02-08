@@ -1,11 +1,10 @@
-from charset_normalizer import detect
 import numpy as np
 from numpy import ndarray
 import win32gui, win32api, win32ui, win32con
 import time, random
+from model import Model
 from vision import Vision
 import cv2 as cv
-import sys
 
 window_name = input('client name: ')
 class WindowCapture:
@@ -76,7 +75,7 @@ class WindowCapture:
         win32gui.DeleteObject(dataBitMap.GetHandle())
 
         img = img[...,:3]
-
+        
         img = np.ascontiguousarray(img)
 
         return img
@@ -113,7 +112,7 @@ class Interactions(WindowCapture, Vision):
         # looks for item to click with _ second timeout.
         s = time.time()
         while time.time()-s < timeout:
-            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            rectangles = self.get_rectangles()
             if len(rectangles) > 0:
                 break
 
@@ -129,6 +128,14 @@ class Interactions(WindowCapture, Vision):
 
         time.sleep(random.normalvariate(0.25,0.02))
     
+    def get_rectangles(self, item, threshold):
+        if type(item) == Vision:
+            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+        elif type(item) == Model:
+            rectangles = item.find(self.get_screenshot(),threshold)
+        
+        return rectangles
+
     def click_list(self, items: list, threshold: float = 0.7, timeout = 7, right_click: bool = False):
         # looks for item to click with _ second timeout.
         s = time.time()
@@ -136,7 +143,7 @@ class Interactions(WindowCapture, Vision):
         inxlst = []
         while time.time()-s < timeout:
             for inx, item in enumerate(items):
-                rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+                rectangles = self.get_rectangles()
                 for rect in rectangles:
                     inxlst.append(inx)
                 if len(rectangles) > 0:
@@ -160,6 +167,18 @@ class Interactions(WindowCapture, Vision):
 
         time.sleep(random.normalvariate(0.25,0.02))
         return items[inxlst[0]]
+
+    def click_self(self):
+
+        point = self.get_click_points(np.array([(self.x, self.y, self.w, self.h)]))
+
+        hWnd = win32gui.FindWindow(None, self.window_name)
+        lParam = win32api.MAKELONG(point[0][0], point[0][1])
+
+        hWnd1 = win32gui.FindWindowEx(hWnd, None, None, None)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+        win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
+        time.sleep(random.normalvariate(0.2,0.01))
     
     def drag(self):
         lParam1 = win32api.MAKELONG(100, 100)
@@ -172,7 +191,7 @@ class Interactions(WindowCapture, Vision):
         # looks for item to click with _ second timeout.
         s = time.time()
         while time.time()-s < timeout:
-            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            rectangles = rectangles = self.get_rectangles()
             if len(rectangles) > 0:
                 break
 
@@ -201,7 +220,7 @@ class Interactions(WindowCapture, Vision):
         s = time.time()
         
         while time.time()-s < 10:
-            rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
+            rectangles = rectangles = self.get_rectangles()
             if len(rectangles) > 0:
                 break
 
@@ -260,7 +279,7 @@ class Interactions(WindowCapture, Vision):
         found = 0
         not_found = 0
         for _ in range(screenshots):
-            if len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)) > 0:
+            if self.amount(item, threshold) > 0:
                 found += 1
             else:
                 not_found += 1
@@ -271,7 +290,7 @@ class Interactions(WindowCapture, Vision):
             return False
     
     def amount(self, item, threshold):
-        return len(item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold))
+        return len(self.get_rectangles(item=item, threshold=threshold))
 
     def wait_for(self, item : object, threshold : float = 0.7, t: int = 5):
         """
@@ -458,13 +477,23 @@ class RunOrb(Interactions):
 
     def __init__(self):
         super().__init__()
-        self.w = 70
-        self.h = 63
-        self.x = 1507
-        self.y = 281        
+        self.w = 38
+        self.h = 38
+        self.x = 1527
+        self.y = 292        
     
     def is_active(self):
-        if self.contains(Vision('Needle\\orbs\\run_boot.png'),0.8):
+        if self.contains(Vision('Needle\\orbs\\run_boot.png'),0.95):
             return True
         else:
             return False
+    
+    def run(self):
+        if self.is_active() == True:
+            pass
+        else:
+            self.click_self()
+
+    def walk(self):
+        if self.is_active() == True:
+            self.click_self()

@@ -1,9 +1,9 @@
 import cv2 as cv
 from hsvfilter import HsvFilter
-from windowcapture import PlayerRegion, ScreenRegion, WindowCapture, CustomRegion
+from windowcapture import PlayerRegion, RunOrb, ScreenRegion, WindowCapture, CustomRegion
 from vision import Vision
 
-wincap = PlayerRegion()
+wincap = ScreenRegion()
 
 needle = 'Needle\\motherlode\\deposit.png'
 

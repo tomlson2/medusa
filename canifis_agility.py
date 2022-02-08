@@ -107,9 +107,9 @@ while True:
                 screen_top.click(mark0_jump, threshold=0.62)
                 time.sleep(4.2)
         
-    if screen_top.contains(first_gap, threshold=0.79):
+    if screen_top.contains(first_gap, threshold=0.64):
         print('jumping first gap... ')
-        screen_top.click(first_gap, threshold=0.78)
+        screen_top.click(first_gap, threshold=0.64)
         time.sleep(4.32)
         dead_loop_counter = 0
         
@@ -125,9 +125,9 @@ while True:
                 screen_left.click(mark11_jump, threshold=0.7)
                 time.sleep(4.5)
          
-    if screen_left.contains(second_gap, threshold=0.66):
+    if screen_left.contains(second_gap, threshold=0.62):
         print('jumping second gap... ')
-        screen_left.click(second_gap, threshold=0.65)
+        screen_left.click(second_gap, threshold=0.62)
         time.sleep(5.4)
         dead_loop_counter = 0
         
@@ -143,9 +143,9 @@ while True:
             screen_left.click(mark1_jump, threshold=0.64)
             time.sleep(5)
         
-    if screen_left.contains(third_gap, threshold=0.63):
+    if screen_left.contains(third_gap, threshold=0.55):
         print('jumping third gap... ')
-        screen_left.click(third_gap, threshold=0.62)
+        screen_left.click(third_gap, threshold=0.55)
         time.sleep(5.4)
         dead_loop_counter = 0
         

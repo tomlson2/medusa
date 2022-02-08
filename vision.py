@@ -38,7 +38,7 @@ class Vision:
         return self.needle_img
     
     def get_center_rectangles(self, rectangles):
-        idx = np.abs(rectangles[:,0] - 980).argsort()
+        idx = np.abs(rectangles[:,0] - 965).argsort()
         rectangles = rectangles.take(idx, 0)
         return rectangles, idx
 
@@ -95,9 +95,11 @@ class Vision:
 
         # Loop over all the rectangles
         for (x, y, w, h) in rectangles:
-            # Determine the center position        
-            click_x = random.randrange(x+4, x+w-4)
-            click_y = random.randrange(y+4, y+h-4)
+            # Determine the center position
+            buffer_x = int(w * 0.2)
+            buffer_y = int(h * 0.2)        
+            click_x = random.randrange(x+buffer_x, x+w-buffer_x)
+            click_y = random.randrange(y+buffer_y, y+h-buffer_y)
             # Save the points
             points.append((click_x, click_y))
         return points
