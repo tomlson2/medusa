@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import cv2 as cv
 import numpy as np
 import random
@@ -15,7 +16,7 @@ class Vision:
     method = None
 
     # constructor
-    def __init__(self, needle_img_path, hsv_filter=HsvFilter(),method=cv.TM_CCOEFF_NORMED):
+    def __init__(self, needle_img_path, hsv_filter=HsvFilter(), method=cv.TM_CCOEFF_NORMED, scale = 1):
         # load the image we're trying to match
         # https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
 
@@ -23,6 +24,8 @@ class Vision:
             self.needle_img = cv.imread(needle_img_path)
         else:
             self.needle_img = needle_img_path
+        if scale < 1:
+            self.needle_img = cv.resize(self.needle_img, (0,0), fx = scale, fy = scale)
         self.needle_img = self.apply_hsv_filter(self.needle_img,hsv_filter=hsv_filter)
         self.needle_w = self.needle_img.shape[1]
         self.needle_h = self.needle_img.shape[0]

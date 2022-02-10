@@ -1,6 +1,7 @@
 import torch
 from vision import Vision
 import numpy as np
+import cv2 as cv
 
 
 class Model(Vision):

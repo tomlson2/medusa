@@ -2,6 +2,7 @@ import numpy as np
 from numpy import ndarray
 import win32gui, win32api, win32ui, win32con
 import time, random
+from hsvfilter import HsvFilter
 from model import Model
 from vision import Vision
 import cv2 as cv
@@ -144,7 +145,7 @@ class Interactions(WindowCapture, Vision):
         while time.time()-s < timeout:
             for inx, item in enumerate(items):
                 rectangles = self.get_rectangles(item, threshold)
-                for rect in rectangles:
+                for _ in rectangles:
                     inxlst.append(inx)
                 if len(rectangles) > 0:
                     matches = np.append(matches, rectangles, axis=0)
@@ -323,22 +324,65 @@ class InventoryRegion(Interactions):
     
     def drink_potion(self):
         self.click()
+
+    def line_process(self):
+        im = self.get_screenshot()
+        im = self.apply_hsv_filter(im, hsv_filter=HsvFilter(vMax=28))
+        gray = cv.cvtColor(im,cv.COLOR_BGR2GRAY)
+        lines = cv.Canny(gray, 0, 0)
+        blur = cv.GaussianBlur(lines,(3,3),0)
+        edited_im = cv.adaptiveThreshold(blur,255,1,1,11,2)
+        return edited_im
+
+    def num_items(self, debugger = False):
+        number = 0
+        im = self.line_process()
+        bgr_im = cv.cvtColor(im, cv.COLOR_GRAY2BGR)
+        contours, _ = cv.findContours(im, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+        cnt_rects = []
+        for cnt in contours:
+            area = cv.contourArea(cnt)
+            x,y,w,h = cv.boundingRect(cnt)
+            x += int((w * 0.5)/2)
+            y += int((h * 0.5)/2)
+            w = int(w * 0.5)
+            h = int(h * 0.5)
+            if area > 150:
+                cnt_rects.append((x, y, w, h))        
+                cv.rectangle(bgr_im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        print(cnt_rects)
+        x = 15
+        y = 10
+        w = 90
+        h = 75
+
+        inventory_spot = 1
+        while x < 350 and y < 590:
+            while x < 350:
+                for r in cnt_rects:
+                    if x < r[0] and y < r[1]:
+                        if x + w > r[0] + r[2] and y + h > r[1] + r[3]:
+                            number += 1
+                            break
+                cv.rectangle(bgr_im, (x, y), (x+w, y+h), (255,0,0),2)
+                inventory_spot += 1
+                x += 95
+            x = 15
+            y += 78
+        
+        if debugger == True:
+            cv.imshow('1', bgr_im)
+            cv.waitKey(0)
+            cv.destroyAllWindows()
+        
+        return number
+
     
     def is_full(self):
-        im = self.get_screenshot()
-        gray = cv.cvtColor(im,cv.COLOR_BGR2GRAY)
-        blur = cv.GaussianBlur(gray,(5,5),0)
-        mask = cv.adaptiveThreshold(blur,255,1,1,11,2)
-        contours, _ = cv.findContours(mask, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
-        rectangles = []
-        for cnt in contours:
-            if 7500 > cv.contourArea(cnt) > 650:
-                x, y, w, h = cv.boundingRect(cnt)
-                if w<500 and h<500:
-                    rectangles.append([x, y, w, h])
-                    rectangles.append([x, y, w, h])
-        rects, weights = cv.groupRectangles(rectangles, groupThreshold=1, eps=1)
-        return len(rects)
+        if self.num_items() == 28:
+            return True
+        else:
+            return False
 
     def drop_click(self, item : object, quantity : int, threshold=0.7):
         '''

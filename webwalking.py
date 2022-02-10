@@ -233,4 +233,4 @@ class WebWalking(WindowCapture):
             print("error")
 
 if __name__ == '__main__':
-    WebWalking('','map\\motherlode2.png',orientation='West').get_path("to_rocks")
+    WebWalking('','map\\motherlode2.png',orientation='West').get_path("to_bank_mlm2")

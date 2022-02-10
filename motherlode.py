@@ -54,16 +54,17 @@ gold_ore = Vision("Needle\\motherlode\\gold_ore.png")
 mitrhil_ore = Vision("Needle\\motherlode\\mithril_ore.png")
 gold_nugget = Vision("Needle\\motherlode\\gold_nugget.png")
 gem1 = Vision("Needle\\motherlode\\gem1.png")
-gem2 = Vision("Needle\\motherlode\gem2.png")
-gem3 = Vision("Needle\\motherlode\gem3.png")
+gem2 = Vision("Needle\\motherlode\\gem2.png")
+gem3 = Vision("Needle\\motherlode\\gem3.png")
+gem4 = Vision("Needle\\motherlode\\gem4.png")
 deposit_checker = Vision('Needle\\motherlode\\deposit_checker.png')
-deposit_items = [coal,gold_ore,mitrhil_ore,gold_nugget,gem1,gem2,gem3]
+deposit_items = [coal,gold_ore,mitrhil_ore,gold_nugget,gem1,gem2,gem3,gem4]
 veins = [Vision('Needle\\motherlode\\right_vein.png',veins_filter), Vision('Needle\\motherlode\\middle_vein.png',veins_filter), Vision('Needle\\motherlode\\left_vein.png',veins_filter)]
 
 
 print("Starting script")
 
-def handle_rockfalls():
+def handle_rockfalls(walk):
     print("Rockfall handler...")
     num_falls = screen.amount(rockfalls, 0.4)
     while True:
@@ -71,7 +72,7 @@ def handle_rockfalls():
             print("Clicking rockfall")
             screen.click(rockfalls,0.5,timeout=0.5)
             time.sleep(5)
-        to_rocks.walk_once(dist=75)
+        walk.walk_once(dist=105)
         if to_rocks.coords_change(threshold=3) == True:
             break
 
@@ -80,11 +81,12 @@ while True:
     print("Toggling run")
     runorb.run()
     print("Walking to rockfall")
-    to_rockfall.walk(within=4)
+    to_rockfall.walk(within=4, ind_len=-2)
     time.sleep(1)
-    handle_rockfalls()
+    handle_rockfalls(walk=to_rocks)
     print("Walking to mining area")
-    to_rocks.walk(within=6, ind_len=-6)
+    to_rocks.walk(within=8, ind_len=-4)
+    time.sleep(1)
     right = True
     print("Toggling walk")
     print("Begin mining")
@@ -131,16 +133,16 @@ while True:
     print("Toggling Run")
     runorb.run()
     print("Walking to rockfall.")
-    to_water1.walk(within=4)
-    handle_rockfalls()
+    to_water1.walk(within=4,ind_len=-2)
+    handle_rockfalls(walk=to_water2)
     print("Walking to hopper")
-    to_water2.walk(within=2)
+    to_water2.walk(within=5,ind_len=-2)
     counter = 0
     while inventory.is_full() > 15:
         deadloop = 0
         try:
             print("Clicking hopper")
-            screen.click(hopper,1)
+            screen.click(hopper,0.8)
         except IndexError:
             print("Hopper not found, rewalking")
             if deadloop > 4:
@@ -161,7 +163,7 @@ while True:
     else:
         deadloop = 0
         print("Walking to sack")
-        to_sack.walk(within=3)
+        to_sack.walk(within=3, ind_len=-2)
         time.sleep(0.5)
         while True:
             try:
@@ -172,7 +174,7 @@ while True:
                 print("Couldn't find sack, walking again")
                 if deadloop > 4:
                     break
-                to_sack.walk(within=2, ind_len=2)
+                to_sack.walk(within=2, ind_len=-2)
                 deadloop += 1
         print("Waiting for ore")
         inventory.wait_for(coal)
@@ -180,7 +182,7 @@ while True:
             print("Didnt successfully collect ore, breaking")
             break
         print("Walking to bank")
-        to_bank.walk(within=3)
+        to_bank.walk(within=3,ind_len=-2)
         time.sleep(0.3)
         deadloop = 0
         while True:
@@ -192,7 +194,7 @@ while True:
                 print("Couldn't find bank deposit, walking again")
                 if deadloop > 4:
                     break
-                to_bank.walk(within=2, ind_len=2)
+                to_bank.walk(within=2, ind_len=-2)
                 deadloop += 1
                 time.sleep(1)
         depost_box_region.wait_for(deposit_checker)
