@@ -351,7 +351,6 @@ class InventoryRegion(Interactions):
             if area > 150:
                 cnt_rects.append((x, y, w, h))        
                 cv.rectangle(bgr_im, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        print(cnt_rects)
         x = 15
         y = 10
         w = 90

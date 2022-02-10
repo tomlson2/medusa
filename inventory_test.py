@@ -1,3 +1,4 @@
 from windowcapture import InventoryRegion
 
-InventoryRegion().num_items()
+while True:
+    print(InventoryRegion().num_items())
