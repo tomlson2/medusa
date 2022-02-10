@@ -6,7 +6,7 @@ from windowcapture import InventoryRegion, ScreenRegion
 
 
 '''
-about ~26k xp/hr
+about ~26k xp/hr ~6 hours 25 to 55
 zoom 2 (middle), brightness 2, north, full up
 go to western fruit stall in hosidious eastern house
 stand on the top tile of the fruit stall
@@ -47,7 +47,7 @@ while True:
     while fruit_counter < 28:
         screen.click_region(stall_region)
         fruit_counter += 1
-        time.sleep(random.normalvariate(3.2, 0.07))
+        time.sleep(random.normalvariate(3.2, 0.02))
         
     print('dropping junk...')
     inventory.drop_list_vert(fruit_list)

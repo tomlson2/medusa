@@ -6,7 +6,7 @@ from windowcapture import InventoryRegion, ScreenRegion
 
 
 '''
-about ~15k xp/hr
+about ~15k xp/hr ~35min 5 to 25
 stand under baker
 zoom 2 (middle), camera north full up
 inventory open and on drop mode
@@ -21,6 +21,8 @@ cake = Vision('Needle\\thieving\\cake_stall\\cake.png')
 bread = Vision('Needle\\thieving\\cake_stall\\bread.png')
 choco = Vision('Needle\\thieving\\cake_stall\\choco_cake.png')
 
+junk = [cake, bread, choco]
+
 start_time = time.time()
 
 
@@ -32,11 +34,7 @@ while True:
         time.sleep(random.normalvariate(3.3, 0.08))
         
     print('dropping junk...')
-    inventory.drop_click(cake, inventory.amount(cake, 0.75))
-    time.sleep(0.26)
-    inventory.drop_click(bread, inventory.amount(bread, 0.75))
-    time.sleep(0.32)
-    inventory.drop_click(choco, inventory.amount(choco, 0.75))
+    inventory.drop_list_vert(junk)
     
     current_time = (time.time() - start_time)
     current_time_format = time.strftime("%H:%M:%S", time.gmtime(current_time))
