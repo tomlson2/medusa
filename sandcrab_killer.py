@@ -33,7 +33,7 @@ def run_timer():
 
 #WebWalking('walking_lists\\to_crab2.pkl','map\\sandcrab_isle.png').get_path("to_crab2.py")
 spec = True
-if screen.contains(spec_button, threshold=0.85):
+if screen.contains(spec_button, threshold=0.97):
     print('spec found')
     spec = True
 else:
@@ -56,8 +56,8 @@ while True:
         if inventory.contains(attack_potion, threshold=0.75):
             inventory.fast_click(attack_potion, threshold=0.75)
         time.sleep(1.8)
-        if inventory.contains(strength_potion, threshold=0.75):
-            inventory.fast_click(strength_potion, threshold=0.75)
+        if inventory.contains(strength_potion, threshold=0.78):
+            inventory.fast_click(strength_potion, threshold=0.78)
         time.sleep(.2)
         
         potion_timer = time.time()
