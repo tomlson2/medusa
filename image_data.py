@@ -124,7 +124,7 @@ def npc_labeling():
         broken2 = False
         cows = []
         
-        if len(rectangles) > 1:
+        if len(rectangles) > 0:
             for rect in rectangles:
                 temp_im = cv.rectangle(temp_im, (rect[0], rect[1]), (rect[0] + rect[2], rect[1] + rect[3]),(255, 0, 0), 3)
                 cv.imshow('test',temp_im)
@@ -149,7 +149,7 @@ def npc_labeling():
             
             label_array = np.asarray(cows, dtype=np.float64)
 
-            if len(cows) > 1 and broken == False:
+            if len(cows) > 0 and broken == False:
                 with open(f"{path}\\labels\\{image_number}.txt", "wb") as f:
                     np.savetxt(f, label_array, fmt=fmt)
                 cv.imwrite(f"{path}\\images\\{image_number}.png", im)

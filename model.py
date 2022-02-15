@@ -12,7 +12,7 @@ class Model(Vision):
         print("Model Loaded!")
 
     def find(self, im, threshold=0.5):
-
+        im = cv.cvtColor(im, cv.COLOR_BGR2RGB)
         result = self.model([im])
         labels, coord = result.xyxyn[0][:, -1], result.xyxyn[0][:, :-1]
         im_h, im_w, _ = im.shape

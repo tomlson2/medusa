@@ -11,9 +11,9 @@ rune = price.load_price("Runite ore")
 rune_bar = price.load_price("Runite bar")
 stamina_pot = price.load_price("Stamina potion(4)")
 
-steel_num = 4800
-adamant_num = 2400
-rune_num = 1950
+steel_num = 4600
+adamant_num = 2200
+rune_num = 1850
 
 coffer_rate = 72000
 

@@ -302,7 +302,10 @@ class Interactions(WindowCapture, Vision):
             current_time = (time.time() - start_time)
             if current_time > t:
                 print(f"Failed to find Needle in {t} seconds")
-                break
+                return False
+            else:
+                pass
+                
             
 class CustomRegion(Interactions):
 

@@ -42,7 +42,7 @@ class Bank:
         if self.stam == True and Player().need_stam() == True:
             self.bank.click(self.withdraw1, 0.9)
             time.sleep(random.normalvariate(0.15,0.01))
-            self.bank.click(self.stamina_pot)
+            self.bank.click(self.stamina_pot, 1)
             time.sleep(random.normalvariate(0.15,0.01))
             self.close()
             time.sleep(random.normalvariate(0.15,0.01))

@@ -1,4 +1,3 @@
-from numpy.core.multiarray import empty
 from pandas.core.indexes.base import Index
 from webwalking import WebWalking
 from vision import Vision
@@ -72,13 +71,13 @@ def empty_bag():
     inventory.click(coal_bag,1,right_click=True)
     while(inventory.contains(coal,0.7) or inventory.contains(adamant_ore,0.7)):
         pass
-    screen.click(empty_cb,.90)
+    screen.click(empty_cb,.85)
     inventory.wait_for(coal)
 
 def fill_bag():
     chest.findbank()
     inventory.click(coal_bag,1,right_click=True)
-    screen.click(fill_cb,.90)
+    screen.click(fill_cb,.85)
     
 
 def coal_run():
