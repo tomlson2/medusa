@@ -8,6 +8,8 @@ from windowcapture import ScreenRegion, CustomRegion, InventoryRegion, ChatboxRe
 
 
 '''
+example setup, need the three circled patches to not be used:
+https://imgur.com/a/fcTIHsm
 34 - 54 ~21k xp/hr, 6 hours. 
 54 - 74 ~55k xp/hr, 17 hours.
 74 - 85 ~80k xp/hr, 27 hours
@@ -340,6 +342,7 @@ def reset_game():
     time.sleep(random.normalvariate(3, 0.1))
     pass
 
+# script for once the grico can is acquired
 def grico_farming(text):
     global start_time, tithe_count
     start_tithe(text)
@@ -363,7 +366,8 @@ def grico_farming(text):
     reset_game()
     tithe_count += 1
     print(f'tithe rounds completed: {tithe_count}')
-    
+
+# normal watering cans script    
 def normal_farming(text):
     global start_time, tithe_count
     start_tithe(text)
@@ -396,5 +400,5 @@ start_time = time.time()
 tithe_count = 0
 
 while True:
-    grico_farming(loga_text)
-    #normal_farming(golo_text)
+    #grico_farming(loga_text)
+    normal_farming(golo_text)

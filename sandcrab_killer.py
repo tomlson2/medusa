@@ -32,12 +32,17 @@ def run_timer():
     print(f"run time: {current_time_format}")
 
 #WebWalking('walking_lists\\to_crab2.pkl','map\\sandcrab_isle.png').get_path("to_crab2.py")
-
-spec = False
+spec = True
+if screen.contains(spec_button, threshold=0.85):
+    print('spec found')
+    spec = True
+else:
+    print('spec not found')
+    spec = False
 
 print('-----starting crab killer-----')
 while True:
-    time.sleep(35)
+    time.sleep(10)
 
     if player.health() < 10:
         for i in range(2):
@@ -51,13 +56,13 @@ while True:
         if inventory.contains(attack_potion, threshold=0.75):
             inventory.fast_click(attack_potion, threshold=0.75)
         time.sleep(1.8)
-        if inventory.contains(strength_potion, threshold=0.72):
-            inventory.fast_click(strength_potion, threshold=0.72)
+        if inventory.contains(strength_potion, threshold=0.75):
+            inventory.fast_click(strength_potion, threshold=0.75)
         time.sleep(.2)
         
         potion_timer = time.time()
         
-    if (time.time() - crab_timer) >= 570:
+    if (time.time() - crab_timer) >= 610:
         print('refreshing crab agro...')
         to_away1.walk(within=3)
         to_crab1.walk(within=1)
@@ -66,7 +71,7 @@ while True:
         to_crab1.walk(within=1)
         run_timer()
         
-    if (time.time() - spec_timer) >= 340 and spec == True:
+    if (time.time() - spec_timer) >= 121 and spec == True:
         print('speccing...')
         screen.click(spec_button)
         

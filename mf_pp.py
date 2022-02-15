@@ -65,16 +65,20 @@ while True:
             if dead_click_check > 7:
                 print('not pickpocketing master farmer\nkilling script')
                 break
-            time.sleep(0.3)
+            if random.randint(1, 30) > 1:
+                time.sleep(0.3)
+            else:
+                time.sleep(random.uniform(0.5, 6.2))
         except IndexError:
             print('master farmer not found')
             time.sleep(3)
             look_for_mf()
             
         if inventory.is_full() == True:
+            print('inventory full')
             break
             
-    if player.health() <= random.randint(20, 35) or inventory.is_full():
+    if player.health() <= random.randint(19, 34) or inventory.is_full():
         if inventory.contains(potato):
             time.sleep(random.normalvariate(0.5, 0.01))
             inventory.click(potato)
