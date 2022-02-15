@@ -73,7 +73,7 @@ while True:
             print('starting0... ')
             screen_left.click(start, threshold=1)
             time.sleep(6.7)
-        dead_loop_counter = 0
+            dead_loop_counter = 0
 
     if minimap.contains(minimap1):
         print("minimap 1.1")    
@@ -112,7 +112,15 @@ while True:
         if screen_left.contains(balance_wall, threshold=0.7):
             print('balancing wall... ')
             screen_left.click(balance_wall, threshold=1)
-            time.sleep(9.9)
+            time.sleep(12.2)
+            dead_loop_counter = 0
+            
+    if minimap.contains(minimap5):
+        print("minimap 5")        
+        if far_right.contains(leap_gap, threshold=0.5):
+            print('leaping small gap... ')
+            screen_right.click(leap_gap, threshold=1)
+            time.sleep(4.55)
             dead_loop_counter = 0
         
     if minimap.contains(minimap6):
@@ -159,14 +167,6 @@ while True:
         print(f"run time: {current_time_format}")
         
         dead_loop_counter = 0
-
-    if minimap.contains(minimap5):
-        print("minimap 5")        
-        if far_right.contains(leap_gap, threshold=0.5):
-            print('leaping small gap... ')
-            screen_right.click(leap_gap, threshold=1)
-            time.sleep(3.2)
-            dead_loop_counter = 0
         
     if screen_top.contains(walk_check, threshold=0.8):
         print('walking to start of course...')
@@ -174,7 +174,13 @@ while True:
         time.sleep(.45)
         dead_loop_counter = 0
         
-    if dead_loop_counter > 5:
+    if dead_loop_counter > 2:
+        if screen_left.contains(fall2_check):
+            print('loop broken, walking to start...')
+            fall2_to_start.walk(within=4)
+            time.sleep(.45)
+        
+    if dead_loop_counter > 4:
         print('loop broken, walking to start...')
         to_start.walk(within=4)
         time.sleep(.45)
@@ -182,7 +188,8 @@ while True:
         if screen_left.contains(rough_wall, threshold=0.8):
             screen_left.click(rough_wall, threshold=0.76)
             time.sleep(.3)
-        
+    
+    print('loop')    
     dead_loop_counter += 1
     time.sleep(0.5)
 

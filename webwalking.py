@@ -64,7 +64,7 @@ class WebWalking(WindowCapture):
         else:
             return True
 
-    def walk(self, within: int = 1, debugger = True, ind_len = -4):
+    def walk(self, within: int = 1, debugger = False, ind_len = -4):
         print("WALKING")
         opoint = self.path[0]
         click_wait = 0

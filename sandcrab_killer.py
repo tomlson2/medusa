@@ -3,15 +3,17 @@ import random
 from webwalking import WebWalking
 from player import Player
 from vision import Vision
-from windowcapture import InventoryRegion, WindowCapture
+from windowcapture import InventoryRegion, WindowCapture, ScreenRegion
 
 
 inventory = InventoryRegion()
+screen = ScreenRegion()
 player = Player()
 
 potato = Vision('Needle\\sandcrab\\potato.png')
 attack_potion = Vision('Needle\\sandcrab\\attack4.png')
 strength_potion = Vision('Needle\\sandcrab\\strength4.png')
+spec_button = Vision('Needle\\sandcrab\\spec_button.png')
 #3 spot south center
 to_away1 = WebWalking('walking_lists\\reset_crab1.pkl','map\\sandcrab_isle.png')
 to_crab1 = WebWalking('walking_lists\\to_crab1.pkl','map\\sandcrab_isle.png')
@@ -22,6 +24,7 @@ to_away2 = WebWalking('walking_lists\\reset_crab2.pkl','map\\sandcrab_isle.png')
 start_time = time.time()
 crab_timer = time.time()
 potion_timer = time.time()
+spec_timer = time.time() 
 
 def run_timer():
     current_time = (time.time() - start_time)
@@ -30,6 +33,7 @@ def run_timer():
 
 #WebWalking('walking_lists\\to_crab2.pkl','map\\sandcrab_isle.png').get_path("to_crab2.py")
 
+spec = False
 
 print('-----starting crab killer-----')
 while True:
@@ -44,8 +48,11 @@ while True:
     
     if (time.time() - potion_timer) >= 304:
         print('drinking potions...')
-        if inventory.contains(attack_potion):
-            inventory.fast_click(attack_potion)
+        if inventory.contains(attack_potion, threshold=0.75):
+            inventory.fast_click(attack_potion, threshold=0.75)
+        time.sleep(1.8)
+        if inventory.contains(strength_potion, threshold=0.72):
+            inventory.fast_click(strength_potion, threshold=0.72)
         time.sleep(.2)
         
         potion_timer = time.time()
@@ -58,3 +65,9 @@ while True:
         time.sleep(0.5)
         to_crab1.walk(within=1)
         run_timer()
+        
+    if (time.time() - spec_timer) >= 340 and spec == True:
+        print('speccing...')
+        screen.click(spec_button)
+        
+        spec_timer = time.time()

@@ -25,22 +25,22 @@ def saltpetre_compost():
             screen.click(bank, threshold=0.7)
             time.sleep(0.7)
             screen.click(deposit)
-            time.sleep(0.64)
+            time.sleep(random.normalvariate(0.64, 0.004))
         else:
             screen.wait_for(bank, threshold=0.7)
     
     time.sleep(0.44)    
     screen.click(compost)
-    time.sleep(0.3)
+    time.sleep(random.normalvariate(0.31, 0.002))
     screen.click(saltpetre)
-    time.sleep(0.4)
+    time.sleep(random.normalvariate(0.44, 0.004))
     screen.click(x)
-    screen.wait_for(x) == False
-    time.sleep(0.12)
+    
+    time.sleep(random.normalvariate(.5, 0.03))
     
     print('making compost...')
-    inventory.click(compost)
-    time.sleep(0.31)
+    inventory.click(compost, ind=-1)
+    time.sleep(random.normalvariate(0.32, 0.004))
     inventory.click(saltpetre)
     time.sleep(random.normalvariate(33, 0.24))
     

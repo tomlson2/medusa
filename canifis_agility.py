@@ -32,6 +32,7 @@ mark0_jump_region = array([(910,383,74,70)])
 
 #obstacles
 tree = Vision('Needle\\agility\\canifis\\tree_start.png')
+tree1 = Vision('Needle\\agility\\canifis\\tree2.png')
 tree2 = Vision('Needle\\agility\\canifis\\walk_start.png')
 covered_start = Vision('Needle\\agility\\canifis\\covered_start.png')
 first_gap = Vision('Needle\\agility\\canifis\\first_gap.png')
@@ -79,10 +80,10 @@ def mark0_check():
         marks += 1
         print(f'marks collected: {marks}')
             
-        if screen_top.contains(mark0_jump, threshold=0.65):
-            print('jumping first gap from mark... ')
-            screen_top.click(mark0_jump, threshold=0.65)
-            time.sleep(4.2)
+        # if screen_top.contains(mark0_jump, threshold=0.65):
+        print('jumping first gap from mark... ')
+        screen_top.click(mark0_jump, threshold=0.65)
+        time.sleep(4.2)
     else:
         pass
         
@@ -125,10 +126,10 @@ while True:
             marks += 1
             print(f'marks collected: {marks}')
             
-            if screen_top.contains(mark0_jump, threshold=0.62):
-                print('jumping first gap from mark... ')
-                screen_top.click(mark0_jump, threshold=0.62)
-                time.sleep(4.2)
+            # if screen_top.contains(mark0_jump, threshold=0.62):
+            print('jumping first gap from mark... ')
+            screen_top.click(mark0_jump, threshold=0.62)
+            time.sleep(4.2)
         
     if screen_top.contains(first_gap, threshold=0.64):
         print('jumping first gap... ')
@@ -143,10 +144,10 @@ while True:
             marks += 1
             print(f'marks collected: {marks}')
             
-            if screen_left.contains(mark11_jump, threshold=0.71):
-                print('jumping second gap from mark... ')
-                screen_left.click(mark11_jump, threshold=0.7)
-                time.sleep(4.5)
+            # if screen_left.contains(mark11_jump, threshold=0.71):
+            print('jumping second gap from mark... ')
+            screen_left.click(mark11_jump, threshold=0.7)
+            time.sleep(4.5)
          
     if screen_left.contains(second_gap, threshold=0.62):
         print('jumping second gap... ')
@@ -240,6 +241,10 @@ while True:
     #     if screen_right.contains(glitch):
     #         screen_right.click(glitch)
     #         dead_loop_counter = 0
+    if dead_loop_counter > 4:
+        if screen_top.contains(tree1):
+            screen_top.click(tree1)
+            time.sleep(3)
     
     if dead_loop_counter > 4:
         if minimap.contains(glitch, threshold=0.9) == True and screen_right.contains(fifth_gap) == False:

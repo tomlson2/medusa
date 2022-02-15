@@ -43,7 +43,7 @@ print('-----starting pickpocketer-----')
 while True:
     
     current_health = player.health()
-    while player.health() == current_health:
+    while player.health() >= current_health:
         screen.click_region(knight_region)
         #changed from .1
         time.sleep(0.2)
@@ -53,15 +53,15 @@ while True:
         else:
             print('check not found')
             dead_click_check += 1
-            if dead_click_check > 8:
+            if dead_click_check > 5:
                 break
-        time.sleep(random.normalvariate(0.35, 0.01))
+        time.sleep(random.normalvariate(0.21, 0.01))
         
         if coin_pouch_count > 22:
             print('cashing out...')
-            time.sleep(random.normalvariate(0.6, 0.04))
+            time.sleep(random.normalvariate(0.5, 0.04))
             inventory.click(coin_pouch)
-            time.sleep(0.1)
+            time.sleep(0.4)
             coin_pouch_count = 0
             
     coin_pouch_count -= 1
@@ -108,7 +108,7 @@ while True:
         time.sleep(random.normalvariate(1, 0.1))
         
         
-    if time.time() - dodgy_timer > random.randint(295, 320):
+    if time.time() - dodgy_timer > random.randint(195, 240):
         print('refreshing dodgy...')
         if inventory.contains(dodgy):
             time.sleep(random.normalvariate(0.32, 0.03))

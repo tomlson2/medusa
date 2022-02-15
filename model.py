@@ -28,6 +28,7 @@ class Model(Vision):
                 w = (x2 - x1)
                 h = (y2 - y1)
                 coords_list.append([x,y,w,h])
+
         
         rectangles = np.asarray(coords_list)
 
