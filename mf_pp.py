@@ -71,7 +71,10 @@ while True:
             time.sleep(3)
             look_for_mf()
             
-    if player.health() <= random.randint(20, 35):
+        if inventory.is_full() == True:
+            break
+            
+    if player.health() <= random.randint(20, 35) or inventory.is_full():
         if inventory.contains(potato):
             time.sleep(random.normalvariate(0.5, 0.01))
             inventory.click(potato)
