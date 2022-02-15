@@ -77,5 +77,6 @@ while True:
     screen.click(build_mode_opt)
     time.sleep(random.normalvariate(5.5, 0.2))
     screen.click_region(to_plant)
+    time.sleep(random.normalvariate(1.2, 0.1))
 
 
