@@ -128,7 +128,20 @@ class Interactions(WindowCapture, Vision):
         self.mouse_up(lParam)
 
         time.sleep(random.normalvariate(0.25,0.02))
-    
+        
+    # def scroll_up(self, item: object, threshold: float = 0.7, ind = 0):
+    #     rectangles = self.get_rectangles(item, threshold)
+
+    #     points = item.get_click_points(rectangles)
+    #     point = self.get_screen_position(points[ind])
+    #     #print(point)
+    #     lParam = win32api.MAKELONG(point[0], point[1])
+
+    #     hwnd = self.get_window()
+    #     win32gui.SendMessage(hwnd, win32con.WM_MOUSEWHEEL, None, lParam)
+
+    #     time.sleep(random.normalvariate(0.25,0.02))
+        
     def get_rectangles(self, item, threshold):
         if type(item) == Vision:
             rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)

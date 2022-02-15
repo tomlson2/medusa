@@ -11,6 +11,9 @@ window_name = "Threshold"
 
 def nothing(position):
     pass
+needle = 'Needle\\sandcrab\\strength4.png'
+
+vision = Vision(needle)
 
 vision.init_control_gui()
 

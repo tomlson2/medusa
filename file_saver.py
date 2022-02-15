@@ -6,6 +6,6 @@ import time
 while True:
     screen = ScreenRegion()
     im = screen.get_screenshot()
-    cv.imwrite("bagged_plants_data//"+str(uuid.uuid4())+".png", im)
+    cv.imwrite("bank_booth_data//"+str(uuid.uuid4())+".png", im)
     time.sleep(2)
 
