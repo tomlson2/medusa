@@ -55,28 +55,27 @@ while True:
     screenshot = wincap.get_screenshot()
     screenshot = vision.apply_hsv_filter(screenshot,hsv_filter=hsv_filter1)
     og = screenshot.copy()
-    edited_needle = edit_image(needle.get_image())
-    edited_image = edit_image(screenshot)
+    # edited_needle = edit_image(needle.get_image())
+    # edited_image = edit_image(screenshot)
     # scaled_img = cv.resize(screenshot,(0,0))
-    # rectangles = edited_needle.find(edited_image, threshold=threshold)
-    # edited_image = vision.draw_rectangles(screenshot,rectangles=rectangles)
-    # edited_image = cv.putText(edited_image,"Threshold = " + str(round(threshold,4)),(50,40),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
-    # edited_image = cv.putText(edited_image,"Matches = " + str(len(rectangles)),(50,85),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
-    edited_image = cv.adaptiveThreshold(edited_image,255,1,1,11,2)
-    contours, _ = cv.findContours(edited_image, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-    edited_image = cv.cvtColor(edited_image, cv.COLOR_GRAY2BGR)
-    for cnt in contours:
-        area = cv.contourArea(cnt)
-        if area > 25:
-            x, y, w, h = cv.boundingRect(cnt)
-            cv.rectangle(edited_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    cv.drawContours(edited_image,contours,-1, (0, 255, 0), 2)
-    cv.imshow('needle', edited_needle)
+    rectangles = needle.find(screenshot, threshold=threshold)
+    edited_image = vision.draw_rectangles(screenshot,rectangles=rectangles)
+    edited_image = cv.putText(edited_image,"Threshold = " + str(round(threshold,4)),(50,40),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+    edited_image = cv.putText(edited_image,"Matches = " + str(len(rectangles)),(50,85),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+    # edited_image = cv.adaptiveThreshold(edited_image,255,1,1,11,2)
+    # contours, _ = cv.findContours(edited_image, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    # edited_image = cv.cvtColor(edited_image, cv.COLOR_GRAY2BGR)
+    # for cnt in contours:
+    #     area = cv.contourArea(cnt)
+    #     if area > 25:
+    #         x, y, w, h = cv.boundingRect(cnt)
+    #         cv.rectangle(edited_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    # cv.drawContours(edited_image,contours,-1, (0, 255, 0), 2)
+    cv.imshow('needle', needle.get_image())
     cv.imshow('canny', edited_image)
     
         
     if cv.waitKey(1) == ord('q'):
-        cv.imwrite("needle2.png", edited_needle.get_image())
         cv.destroyAllWindows()
         break 
 

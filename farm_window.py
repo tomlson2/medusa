@@ -44,7 +44,7 @@ while True:
         img = np.ascontiguousarray(img)
         resized = cv.resize(img, (0,0), fx=0.4,fy=0.4)
         images.append(resized)
-        time.sleep(0.25)
+        time.sleep(0.5)
 
     image_num = 0
     for im in images:
