@@ -47,6 +47,9 @@ while True:
     while fruit_counter < 28:
         screen.click_region(stall_region)
         fruit_counter += 1
+        chance = random.randrange(1,80)
+        if chance > 70:
+            time.sleep(random.normalvariate(1.5, 0.03))
         time.sleep(random.normalvariate(3.2, 0.02))
         
     print('dropping junk...')

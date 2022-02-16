@@ -396,5 +396,5 @@ start_time = time.time()
 tithe_count = 0
 
 while True:
-    grico_farming(loga_text)
-    #normal_farming(golo_text)
+    #grico_farming(loga_text)
+    normal_farming(golo_text)

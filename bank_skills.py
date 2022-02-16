@@ -1,8 +1,15 @@
-from turtle import Screen
 from windowcapture import InventoryRegion, ScreenRegion
 import time
 import random
 from vision import Vision
+
+
+'''
+west GE
+full zoom
+withdraw set to x (14)
+everything in own tab
+'''
 
 
 screen = ScreenRegion()
@@ -21,13 +28,13 @@ def run_timer():
 
 def saltpetre_compost():
     while screen.contains(x) == False:
-        if screen.contains(bank, threshold=0.7):
-            screen.click(bank, threshold=0.7)
+        if screen.contains(bank, threshold=0.75):
+            screen.click(bank, threshold=0.75)
             time.sleep(0.7)
             screen.click(deposit)
             time.sleep(random.normalvariate(0.64, 0.004))
         else:
-            screen.wait_for(bank, threshold=0.7)
+            screen.wait_for(bank, threshold=0.75)
     
     time.sleep(0.44)    
     screen.click(compost)
@@ -44,7 +51,7 @@ def saltpetre_compost():
     inventory.click(saltpetre)
     time.sleep(random.normalvariate(33, 0.24))
     
-    screen.click(bank, threshold=0.7)
+    screen.click(bank, threshold=0.75)
     time.sleep(0.9)
     screen.click(deposit)
     inventory.wait_for(compost) == False

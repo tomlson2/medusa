@@ -1,11 +1,14 @@
+from typing import Tuple
 import numpy as np
 from numpy import ndarray
+from sqlalchemy import null
 import win32gui, win32api, win32ui, win32con
 import time, random
 from hsvfilter import HsvFilter
 from model import Model
 from vision import Vision
 import cv2 as cv
+from errors import OptionHandlerError
 
 window_name = input('client name: ')
 class WindowCapture:
@@ -128,20 +131,7 @@ class Interactions(WindowCapture, Vision):
         self.mouse_up(lParam)
 
         time.sleep(random.normalvariate(0.25,0.02))
-        
-    # def scroll_up(self, item: object, threshold: float = 0.7, ind = 0):
-    #     rectangles = self.get_rectangles(item, threshold)
-
-    #     points = item.get_click_points(rectangles)
-    #     point = self.get_screen_position(points[ind])
-    #     #print(point)
-    #     lParam = win32api.MAKELONG(point[0], point[1])
-
-    #     hwnd = self.get_window()
-    #     win32gui.SendMessage(hwnd, win32con.WM_MOUSEWHEEL, None, lParam)
-
-    #     time.sleep(random.normalvariate(0.25,0.02))
-        
+    
     def get_rectangles(self, item, threshold):
         if type(item) == Vision:
             rectangles = item.find(self.apply_hsv_filter(self.get_screenshot(),hsv_filter=item.get_hsv_filter()),threshold)
@@ -488,10 +478,73 @@ class ChatboxRegion(Interactions):
 
     def __init__(self):
         super().__init__()
-        self.w = 1105
-        self.h = 297
-        self.x = 29
-        self.y = 37
+        self.w = 1076
+        self.h = 267
+        self.x = 48
+        self.y = 52
+    
+    def tap_handler(self):
+        tap_here = Vision("Needle\\chatbox\\tap_here_to_continue.png")
+        please_wait = Vision("Needle\\chatbox\\please_wait.png")
+        please_wait_black = Vision("Needle\\chatbox\\please_wait_black.png")
+
+        while True:
+            if self.contains(tap_here,0.85):
+                self.click(tap_here, 0.85)
+                time.sleep(0.15)
+            elif self.contains(please_wait, 0.85) or self.contains(please_wait_black, 0.85):
+                time.sleep(0.1)
+            else:
+                break
+
+
+    def options(self) -> Tuple[list, int]:
+        self.tap_handler()
+        if self.contains(Vision("Needle\\chatbox\\select_option.png"), 0.85):
+            im = self.get_screenshot()
+            gray_im = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+            canny_im = cv.Canny(gray_im, 200, 200)
+            blurred_im = cv.GaussianBlur(canny_im, (9, 9), cv.BORDER_DEFAULT)
+            contours, _ = cv.findContours(blurred_im, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+            
+            rects = []
+            for cnt in contours:
+                area = cv.contourArea(cnt)
+                if area > 200:
+                    x, y, w, h = cv.boundingRect(cnt)
+                    rects.append((x, y, w, h))
+
+            y_vals = []
+            y_vals.append(rects[0][2])
+            for x,y,w,h in rects:
+                for ht in y_vals:
+                    if ht-25 < y < ht+25:
+                        match = True
+                        break
+                    else:
+                        match = False
+                if match == False:
+                    y_vals.append(y)
+                
+                num = len(y_vals) - 1
+            
+            y_vals = [y + 40 for y in y_vals]
+            y_vals.sort()
+            return y_vals, num
+        else:
+            print("Error: No option to select!")
+
+    def option_handler(self, option: int):
+        y_vals, num = self.options()
+        print(y_vals)
+        if option > num:
+            raise OptionHandlerError("Option selected was higher than range of selection.")
+
+        y_val = y_vals[option]
+        x_val = int(random.normalvariate(600, 25))
+        self.click_point((x_val, y_val))
+        # time.sleep(0.5)
+        
 
 class PlayerRegion(Interactions):
 

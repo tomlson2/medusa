@@ -1,0 +1,2 @@
+class OptionHandlerError(Exception):
+    pass
