@@ -53,7 +53,6 @@ class Ocr:
         blur = cv.GaussianBlur(gray,(5,5),0)
         mask = cv.adaptiveThreshold(blur,255,1,1,11,2)
         contours, _ = cv.findContours(mask, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
-        print(len(contours))
         num = []
         xlis = []
         ylis = []

@@ -531,19 +531,27 @@ class ChatboxRegion(Interactions):
             y_vals = [y + 40 for y in y_vals]
             y_vals.sort()
             return y_vals, num
-        else:
-            print("Error: No option to select!")
 
-    def option_handler(self, option: int):
-        y_vals, num = self.options()
-        print(y_vals)
-        if option > num:
-            raise OptionHandlerError("Option selected was higher than range of selection.")
+    def option_handler(self, options: list):
+        for option in options:
+            while True:
+                deadloop = 0
+                try:
+                    y_vals, num = self.options()
+                    break
+                except TypeError:
+                    if deadloop > 4:
+                        break
+                    else:
+                        time.sleep(0.2)
+                        deadloop += 1
+            print(option)
+            if option > num or option == 0:
+                raise OptionHandlerError("Option was not in range of possible selection!")
 
-        y_val = y_vals[option]
-        x_val = int(random.normalvariate(600, 25))
-        self.click_point((x_val, y_val))
-        # time.sleep(0.5)
+            y_val = y_vals[option]
+            x_val = int(random.normalvariate(600, 25))
+            self.click_point((x_val, y_val))
         
 
 class PlayerRegion(Interactions):

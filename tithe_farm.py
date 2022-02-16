@@ -78,7 +78,7 @@ def start_tithe(seed_type_text):
         pass
     else:
         print('getting tithe seeds...')
-        screen.click(table)
+        screen.click(table,0.63)
         time.sleep(random.normalvariate(2, 0.11))
         chatbox.wait_for(seed_type_text)
         time.sleep(random.normalvariate(0.21, 0.01))
