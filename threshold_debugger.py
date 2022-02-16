@@ -3,8 +3,13 @@ from hsvfilter import HsvFilter
 from windowcapture import ChatboxRegion, InventoryRegion, PlayerRegion, RunOrb, ScreenRegion, WindowCapture, CustomRegion
 from vision import Vision
 
+<<<<<<< HEAD
 wincap = ChatboxRegion()
 needle_path = 'Needle\\motherlode\\iron_ore.png'
+=======
+wincap = ScreenRegion()
+needle_path = 'Needle\\sandcrab\\strength4.png'
+>>>>>>> 0be9a77038b72f013832a5eb69bd404c9f8a12ee
 scale = 0.5
 vision = Vision(needle_path, scale = 0.5)
 window_name = "Threshold"

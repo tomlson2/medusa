@@ -8,9 +8,14 @@ from windowcapture import ScreenRegion, CustomRegion, InventoryRegion, ChatboxRe
 
 
 '''
-34 - 54 ~21k xp/hr, 6 hours. 
-54 - 74 ~55k xp/hr, 17 hours.
-74 - 85 ~80k xp/hr, 27 hours
+example setup, need the three circled patches to not be used:
+https://imgur.com/a/fcTIHsm
+use proper params and function in main while loop:
+normal_farming = 12 watering cans
+grico_farming = grico watering can (will be able to purchase after 200 points earned)
+34 - 54 ~21k xp/hr, 6 hours. param: golo_text
+54 - 74 ~55k xp/hr, 17 hours. param: bolo_text
+74 - 85 ~80k xp/hr, 27 hours. param: loga_text
 
 brightness 2, zoom 1, camera north, full up
 start near to table
@@ -23,6 +28,7 @@ chatbox = ChatboxRegion()
 screen = ScreenRegion()
 screen_right = CustomRegion(980, 1035, 929, 36)
 inventory = InventoryRegion()
+player = Player()
 
 to_start = WebWalking('walking_lists\\tithe_start.pkl','map\\tithe_farm_map.png')
 
@@ -33,6 +39,7 @@ door_left = Vision('Needle\\tithe_farm\\farm_door_left.png')
 watering_can = Vision('Needle\\tithe_farm\\watering_can.png')
 water_barrel = Vision('Needle\\tithe_farm\\water_barrel.png')
 seed_bag = Vision('Needle\\tithe_farm\\seed_bag.png')
+stamina = Vision('Needle\\stamina1.png')
 
 fertiliser = Vision('Needle\\tithe_farm\\fertiliser.png')
 drop = Vision('Needle\\tithe_farm\\drop.png')
@@ -44,6 +51,9 @@ bolo_text = Vision('Needle\\tithe_farm\\bolo_seed_text.png')
 loga_text = Vision('Needle\\tithe_farm\\loga_text.png')
 
 plant_check = Vision('Needle\\tithe_farm\\plant_check.png')
+logout_tab = Vision('Needle\\tithe_farm\\logout_tab.png')
+to_logout = Vision('Needle\\tithe_farm\\to_logout.png')
+to_logout1 = Vision('Needle\\tithe_farm\\to_logout1.png')
 
 count = 0
 
@@ -179,6 +189,7 @@ def new_aisle(seed_type, grico=False):
         print('planting successful')
     else:
         print('world crashed, breaking')
+        logout()
         time.sleep(800)
     time.sleep(2.8)
     inventory.click(watering_can, ind=index)
@@ -194,6 +205,7 @@ def new_aisle(seed_type, grico=False):
         print('planting successful')
     else:
         print('world crashed, breaking')
+        logout()
         time.sleep(800)
     time.sleep(0.75)
     inventory.click(watering_can, ind=index)
@@ -215,6 +227,7 @@ def single_column(seed_type, grico=False):
         print('planting successful')
     else:
         print('world crashed, breaking')
+        logout()
         time.sleep(800)
     time.sleep(2.8)
     inventory.click(watering_can, ind=index)
@@ -338,8 +351,20 @@ def reset_game():
         time.sleep(random.normalvariate(0.25, 0.001))
         screen.click(door_left, threshold=0.82)
     time.sleep(random.normalvariate(3, 0.1))
-    pass
+    
+    if player.run() <= 50:
+        inventory.click(stamina)
+        time.sleep(random.uniform(.6, .94))
+        
+def logout():
+    screen.click(logout_tab)
+    time.sleep(random.uniform(0.4, 1.25))
+    try:
+        inventory.click(to_logout)
+    except IndexError:
+        inventory.click(to_logout1)
 
+# script for once the grico can is acquired
 def grico_farming(text):
     global start_time, tithe_count
     start_tithe(text)
@@ -363,7 +388,8 @@ def grico_farming(text):
     reset_game()
     tithe_count += 1
     print(f'tithe rounds completed: {tithe_count}')
-    
+
+# normal watering cans script    
 def normal_farming(text):
     global start_time, tithe_count
     start_tithe(text)
