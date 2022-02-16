@@ -10,9 +10,12 @@ from windowcapture import ScreenRegion, CustomRegion, InventoryRegion, ChatboxRe
 '''
 example setup, need the three circled patches to not be used:
 https://imgur.com/a/fcTIHsm
-34 - 54 ~21k xp/hr, 6 hours. 
-54 - 74 ~55k xp/hr, 17 hours.
-74 - 85 ~80k xp/hr, 27 hours
+use proper params and function in main while loop:
+normal_farming = 12 watering cans
+grico_farming = grico watering can (will be able to purchase after 200 points earned)
+34 - 54 ~21k xp/hr, 6 hours. param: golo_text
+54 - 74 ~55k xp/hr, 17 hours. param: bolo_text
+74 - 85 ~80k xp/hr, 27 hours. param: loga_text
 
 brightness 2, zoom 1, camera north, full up
 start near to table
@@ -50,6 +53,7 @@ loga_text = Vision('Needle\\tithe_farm\\loga_text.png')
 plant_check = Vision('Needle\\tithe_farm\\plant_check.png')
 logout_tab = Vision('Needle\\tithe_farm\\logout_tab.png')
 to_logout = Vision('Needle\\tithe_farm\\to_logout.png')
+to_logout1 = Vision('Needle\\tithe_farm\\to_logout1.png')
 
 count = 0
 
@@ -355,7 +359,10 @@ def reset_game():
 def logout():
     screen.click(logout_tab)
     time.sleep(random.uniform(0.4, 1.25))
-    inventory.click(to_logout)
+    try:
+        inventory.click(to_logout)
+    except IndexError:
+        inventory.click(to_logout1)
 
 # script for once the grico can is acquired
 def grico_farming(text):
@@ -415,5 +422,5 @@ start_time = time.time()
 tithe_count = 0
 
 while True:
-    #grico_farming(loga_text)
-    normal_farming(golo_text)
+    grico_farming(golo_text)
+    #normal_farming(golo_text)

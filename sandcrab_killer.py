@@ -13,6 +13,8 @@ player = Player()
 potato = Vision('Needle\\sandcrab\\potato.png')
 attack_potion = Vision('Needle\\sandcrab\\attack4.png')
 strength_potion = Vision('Needle\\sandcrab\\strength4.png')
+strength1 = Vision('Needle\\sandcrab\\strength1.png')
+attack1 = Vision('Needle\\sandcrab\\attack1.png')
 spec_button = Vision('Needle\\sandcrab\\spec_button.png')
 #3 spot south center
 to_away1 = WebWalking('walking_lists\\reset_crab1.pkl','map\\sandcrab_isle.png')
@@ -53,16 +55,20 @@ while True:
     
     if (time.time() - potion_timer) >= 304:
         print('drinking potions...')
-        if inventory.contains(attack_potion, threshold=0.75):
-            inventory.fast_click(attack_potion, threshold=0.75)
+        if inventory.contains(attack1, threshold=0.85):
+            inventory.fast_click(attack1, threshold=0.85)
+        elif inventory.contains(attack_potion, threshold=0.85):
+            inventory.fast_click(attack_potion, threshold=0.85)
         time.sleep(1.8)
-        if inventory.contains(strength_potion, threshold=0.78):
-            inventory.fast_click(strength_potion, threshold=0.78)
+        if inventory.contains(strength1, threshold=0.85):
+            inventory.fast_click(strength1, threshold=0.85)
+        elif inventory.contains(strength_potion, threshold=0.85):
+            inventory.fast_click(strength_potion, threshold=0.85)
         time.sleep(.2)
         
         potion_timer = time.time()
         
-    if (time.time() - crab_timer) >= 610:
+    if (time.time() - crab_timer) >= 604:
         print('refreshing crab agro...')
         to_away1.walk(within=3)
         to_crab1.walk(within=1)
