@@ -9,6 +9,7 @@ from model import Model
 from vision import Vision
 import cv2 as cv
 from errors import OptionHandlerError
+from image_tools import contour_boxes
 
 window_name = input('client name: ')
 class WindowCapture:
@@ -248,7 +249,11 @@ class Interactions(WindowCapture, Vision):
         time.sleep(random.normalvariate(.15, 0.005))
         win32gui.SendMessage(hWnd1, win32con.WM_KEYUP, win32con.VK_SHIFT, lParam)
 
-    def click_point(self, point : tuple):
+    def click_point(self, point : tuple, relative = True):
+
+        if relative == True:
+            point = self.get_screen_position(point)
+
         hWnd = win32gui.FindWindow(None, self.window_name)
         lParam = win32api.MAKELONG(point[0], point[1])
 
@@ -491,9 +496,9 @@ class ChatboxRegion(Interactions):
         while True:
             if self.contains(tap_here,0.85):
                 self.click(tap_here, 0.85)
-                time.sleep(0.15)
+                time.sleep(0.25)
             elif self.contains(please_wait, 0.85) or self.contains(please_wait_black, 0.85):
-                time.sleep(0.1)
+                time.sleep(0.25)
             else:
                 break
 
@@ -528,14 +533,14 @@ class ChatboxRegion(Interactions):
                 
                 num = len(y_vals) - 1
             
-            y_vals = [y + 40 for y in y_vals]
+            y_vals = [y + 30 for y in y_vals]
             y_vals.sort()
             return y_vals, num
 
     def option_handler(self, options: list):
         for option in options:
+            deadloop = 0
             while True:
-                deadloop = 0
                 try:
                     y_vals, num = self.options()
                     break
@@ -545,7 +550,6 @@ class ChatboxRegion(Interactions):
                     else:
                         time.sleep(0.2)
                         deadloop += 1
-            print(option)
             if option > num or option == 0:
                 raise OptionHandlerError("Option was not in range of possible selection!")
 
@@ -595,11 +599,62 @@ class BankRegion(Interactions):
 
     def __init__(self):
         super().__init__()
-        self.w = 1025
-        self.h = 688
-        self.x = 295
-        self.y = 376
+        self.w = 1014
+        self.h = 553
+        self.x = 299
+        self.y = 478
 
+
+
+class ShopRegion(Interactions):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 1014
+        self.h = 460
+        self.x = 299
+        self.y = 480
+    
+    def set_quantity(self, quantity):
+        quantity_region = CustomRegion(539, 74, 767, 958)
+
+        self.quantity1 = Vision('Needle\\shop\\quantity_1.png')
+        self.quantity5 = Vision('Needle\\shop\\quantity_5.png')
+        self.quantity10 = Vision('Needle\\shop\\quantity_10.png')
+        self.quantity50 = Vision('Needle\\shop\\quantity_50.png')
+        if quantity == 1:
+            if quantity_region.contains(self.quantity1, 0.95):
+                quantity_region.click(self.quantity1)
+        if quantity == 5:
+            if quantity_region.contains(self.quantity5, 0.95):
+                quantity_region.click(self.quantity5)
+        if quantity == 10:
+            if quantity_region.contains(self.quantity10, 0.95):
+                quantity_region.click(self.quantity10)
+        if quantity == 50:
+            if quantity_region.contains(self.quantity50, 0.95):
+                quantity_region.click(self.quantity50)
+        else:
+            print("Incorrect quantity selected")
+    
+    def items(self) -> Tuple[list, int]:
+        im = self.get_screenshot()
+        hsv_img = self.apply_hsv_filter(im, HsvFilter(vMax=50))
+        gray_im = cv.cvtColor(hsv_img, cv.COLOR_BGR2GRAY)
+        canny_im = cv.Canny(gray_im, 1, 1)
+        blurred_im = cv.GaussianBlur(canny_im, (9, 9), cv.BORDER_DEFAULT)
+        rectangles = contour_boxes(blurred_im, 50)
+        num = len(rectangles)
+        return rectangles, num
+        
+
+    def purchase(self, index, quantity):
+        if index > self.items()[1]:
+            print("Selected item that is not in purchasable index!")
+        else:
+            self.set_quantity(quantity)
+            point = self.get_click_points(self.items()[0])
+            self.click_point(point[index])
 
 class MinimapRegion(Interactions):
 

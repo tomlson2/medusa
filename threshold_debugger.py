@@ -1,9 +1,9 @@
 import cv2 as cv
 from hsvfilter import HsvFilter
-from windowcapture import InventoryRegion, PlayerRegion, RunOrb, ScreenRegion, WindowCapture, CustomRegion
+from windowcapture import InventoryRegion, PlayerRegion, RunOrb, ScreenRegion, ShopRegion, WindowCapture, CustomRegion
 from vision import Vision
 
-wincap = ScreenRegion()
+wincap = ShopRegion()
 needle_path = 'Needle\\sandcrab\\strength4.png'
 scale = 0.5
 vision = Vision(needle_path, scale = 0.5)
@@ -12,6 +12,7 @@ window_name = "Threshold"
 def nothing(position):
     pass
 needle = 'Needle\\sandcrab\\strength4.png'
+
 
 vision = Vision(needle)
 
@@ -49,37 +50,63 @@ def edit_image(img):
     img = blur(img)
     return img
 
+def testing():
+    while True:
+        im = ShopRegion().get_screenshot()
+        hsv_img = vision.apply_hsv_filter(im, HsvFilter(vMax=50))
+        gray_im = cv.cvtColor(hsv_img, cv.COLOR_BGR2GRAY)
+        canny_im = cv.Canny(gray_im, 1, 1)
+        blurred_im = cv.GaussianBlur(canny_im, (9, 9), cv.BORDER_DEFAULT)
+        contours, _ = cv.findContours(blurred_im, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+
+        for cnt in contours:
+            area = cv.contourArea(cnt)
+            if area > 50:
+                x, y, w, h = cv.boundingRect(cnt)
+                cv.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        # 
+        cv.imshow('canny', im)
+
+            
+        if cv.waitKey(1) == ord('q'):
+            cv.destroyAllWindows()
+            break 
+
+        print('Done.')
 init_trackbars()
 
-while True:
-    threshold = (cv.getTrackbarPos('Match Threshold', window_name) * .01)
-    hsv_filter1 = vision.get_hsv_filter_from_controls()
-    needle = Vision(needle_path, hsv_filter=hsv_filter1)
-    screenshot = wincap.get_screenshot()
-    screenshot = vision.apply_hsv_filter(screenshot,hsv_filter=hsv_filter1)
-    og = screenshot.copy()
-    # edited_needle = edit_image(needle.get_image())
-    # edited_image = edit_image(screenshot)
-    # scaled_img = cv.resize(screenshot,(0,0))
-    rectangles = needle.find(screenshot, threshold=threshold)
-    edited_image = vision.draw_rectangles(screenshot,rectangles=rectangles)
-    edited_image = cv.putText(edited_image,"Threshold = " + str(round(threshold,4)),(50,40),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
-    edited_image = cv.putText(edited_image,"Matches = " + str(len(rectangles)),(50,85),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
-    # edited_image = cv.adaptiveThreshold(edited_image,255,1,1,11,2)
-    # contours, _ = cv.findContours(edited_image, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-    # edited_image = cv.cvtColor(edited_image, cv.COLOR_GRAY2BGR)
-    # for cnt in contours:
-    #     area = cv.contourArea(cnt)
-    #     if area > 25:
-    #         x, y, w, h = cv.boundingRect(cnt)
-    #         cv.rectangle(edited_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    # cv.drawContours(edited_image,contours,-1, (0, 255, 0), 2)
-    cv.imshow('needle', needle.get_image())
-    cv.imshow('canny', edited_image)
+
+testing()
+
+# while True:
+#     threshold = (cv.getTrackbarPos('Match Threshold', window_name) * .01)
+#     hsv_filter1 = vision.get_hsv_filter_from_controls()
+#     needle = Vision(needle_path, hsv_filter=hsv_filter1)
+#     screenshot = wincap.get_screenshot()
+#     screenshot = vision.apply_hsv_filter(screenshot,hsv_filter=hsv_filter1)
+#     og = screenshot.copy()
+#     # edited_needle = edit_image(needle.get_image())
+#     # edited_image = edit_image(screenshot)
+#     # scaled_img = cv.resize(screenshot,(0,0))
+#     rectangles = needle.find(screenshot, threshold=threshold)
+#     edited_image = vision.draw_rectangles(screenshot,rectangles=rectangles)
+#     edited_image = cv.putText(edited_image,"Threshold = " + str(round(threshold,4)),(50,40),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+#     edited_image = cv.putText(edited_image,"Matches = " + str(len(rectangles)),(50,85),cv.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+#     # edited_image = cv.adaptiveThreshold(edited_image,255,1,1,11,2)
+#     # contours, _ = cv.findContours(edited_image, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+#     # edited_image = cv.cvtColor(edited_image, cv.COLOR_GRAY2BGR)
+#     # for cnt in contours:
+#     #     area = cv.contourArea(cnt)
+#     #     if area > 25:
+#     #         x, y, w, h = cv.boundingRect(cnt)
+#     #         cv.rectangle(edited_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+#     # cv.drawContours(edited_image,contours,-1, (0, 255, 0), 2)
+#     cv.imshow('needle', needle.get_image())
+#     cv.imshow('canny', edited_image)
     
         
-    if cv.waitKey(1) == ord('q'):
-        cv.destroyAllWindows()
-        break 
+#     if cv.waitKey(1) == ord('q'):
+#         cv.destroyAllWindows()
+#         break 
 
-print('Done.')
+# print('Done.')

@@ -145,7 +145,7 @@ def plant_seeds(seed_type):
         screen.click_region(right_middle)
         time.sleep(1.05)
         inventory.click(watering_can)
-        time.sleep(0.75)
+        time.sleep(0.8)
         screen.click_region(right_middle)
         time.sleep(random.normalvariate(0.22, 0.01))
     time.sleep(0.15)
@@ -422,5 +422,5 @@ start_time = time.time()
 tithe_count = 0
 
 while True:
-    #grico_farming(loga_text)
-    normal_farming(golo_text)
+    grico_farming(bolo_text)
+    #normal_farming(bolo_text)

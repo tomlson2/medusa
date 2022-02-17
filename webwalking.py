@@ -33,6 +33,8 @@ class WebWalking(WindowCapture):
             self.rotate_code = cv.ROTATE_90_COUNTERCLOCKWISE
         if orientation == 'West':
             self.rotate_code = cv.ROTATE_90_CLOCKWISE
+        
+        self.points=[]
     
     def walk_once(self, dist = 100):
         coordinates = self.get_coordinates()
@@ -161,26 +163,53 @@ class WebWalking(WindowCapture):
         return im
 
 
-    def get_path(self,name):
-        path = []
+    def save_coords(self, event, x, y, flags, params):
+
+        if event == cv.EVENT_MOUSEMOVE and cv.EVENT_LBUTTONDOWN:
+            self.points.append((x,y))
+
+    def draw_path(self, name):
+        loop = False
+        if self.rotate_code == None:
+            im = cv.imread(self.worldmap)
+        else:
+            im = cv.rotate(cv.imread(self.worldmap), self.rotate_code)
+        while loop == False:
+            cv.imshow('map', im)
+            if cv.waitKey(0) == ord('1'):
+                loop = True
+        while True:
+            cv.imshow('map', im)
+            for coords in self.points:
+                cv.drawMarker(im, coords, (255,255,255),markerType=cv.MARKER_SQUARE, markerSize=2)
+            cv.setMouseCallback('map', self.save_coords)
+            if cv.waitKey(1) == ord('q'):
+                with open('walking_lists/'+name+".pkl", 'wb') as pickle_file:
+                    pickle.dump(self.points, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
+                cv.destroyAllWindows()
+                break
+        
+
+
+    def get_path(self, name):
         while True:
             if self.rotate_code == None:
                 im = cv.imread(self.worldmap)
             else:
                 im = cv.rotate(cv.imread(self.worldmap), self.rotate_code)
             coordinates = self.get_coordinates()
-            for coords in path:
+            for coords in self.points:
                 cv.drawMarker(im, coords, (255,255,255),markerType=cv.MARKER_SQUARE, markerSize=2)
             cv.drawMarker(im,coordinates, (255,255,0),markerType=cv.MARKER_SQUARE, markerSize=5)
             cv.putText(im,str(coordinates),tuple(np.subtract(coordinates,(70, 20))),cv.FONT_HERSHEY_COMPLEX,1,(255,255,0),2)
             cv.imshow("loc",im)
             #cv.imshow(self.minimap)
-            if coordinates not in path:
-                path.append(coordinates)
-                print(len(path))
+            if coordinates not in self.points:
+                self.points.append(coordinates)
+                print(len(self.points))
             if cv.waitKey(1) == ord('q'):
                 with open('walking_lists/'+name+".pkl", 'wb') as pickle_file:
-                    pickle.dump(path, pickle_file, protocol=pickle.HIGHEST_PROTOCOL) 
+                    pickle.dump(self.points, pickle_file, protocol=pickle.HIGHEST_PROTOCOL) 
                 cv.destroyAllWindows()
                 break
         return coordinates
@@ -232,5 +261,6 @@ class WebWalking(WindowCapture):
         else:
             print("error")
 
-if __name__ == '__main__':
-    WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
+# if __name__ == '__main__':
+    #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
+    #WebWalking('','map\\rimmington.png',orientation='North').draw_path('123')

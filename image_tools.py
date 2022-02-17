@@ -81,6 +81,33 @@ def add_margin(pil_img, top, right, bottom, left, color):
     result.paste(pil_img, (left, top))
     return result
 
-im = Image.open('map/motherlode.png')
-imnew = add_margin(im,100, 100, 100, 100, color=(85,73,41))
-imnew.save('map/motherlode2.png')
+def contour_boxes(im, min = 100):
+    contours, _ = cv.findContours(im, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+            
+    rects = []
+    for cnt in contours:
+        area = cv.contourArea(cnt)
+        if area > min:
+            x, y, w, h = cv.boundingRect(cnt)
+            rects.append((x, y, w, h))
+
+    y_vals = []
+    y_vals.append(rects[0])
+    for x,y,w,h in rects:
+        match = False
+        for ht in y_vals:
+            print(ht[1])
+            if ht[1]-20 < y < ht[1]+20:
+                y = ht[1]
+                y_vals.append((x,y,w,h))
+                match = True
+                break
+        if match == False:
+            y_vals.append((x,y,w,h))
+
+    y_vals.pop(0)
+    rects = sorted(y_vals, key=lambda x: x[0])
+    rects = sorted(rects, key=lambda x: x[1])
+    
+
+    return rects
