@@ -567,20 +567,17 @@ class PlayerRegion(Interactions):
         self.x = 838
         self.y = 386
     
-    def is_animating(self):
-        object_detector = cv.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
+    def is_animating(self, history=100, threshold=40, loops=40):
+        object_detector = cv.createBackgroundSubtractorMOG2(history=history, varThreshold=threshold)
         found = False
         im = self.get_screenshot()
         mask = object_detector.apply(im)
-        for _ in range(40):
+        for _ in range(loops):
             im = self.get_screenshot()
             mask = object_detector.apply(im)
             contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
             stencil = np.zeros(im.shape).astype(im.dtype)
             cv.fillPoly(stencil, contours, [255, 255, 255])
-            stenciled_im = cv.bitwise_and(im, stencil)
-            big = 0
-            total = 0
             for cnt in contours:
                 area = cv.contourArea(cnt)
                 if area > 1000:

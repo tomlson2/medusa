@@ -261,6 +261,6 @@ class WebWalking(WindowCapture):
         else:
             print("error")
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    #WebWalking('','map\\rimmington.png',orientation='North').draw_path('123')
+    WebWalking('','map\\falador.png',orientation='North').draw_path('falador_east_bank')
