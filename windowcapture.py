@@ -298,7 +298,7 @@ class Interactions(WindowCapture, Vision):
         else:
             return False
     
-    def amount(self, item, threshold):
+    def amount(self, item, threshold = 0.7):
         return len(self.get_rectangles(item=item, threshold=threshold))
 
     def wait_for(self, item : object, threshold : float = 0.7, t: int = 5):

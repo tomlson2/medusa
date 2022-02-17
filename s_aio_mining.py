@@ -1,7 +1,5 @@
 import time
 import random
-from tracemalloc import start
-from turtle import Screen
 from player import Player
 from vision import Vision
 from windowcapture import InventoryRegion, ChatboxRegion, CustomRegion, ScreenRegion
