@@ -51,6 +51,13 @@ class WebWalking(WindowCapture):
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
         time.sleep(0.25)
     
+    def changed_tiles(self):
+        '''
+        Returns True if player changes tiles
+        '''
+        coordinates = self.get_coordinates()
+
+    
     @staticmethod
     def distance(coords1, coords2):
         x1,y1 = coords1
@@ -58,15 +65,17 @@ class WebWalking(WindowCapture):
         dist = sqrt(abs((x2-x1)^2 + (y2-y1)^2))
         return dist
 
-    def coords_change(self, threshold = 3):
+    def coords_change(self, threshold = 1):
         starting = self.get_coordinates()
-        time.sleep(2)   
-        if self.distance(starting, self.get_coordinates()) > threshold:
-            return False
-        else:
+        time.sleep(random.normalvariate(0.35, 0.01))
+        change = self.distance(starting, self.get_coordinates())
+        if change > threshold:
             return True
+        else:
+            return False
+        
 
-    def walk(self, within: int = 1, debugger = False, ind_len = -4):
+    def walk(self, within: int = 1, debugger = False, ind_len = -6):
         print("WALKING")
         opoint = self.path[0]
         click_wait = 0
@@ -86,9 +95,11 @@ class WebWalking(WindowCapture):
                 #TODO add points to list (ln44) where they are a certain distance away on minimap or 
                 ind = np.where(arr < 160)
                 ind = ind[0].tolist()
-                possible_points = self.path[ind[ind_len]:ind[-1]]
-                point = random.choice(possible_points)
-                
+                if len(ind) > 10:
+                    possible_points = self.path[ind[ind_len]:ind[-1]]
+                    point = random.choice(possible_points)
+                else:
+                    point = ind[-1]
                 if debugger == True:
                     if coordinates in self.path:
                         color = (0,255,0)
@@ -263,4 +274,4 @@ class WebWalking(WindowCapture):
 
 if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    WebWalking('','map\\falador.png',orientation='North').draw_path('falador_east_bank')
+    WebWalking('','map\\falador.png',orientation='North').draw_path('light_logs2')

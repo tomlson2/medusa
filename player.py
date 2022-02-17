@@ -1,10 +1,11 @@
 from hsvfilter import HsvFilter
+from webwalking import WebWalking
 from windowcapture import Interactions, WindowCapture
 from vision import Vision
 from ocr import Ocr
 
 
-class Player(Interactions, Vision):
+class Player(Interactions, Vision, WebWalking):
 
     def __init__(self) -> None:
         super().__init__()
@@ -81,5 +82,7 @@ class Player(Interactions, Vision):
         else:
             print("NEED STAM")
             return True
+
+    def changed_tiles(self)
 
 
