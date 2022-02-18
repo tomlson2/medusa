@@ -83,6 +83,4 @@ class Player(Interactions, Vision):
             print("NEED STAM")
             return True
 
-    def changed_tiles(self)
-
 
