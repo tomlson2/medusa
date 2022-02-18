@@ -5,7 +5,7 @@ from vision import Vision
 from ocr import Ocr
 
 
-class Player(Interactions, Vision, WebWalking):
+class Player(Interactions, Vision):
 
     def __init__(self) -> None:
         super().__init__()
