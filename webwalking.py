@@ -69,6 +69,7 @@ class WebWalking(WindowCapture):
         starting = self.get_coordinates()
         time.sleep(random.normalvariate(0.35, 0.01))
         change = self.distance(starting, self.get_coordinates())
+        print(change)
         if change > threshold:
             return True
         else:
@@ -274,4 +275,4 @@ class WebWalking(WindowCapture):
 
 if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    WebWalking('','map\\wintertodt.png',orientation='North').draw_path('wintertodt_brazier')
+    WebWalking('','map\\wintertodt.png',orientation='North').draw_path('wintertodt_door')

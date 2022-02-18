@@ -48,16 +48,14 @@ def run(logs):
                 s = time.time()
                 time.sleep(random.normalvariate(0.3, 0.02))
                 while to_fire1.coords_change() == False:
-                    if time.time() - s > 5:
+                    if time.time() - s > 15:
                         stuck += 1
                         break
                     else:
                         time.sleep(0.1)
                 print("Moved")
-                if stuck > 3:
+                if stuck > 2:
                     print("stuck! switching lines")
-                    # negate bool to switch path
-                    path1 = not path1
                     break
             path1 = not path1
             burned += start_logs
@@ -66,8 +64,13 @@ def run(logs):
             to_bank.walk(within=2)
             print("Banking")
             screen.click_region(bank_region)
-            time.sleep(random.normalvariate(1.8,0.1))
-            bank.click(logs)
+            try:
+                bank.wait_for(logs)
+                bank.click(logs)
+            except IndexError:
+                screen.click_region(bank_region)
+                bank.wait_for(logs)
+                bank.click(logs)
             time.sleep(random.normalvariate(1, 0.1))
 
         runtime = (time.time() - start_time)

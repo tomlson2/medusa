@@ -1,7 +1,7 @@
 from typing import Tuple
 import numpy as np
 from numpy import ndarray
-from sqlalchemy import null
+from ocr import Ocr
 import win32gui, win32api, win32ui, win32con
 import time, random
 from hsvfilter import HsvFilter
@@ -389,11 +389,23 @@ class InventoryRegion(Interactions):
         return number
 
     
-    def is_full(self):
+    def is_full(self) -> bool:
         if self.num_items() == 28:
             return True
         else:
             return False
+    
+    def is_emptying(self, interval = 3.5) -> bool:
+        '''
+        checks if inventory is emptying out (at least 1 item every x amount of seconds)
+        useful for things like wintertodt where you put in one thing at a time
+        '''
+        num = self.num_items()
+        time.sleep(interval)
+        if num == self.num_items():
+            return False
+        else:
+            return True
 
     def drop_click(self, item : object, quantity : int, threshold=0.7):
         '''
@@ -686,3 +698,32 @@ class RunOrb(Interactions):
     def walk(self):
         if self.is_active() == True:
             self.click_self()
+
+class HealthOrb(Interactions):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 42
+        self.h = 27
+        self.x = 1449
+        self.y = 166
+
+        self.filter = HsvFilter(vMin=136,sSub=255)
+        self.orbs = Ocr('samples/generalsamples.data', 'responses/generalresponses.data')
+
+    def health(self):
+        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
+        health = self.orbs.number(im)
+        return health
+    
+    def damage_taken(self):
+        starting_health = self.health()
+        time.sleep(0.05)
+        if self.health() < starting_health:
+            return True
+        else:
+            return False
+
+        
+        
+
