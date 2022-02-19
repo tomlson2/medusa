@@ -128,7 +128,7 @@ class Interactions(WindowCapture, Vision):
 
         self.mouse_down(lParam)
         if right_click == True:
-            time.sleep(random.normalvariate(0.8,0.01))
+            time.sleep(random.normalvariate(0.75,0.01))
         self.mouse_up(lParam)
 
         time.sleep(random.normalvariate(0.25,0.02))
@@ -500,19 +500,24 @@ class ChatboxRegion(Interactions):
         self.x = 48
         self.y = 52
     
+        self.tap_here = Vision("Needle\\chatbox\\tap_here_to_continue.png")
+        self.please_wait = Vision("Needle\\chatbox\\please_wait.png")
+        self.please_wait_black = Vision("Needle\\chatbox\\please_wait_black.png")
+    
     def tap_handler(self):
-        tap_here = Vision("Needle\\chatbox\\tap_here_to_continue.png")
-        please_wait = Vision("Needle\\chatbox\\please_wait.png")
-        please_wait_black = Vision("Needle\\chatbox\\please_wait_black.png")
 
         while True:
-            if self.contains(tap_here,0.85):
-                self.click(tap_here, 0.85)
+            if self.contains(self.tap_here,0.85):
+                self.click(self.tap_here, 0.85)
                 time.sleep(0.25)
-            elif self.contains(please_wait, 0.85) or self.contains(please_wait_black, 0.85):
+            elif self.contains(self.please_wait, 0.85) or self.contains(self.please_wait_black, 0.85):
                 time.sleep(0.25)
             else:
                 break
+
+    def contains_dialogue(self):
+        if self.contains(self.tap_here):
+            return True
 
 
     def options(self) -> Tuple[list, int]:
@@ -613,7 +618,50 @@ class BankRegion(Interactions):
         self.x = 299
         self.y = 478
 
+        self.quantity = 0
+    
+        self.stamina_pot = Vision('Needle\\stam.png')
+        self.bank_check = Vision('Needle\\inventory_guy.png')
+        self.exit = Vision('Needle\\x_bank.png')
+        self.withdraw1 = Vision('Needle\\withdraw1.png')
+        self.withdraw_all = Vision('Needle\\withdraw_all.png')
+    
+    def check_quantity(self):
+        pass
 
+    def set_quantity(self):
+        pass
+
+    def status(self):
+        bank_interface = self.contains(self.bank_check,0.9)
+        return bank_interface
+
+    def withdraw(self, item, threshold=0.7, quantity=1):
+
+        if self.status() == True:
+            for _ in range(quantity):
+                self.click(item, threshold)
+        else:
+            print("Not in bank interface.")    
+
+    def wait_interface(self):
+        timeout = time.time() + 10
+        while self.status() == False: 
+            if time.time() > timeout:
+                return False
+            time.sleep(0.1)
+        return True
+
+    def deposit(self, item, threshold=0.7, quantity=1):
+        if self.status() == True:
+            for _ in range(quantity):
+                InventoryRegion().click(item, threshold)
+        else:
+            print("Not in bank interface.")
+    
+    def close(self):
+        self.wait_for(self.exit,0.76)
+        self.click(self.exit,0.76)
 
 class ShopRegion(Interactions):
 
@@ -711,17 +759,22 @@ class HealthOrb(Interactions):
         self.filter = HsvFilter(vMin=136,sSub=255)
         self.orbs = Ocr('samples/generalsamples.data', 'responses/generalresponses.data')
 
-    def health(self):
+        self.hp = self.get_hp()
+
+    def get_hp(self):
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        health = self.orbs.number(im)
-        return health
+        return self.orbs.number(im)
     
+    def update_hp(self):
+        self.hp = self.get_hp()
+
     def damage_taken(self):
-        starting_health = self.health()
-        time.sleep(0.05)
-        if self.health() < starting_health:
+        if self.get_hp() < self.hp:
+            print(self.get_hp(), self.hp)
+            self.update_hp()
             return True
         else:
+            self.update_hp()
             return False
 
         

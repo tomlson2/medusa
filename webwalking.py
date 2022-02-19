@@ -15,7 +15,7 @@ class WebWalking(WindowCapture):
     """
     WebWalking object, pass path to pickle list and map png
     """
-    def __init__(self, path: str, worldmap: str, orientation: str = 'North'):
+    def __init__(self, path: str, worldmap: str, orientation: str = 'North', reverse: bool = False):
         super().__init__()
 
         try:
@@ -35,7 +35,10 @@ class WebWalking(WindowCapture):
             self.rotate_code = cv.ROTATE_90_CLOCKWISE
         
         self.points=[]
-    
+
+        if reverse == True:
+            self.path.reverse()
+
     def walk_once(self, dist = 100):
         coordinates = self.get_coordinates()
         d = map(lambda t: ((t[0] - coordinates[0])**2 + (t[1] - coordinates[1])**2)**0.5, self.path)
@@ -275,4 +278,4 @@ class WebWalking(WindowCapture):
 
 if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    WebWalking('','map\\wintertodt.png',orientation='North').draw_path('wintertodt_door')
+    WebWalking('','map\\wintertodt.png',orientation='North').get_path('wintertodt_brazier')
