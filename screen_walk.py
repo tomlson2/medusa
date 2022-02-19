@@ -42,10 +42,3 @@ def testing():
         if cv.waitKey(1) == ord('q'):
             cv.destroyAllWindows()
             break 
-
-
-script = Script()
-
-while True:
-    time.sleep(5)
-    script.print_time()

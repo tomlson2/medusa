@@ -759,7 +759,7 @@ class HealthOrb(Interactions):
         self.filter = HsvFilter(vMin=136,sSub=255)
         self.orbs = Ocr('samples/generalsamples.data', 'responses/generalresponses.data')
 
-        self.hp = self.get_hp()
+        self.hp = 0
 
     def get_hp(self):
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)

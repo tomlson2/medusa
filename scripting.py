@@ -6,11 +6,11 @@ from windowcapture import ScreenRegion
 
 path = 'Needle\\scripting\\'
 screen = ScreenRegion()
-class Script:
+class Script(object):
     
     def __init__(self) -> None:
 
-        print("starting script")
+        print(f'Starting {__class__.__subclasses__()[0].__name__}')
 
         # set time vars
         self.script_time = time.time()
@@ -26,6 +26,12 @@ class Script:
         self.play_now = Vision(path + 'play_now.png')
         self.tap_here_to_play = Vision(path + 'tap_here_to_play.png')
         self.world_map = Vision(path + 'world_map.png')
+
+        self.xp = 0
+        self.gp = 0
+
+    def set_xp(self, amount):
+        self.xp += amount
 
     def get_runtime(self):
         runtime = time.time() - self.script_time
@@ -66,7 +72,7 @@ class Script:
             if self.login() == True:
                 print("Break completed")
                 self.set_break_duration()
-                self.set_break_range()
+                self.set_break_time()
                 self.set_session_time()
             else:
                 print("Failed to log in")

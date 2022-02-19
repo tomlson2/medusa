@@ -54,11 +54,9 @@ class WebWalking(WindowCapture):
         win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
         time.sleep(0.25)
     
-    def changed_tiles(self):
-        '''
-        Returns True if player changes tiles
-        '''
-        coordinates = self.get_coordinates()
+    def show_minimap(self):
+        cv.imshow("minimap", MinimapRegion().get_screenshot())
+        cv.waitKey(0) == ord('q')
 
     
     @staticmethod
@@ -68,11 +66,10 @@ class WebWalking(WindowCapture):
         dist = sqrt(abs((x2-x1)^2 + (y2-y1)^2))
         return dist
 
-    def coords_change(self, threshold = 1):
+    def coords_change(self, threshold = 1, sleep = 0.25):
         starting = self.get_coordinates()
-        time.sleep(random.normalvariate(0.35, 0.01))
+        time.sleep(random.normalvariate(sleep, 0.01))
         change = self.distance(starting, self.get_coordinates())
-        print(change)
         if change > threshold:
             return True
         else:
@@ -87,6 +84,7 @@ class WebWalking(WindowCapture):
         current = 0
         first = True
         arrived = False
+        last = False
         while True:
             while True:
                 im = self.show_coords()
@@ -97,13 +95,14 @@ class WebWalking(WindowCapture):
                 arr = np.array(list(d))
                 #changed from 103 to 138, i dont know if breaks other scripts
                 #TODO add points to list (ln44) where they are a certain distance away on minimap or 
-                ind = np.where(arr < 160)
-                ind = ind[0].tolist()
-                if len(ind) > 10:
+                idx = np.where(arr < 140)
+                ind = idx[0].tolist()
+                if arr[ind[-1]] > 130:
                     possible_points = self.path[ind[ind_len]:ind[-1]]
                     point = random.choice(possible_points)
                 else:
-                    point = ind[-1]
+                    point = self.path[ind[-1]]
+                    last = True
                 if debugger == True:
                     if coordinates in self.path:
                         color = (0,255,0)
@@ -131,9 +130,9 @@ class WebWalking(WindowCapture):
                 opoint = point
 
                 if RunOrb().is_active():
-                    click_wait = 4
+                    click_wait = random.normalvariate(4, 0.15)
                 else:
-                    click_wait = 7
+                    click_wait = random.normalvariate(7, 0.25)
 
                 if first == True:
                     first = False
@@ -143,8 +142,10 @@ class WebWalking(WindowCapture):
                         pass
                 else:
                     break
+
             if  arrived == True:
                 break
+
             hWnd = win32gui.FindWindow(None, self.window_name)
             # TODO Click point within 2 pixels, not exact
             lParam = win32api.MAKELONG(1716+rel_point[0], 185+rel_point[1])
@@ -152,6 +153,17 @@ class WebWalking(WindowCapture):
             win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
             win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
             start = time.time()
+
+            if last == True:
+                time.sleep(1)
+                print("clicking last point")    
+                while self.coords_change(sleep=0.8) == True:
+                    time.sleep(0.05)
+                if self.end_of_path():
+                    break
+                else:
+                    self.walk()
+                    break
     
 
     def end_of_path(self, within : int = 1):
@@ -278,4 +290,4 @@ class WebWalking(WindowCapture):
 
 if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    WebWalking('','map\\wintertodt.png',orientation='North').get_path('wintertodt_brazier')
+    WebWalking('','map\\wintertodt.png',orientation='North').get_path('wintertodt_door')

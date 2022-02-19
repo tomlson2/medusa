@@ -48,7 +48,11 @@ class Wintertodt(Script):
 
     def __init__(self, breaking = True) -> None:
         super().__init__()
+        
         self.breaking = breaking
+    
+    def to_brazier(self):
+        to_brazier.walk()
 
     def eat_cake(self):
         if inventory.contains(cake3):
@@ -84,10 +88,9 @@ class Wintertodt(Script):
         if inventory.contains(logs):
             self.start_fletching()
             while inventory.contains(logs):
-                if self.damage_interruption() == True:
+                if any([self.damage_interruption(), self.level_interruption()]):
                     self.start_fletching()
-                elif self.level_interruption() == True:
-                    self.start_fletching()
+                    time.sleep(0.5)
 
     def woodcut(self):
         if to_brazier.end_of_path(within=2) == False:
@@ -97,9 +100,11 @@ class Wintertodt(Script):
         while inventory.amount(logs) < 20:
             if self.level_interruption():
                 screen.click_region(close_root_region)
+                time.sleep(random.normalvariate(0.3,0.05))
             if health.get_hp() < 7:
                 self.eat_cake()
                 screen.click_region(close_root_region)
+                time.sleep(random.normalvariate(0.3,0.05))
 
     def unlit(self) -> bool:
         if brazier_status.contains(unlit_brazier,0.75):
@@ -114,18 +119,15 @@ class Wintertodt(Script):
                 screen.click_region(brazier_region)
             if self.unlit():
                 screen.click_region(brazier_region)
-                time.sleep(random.normalvariate(0.7,0.1))
+                time.sleep(random.normalvariate(2.4,0.1))
                 screen.click_region(brazier_region)
-            elif self.damage_interruption():
+            elif any([self.damage_interruption(), self.level_interruption(), self.not_emptying()]):
                 screen.click_region(brazier_region)
-            elif self.level_interruption():
-                screen.click_region(brazier_region)
-            elif self.not_emptying():
-                screen.click_region(brazier_region)
+                time.sleep(0.5)
     
 
     def walk_to_start(self):
-        to_outside_door.walk(within=4)
+        to_outside_door.walk(within=7)
         screen.click_region(enter_door_region)
         time.sleep(random.normalvariate(4, 0.2))
         to_brazier.walk(within=2)
@@ -161,7 +163,7 @@ class Wintertodt(Script):
                 bank.deposit(supply_crate)
             if InventoryRegion().amount(cake1) < 3:
                 bank.withdraw(cake1, quantity=2)
-            print(f'runtime: {self.get_runtime()}')
+            self.print_time()
 
 if __name__ == '__main__':
    Wintertodt().main()
