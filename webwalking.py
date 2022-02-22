@@ -101,7 +101,7 @@ class WebWalking(WindowCapture):
                     possible_points = self.path[ind[ind_len]:ind[-1]]
                     point = random.choice(possible_points)
                 else:
-                    point = self.path[ind[-3]]
+                    point = self.path[ind[-2]]
                     last = True
                 if debugger == True:
                     if coordinates in self.path:
