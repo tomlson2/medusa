@@ -18,9 +18,7 @@ grico_farming = grico watering can (will be able to purchase after 200 points ea
 74 - 85 ~80k xp/hr, 27 hours. param: loga_text
 
 brightness 2, zoom 1, camera north, full up
-start near to table
-
--------------MOVE Y AXIS DOWN AND SHRINK HEIGHT FOR LEFT_BOTTOM, FOR THE FOR LOOPS--------------
+start in the game once youve found a world
 '''
 
 

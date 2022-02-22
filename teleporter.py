@@ -3,6 +3,7 @@ import random
 from vision import Vision
 from windowcapture import ScreenRegion
 
+var_tp = Vision('Needle\\magic\\teleporter\\var_tp.png')
 lumb_tp = Vision('Needle\\magic\\teleporter\\lumb_tp.png')
 fala_tp = Vision('Needle\\magic\\teleporter\\fala_tp.png')
 home_tp = Vision('Needle\\magic\\teleporter\\home_tp.png')

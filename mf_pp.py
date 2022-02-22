@@ -15,6 +15,8 @@ player = Player()
 
 potato = Vision('Needle\\sandcrab\\potato.png')
 seed_box = Vision('Needle\\thieving\\mf\\seed_box.png')
+dodgy = Vision('Needle\\thieving\\knights\\dodgy.png')
+
 bank_area = Vision('Needle\\thieving\\mf\\bank_area.png')
 to_mf = Vision('Needle\\thieving\\mf\\to_mf.png')
 to_mf1 = Vision('Needle\\thieving\\mf\\to_mf1.png')
@@ -55,14 +57,16 @@ while True:
     current_health = player.health()
     while player.health() >= current_health:
         try:
-            screen.click(master_farmer, threshold=0.58)
+            screen.click(master_farmer, threshold=0.61)
             #changed from .1
             time.sleep(0.2)
             if screen.contains(click_check):
                 dead_click_check = 0
             else:
                 dead_click_check += 1
-            if dead_click_check > 7:
+            if dead_click_check > 4:
+                time.sleep(random.normalvariate(1.2, 2.2))
+            if dead_click_check > 5:
                 print('not pickpocketing master farmer\nkilling script')
                 break
             if random.randint(1, 30) > 1:
@@ -77,8 +81,21 @@ while True:
         if inventory.is_full() == True:
             print('inventory full')
             break
+        
+    if time.time() - dodgy_timer > 800:
+        
+        if inventory.contains(dodgy):
+            print('checking for dodgy')
+            time.sleep(random.uniform(0.45, 0.7))
+            inventory.click(dodgy)
+            time.sleep(1.12)
+            if inventory.contains(dodgy) == False:
+                dodgy_timer = time.time()
+                print('dodgy equipped')
+            else:
+                dodgy_timer += random.randint(290, 321)
             
-    if player.health() <= random.randint(19, 34) or inventory.is_full():
+    if player.health() <= random.randint(14, 20) or inventory.is_full():
         if inventory.contains(potato):
             time.sleep(random.normalvariate(0.5, 0.01))
             inventory.click(potato)
@@ -90,7 +107,7 @@ while True:
             print('banking...')
             time.sleep(1)
             screen.click(bank_area, threshold=0.7)
-            time.sleep(4)
+            time.sleep(5.5)
             while screen.contains(x) == False:
                 bank_count += 1
                 try:
@@ -111,7 +128,9 @@ while True:
             for i in range(3):
                 screen_left.click(potato)
                 time.sleep(random.normalvariate(.07, 0.01))
-            time.sleep(1.2)
+            time.sleep(0.42)
+            screen_left.click(dodgy)
+            time.sleep(0.92)
             
             look_for_mf()    
             
@@ -119,7 +138,7 @@ while True:
             current_time_format = time.strftime("%H:%M:%S", time.gmtime(current_time))
             print(f"run time: {current_time_format}")
     else:
-        time.sleep(random.normalvariate(3.42, 0.115))
+        time.sleep(random.normalvariate(3.46, 0.115))
         
     if dead_click_check > 4:
         look_for_mf()

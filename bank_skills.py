@@ -1,6 +1,7 @@
 from windowcapture import InventoryRegion, ScreenRegion
 import time
 import random
+from numpy import array
 from vision import Vision
 
 
@@ -20,6 +21,11 @@ x = Vision('Needle\\bank_skills\\compost\\x.png')
 deposit = Vision('Needle\\bank_skills\\compost\\deposit.png')
 compost = Vision('Needle\\bank_skills\\compost\\compost.png')
 saltpetre = Vision('Needle\\bank_skills\\compost\\saltpetre.png')
+
+headless = Vision('Needle\\bank_skills\\fletching\\headless.png')
+steel_tip = Vision('Needle\\bank_skills\\fletching\\steel_tip.png')
+
+make_region = array([(485,122,199,143)])
 
 def run_timer():
     current_time = (time.time() - start_time)
@@ -56,6 +62,14 @@ def saltpetre_compost():
     screen.click(deposit)
     inventory.wait_for(compost) == False
     time.sleep(0.62)
+    
+def arrow_tip(arrow_tip):
+    inventory.click(headless, threshold=0.85)
+    time.sleep(random.uniform(0.384, 0.47))
+    inventory.click(arrow_tip, threshold=0.85)
+    time.sleep(random.uniform(0.79, 0.91))
+    screen.click_region(make_region)
+    time.sleep(12.9)
 
 
 start_time = time.time()
@@ -63,6 +77,6 @@ print('starting script...')
 
 while True:
     
-    saltpetre_compost()
+    arrow_tip(steel_tip)
     
     run_timer()
