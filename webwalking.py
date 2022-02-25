@@ -166,7 +166,7 @@ class WebWalking(WindowCapture):
                 if self.end_of_path(within=within) is True:
                     break
                 else:
-                    self.walk_once()
+                    self.walk()
                     time.sleep(0.25)
                     break
     

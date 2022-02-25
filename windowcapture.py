@@ -398,7 +398,7 @@ class InventoryRegion(Interactions):
         else:
             return False
     
-    def is_emptying(self, interval = 3.5) -> bool:
+    def is_emptying(self, interval = 5.5) -> bool:
         '''
         checks if inventory is emptying out (at least 1 item every x amount of seconds)
         useful for things like wintertodt where you put in one thing at a time
@@ -413,7 +413,7 @@ class InventoryRegion(Interactions):
             else:
                 return True
     
-    def item_increasing(self, item: object, interval = 4.5) -> bool:
+    def item_increasing(self, item: object, interval = 5.5) -> bool:
         if self.item_amt is None:
             self.item_amt = self.amount(item)
         elif self.timer is None:
@@ -425,6 +425,7 @@ class InventoryRegion(Interactions):
                     self.item_amt = self.amount(item)
                     return True
                 else:
+                    self.item_amt = self.amount(item)
                     return False
             
 

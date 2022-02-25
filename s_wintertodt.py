@@ -68,11 +68,17 @@ class Wintertodt(Script):
         inventory.click(logs)
 
     def damage_interruption(self):
-        if health.damage_taken() == True:
+        if health.damage_taken() is True:
             self.log("Damage Taken")
             if health.get_hp() < 5:
                 self.eat_cake()
             return True
+    
+    def not_increasing(self):
+        if inventory.item_increasing(kindling) is False:
+            return True
+        else:
+            return False
 
     def level_interruption(self):
         if ChatboxRegion().contains_dialogue():
@@ -80,7 +86,7 @@ class Wintertodt(Script):
             return True
 
     def not_emptying(self):
-        if inventory.is_emptying() == False:
+        if inventory.is_emptying() is False:
             self.log("Inventory not emptying")
             return True
 
@@ -88,12 +94,12 @@ class Wintertodt(Script):
         if inventory.contains(logs):
             self.start_fletching()
             while inventory.contains(logs):
-                if any([self.damage_interruption(), self.level_interruption(), inventory.item_increasing(kindling)]):
+                if any([self.damage_interruption(), self.level_interruption(), self.not_increasing()]):
                     self.start_fletching()
                     time.sleep(0.5)
 
     def woodcut(self):
-        if to_brazier.end_of_path(within=2) == False:
+        if to_brazier.end_of_path(within=2) is False:
             to_brazier.walk(ind_len=-2)
         self.log("Clicking root region")
         screen.click_region(root_region)
@@ -152,7 +158,7 @@ class Wintertodt(Script):
             time.sleep(random.normalvariate(1.8,0.15))
             self.minigame()
             to_inside_door.walk()
-            while ChatboxRegion().contains(next_round) == False:
+            while ChatboxRegion().contains(next_round) is False:
                 time.sleep(1)
             time.sleep(1.5)
             screen.click_region(exit_door_region)
