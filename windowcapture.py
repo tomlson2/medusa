@@ -333,6 +333,9 @@ class InventoryRegion(Interactions):
         self.h = 559
         self.x = 1388
         self.y = 477
+
+        self.item_amt = None
+        self.timer = None
     
     def drink_potion(self):
         self.click()
@@ -400,14 +403,31 @@ class InventoryRegion(Interactions):
         checks if inventory is emptying out (at least 1 item every x amount of seconds)
         useful for things like wintertodt where you put in one thing at a time
         '''
+        if self.timer is None:
+            self.timer = time.time()
         num = self.num_items()
-        time.sleep(interval)
-        if num == self.num_items():
-            return False
+        if time.time() - self.timer > interval:
+            self.timer = None
+            if num == self.num_items():
+                return False
+            else:
+                return True
+    
+    def item_increasing(self, item: object, interval = 3.5) -> bool:
+        if self.item_amt is None:
+            self.item_amt = self.amount(item)
+        elif self.timer is None:
+            self.timer = time.time()
         else:
-            return True
+            if time.time() - self.timer > interval:
+                self.timer = None
+                if self.amount(item) > self.item_amt:
+                    return True
+                else:
+                    return False
+            
 
-    def drop_click(self, item : object, quantity : int, threshold=0.7):
+    def drop_click(self, item: object, quantity: int, threshold=0.7):
         '''
         must have drop mode on before call
         '''
@@ -613,10 +633,10 @@ class BankRegion(Interactions):
 
     def __init__(self):
         super().__init__()
-        self.w = 1014
-        self.h = 553
-        self.x = 299
-        self.y = 478
+        self.w = 1031
+        self.h = 697
+        self.x = 296
+        self.y = 375
 
         self.quantity = 0
     
@@ -633,7 +653,7 @@ class BankRegion(Interactions):
         pass
 
     def status(self):
-        bank_interface = self.contains(self.bank_check,0.9)
+        bank_interface = ScreenRegion().contains(self.bank_check,0.9)
         return bank_interface
 
     def withdraw(self, item, threshold=0.7, quantity=1):
@@ -770,7 +790,6 @@ class HealthOrb(Interactions):
 
     def damage_taken(self):
         if self.get_hp() < self.hp:
-            print(self.get_hp(), self.hp)
             self.update_hp()
             return True
         else:

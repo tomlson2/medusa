@@ -1,5 +1,7 @@
 import cv2 as cv
 import time
+
+from sqlalchemy import true
 from vision import Vision
 import win32gui, win32api, win32con
 import random
@@ -33,7 +35,7 @@ class WebWalking(WindowCapture):
             self.rotate_code = cv.ROTATE_90_COUNTERCLOCKWISE
         if orientation == 'West':
             self.rotate_code = cv.ROTATE_90_CLOCKWISE
-        
+            
         self.points=[]
 
         if reverse == True:
@@ -77,7 +79,6 @@ class WebWalking(WindowCapture):
         
 
     def walk(self, within: int = 1, debugger = False, ind_len = -6):
-        print("WALKING")
         opoint = self.path[0]
         click_wait = 0
         start = time.time()
@@ -101,7 +102,7 @@ class WebWalking(WindowCapture):
                     possible_points = self.path[ind[ind_len]:ind[-1]]
                     point = random.choice(possible_points)
                 else:
-                    point = self.path[ind[-2]]
+                    point = self.path[ind[-1]]
                     last = True
                 if debugger == True:
                     if coordinates in self.path:
@@ -155,14 +156,13 @@ class WebWalking(WindowCapture):
             start = time.time()
 
             if last == True:
-                time.sleep(1)
-                print("clicking last point")    
+                time.sleep(1) 
                 while self.coords_change(sleep=0.8) == True:
                     time.sleep(0.05)
-                if self.end_of_path():
+                if self.end_of_path(within=within) == True:
                     break
                 else:
-                    self.walk()
+                    self.walk(within=within)
                     break
     
 

@@ -2,22 +2,30 @@ import time
 import random
 from vision import Vision
 from windowcapture import ScreenRegion
-
+import logging
 
 path = 'Needle\\scripting\\'
 screen = ScreenRegion()
 class Script(object):
     
-    def __init__(self) -> None:
+    def __init__(self, breaking=True, show_log=False) -> None:
 
         print(f'Starting {__class__.__subclasses__()[0].__name__}')
 
         # set time vars
         self.script_time = time.time()
         self.session_time = time.time()
-        self.breaking = True
+        self.breaking = breaking
+        self.show_log = show_log
         self.break_time = self.set_break_time()
         self.break_duration = self.set_break_duration()
+
+        # set logger
+        logging.basicConfig(format='DEBUGGER: %(message)s')
+        logger = logging.getLogger()
+        logger.setLevel(logging.DEBUG)
+        self.logger = logger
+
 
         # load vision objects
         self.inventory_closed = Vision(path + 'inventory_pane.png')
@@ -65,11 +73,15 @@ class Script(object):
             return True
         else:
             return False
+    
+    def log(self, message: str):
+        if self.show_log is True:
+            self.logger.info(message)
 
     def break_handler(self):
-        if self.breaking == True and self.get_session_time() > self.break_time:
+        if self.breaking is True and self.get_session_time() > self.break_time:
             time.sleep(self.break_duration)
-            if self.login() == True:
+            if self.login() is True:
                 print("Break completed")
                 self.set_break_duration()
                 self.set_break_time()
@@ -78,7 +90,11 @@ class Script(object):
                 print("Failed to log in")
     
     def print_time(self):
-        print(f'runtime: {self.get_runtime()} time to break: {self.get_time_to_break()}')
+        if self.show_log is False:
+            line_end = '\r'
+        else:
+            line_end = '\n'
+        print(f'runtime: {self.get_runtime()} time to break: {self.get_time_to_break()}', end=line_end)
             
         
     def login(self) -> bool:
