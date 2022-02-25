@@ -422,6 +422,7 @@ class InventoryRegion(Interactions):
             if time.time() - self.timer > interval:
                 self.timer = None
                 if self.amount(item) > self.item_amt:
+                    self.item_amt = self.amount(item)
                     return True
                 else:
                     return False

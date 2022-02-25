@@ -104,8 +104,7 @@ class WebWalking(WindowCapture):
                 else:
                     point = self.path[ind[-1]]
                     last = True
-                    break
-                if debugger == True:
+                if debugger is True:
                     if coordinates in self.path:
                         color = (0,255,0)
                     else:
@@ -118,7 +117,13 @@ class WebWalking(WindowCapture):
                     if cv.waitKey(1) == ord('q'):
                         cv.destroyAllWindows()
                         break
-                
+
+                rel_point = self.get_relative_point(coordinates, point)
+
+                if last is True:
+                    break
+
+
                 x1,x2,y1,y2 = self.within_distance(within)
 
                 if  (x1 <= coordinates[0] <= x2 and y1 <= coordinates[1] <= y2):
@@ -127,8 +132,6 @@ class WebWalking(WindowCapture):
                     arrived = True
                     break
 
-                rel_point = self.get_relative_point(coordinates, point)
-
                 opoint = point
 
                 if RunOrb().is_active():
@@ -136,7 +139,7 @@ class WebWalking(WindowCapture):
                 else:
                     click_wait = random.normalvariate(7, 0.25)
 
-                if first == True:
+                if first is True:
                     first = False
                     break
                 if current - start < random.normalvariate(click_wait,0.1):
@@ -145,7 +148,7 @@ class WebWalking(WindowCapture):
                 else:
                     break
 
-            if  arrived == True:
+            if  arrived is True:
                 break
 
             hWnd = win32gui.FindWindow(None, self.window_name)
@@ -156,13 +159,13 @@ class WebWalking(WindowCapture):
             win32gui.SendMessage(hWnd1, win32con.WM_LBUTTONUP, None, lParam)
             start = time.time()
 
-            if last == True:
-                while self.coords_change(sleep=0.8) == True:
+            if last is True:
+                while self.coords_change(sleep=0.8) is True:
                     time.sleep(0.05)
-                if self.end_of_path(within=within) == True:
+                if self.end_of_path(within=within) is True:
                     break
                 else:
-                    self.walk_once(within=within)
+                    self.walk_once()
                     time.sleep(0.25)
                     break
     
@@ -181,7 +184,7 @@ class WebWalking(WindowCapture):
 
         x = 10
         y = 20
-        if self.rotate_code == None:
+        if self.rotate_code is None:
             im = cv.imread(self.worldmap)
         else:
             im = cv.rotate(cv.imread(self.worldmap), self.rotate_code)
