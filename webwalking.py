@@ -160,6 +160,7 @@ class WebWalking(WindowCapture):
             start = time.time()
 
             if last is True:
+                time.sleep(0.25)
                 while self.coords_change(sleep=0.8) is True:
                     time.sleep(0.05)
                 if self.end_of_path(within=within) is True:
