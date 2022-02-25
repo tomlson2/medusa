@@ -88,7 +88,7 @@ class Wintertodt(Script):
         if inventory.contains(logs):
             self.start_fletching()
             while inventory.contains(logs):
-                if any([self.damage_interruption(), self.level_interruption(), inventory.item_increasing]):
+                if any([self.damage_interruption(), self.level_interruption(), inventory.item_increasing(kindling)]):
                     self.start_fletching()
                     time.sleep(0.5)
 

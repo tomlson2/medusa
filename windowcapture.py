@@ -413,7 +413,7 @@ class InventoryRegion(Interactions):
             else:
                 return True
     
-    def item_increasing(self, item: object, interval = 3.5) -> bool:
+    def item_increasing(self, item: object, interval = 4.5) -> bool:
         if self.item_amt is None:
             self.item_amt = self.amount(item)
         elif self.timer is None:

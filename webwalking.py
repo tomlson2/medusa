@@ -104,6 +104,7 @@ class WebWalking(WindowCapture):
                 else:
                     point = self.path[ind[-1]]
                     last = True
+                    break
                 if debugger == True:
                     if coordinates in self.path:
                         color = (0,255,0)
@@ -156,13 +157,13 @@ class WebWalking(WindowCapture):
             start = time.time()
 
             if last == True:
-                time.sleep(1) 
                 while self.coords_change(sleep=0.8) == True:
                     time.sleep(0.05)
                 if self.end_of_path(within=within) == True:
                     break
                 else:
-                    self.walk(within=within)
+                    self.walk_once(within=within)
+                    time.sleep(0.25)
                     break
     
 
