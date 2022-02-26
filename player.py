@@ -1,75 +1,47 @@
 from hsvfilter import HsvFilter
-from webwalking import WebWalking
-from windowcapture import Interactions, WindowCapture
+from windowcapture import Interactions
+from regions import XpRegion, HealthOrb, RunOrb
 from vision import Vision
 from ocr import Ocr
 
 
-class Player(Interactions, Vision):
+class Player(Interactions):
 
     def __init__(self) -> None:
         super().__init__()
-        # self.run_boot = Interactions(area='run_boot')
-        # self.run_orb = WindowCapture(area='run_orb')
-        # self.health_orb = WindowCapture(area='health_orb')
-        # self.prayer_orb = WindowCapture(area='prayer_orb')
-        # self.special_orb = WindowCapture(area='special_orb')
-        # self.xp_bar = WindowCapture(area='xp_bar')
-        # self.stam_boot = Vision('Needle\\stam_boot.png')
         self.vision = Vision('Needle\\banana.png')
         self.filter = HsvFilter(vMin=136,sSub=255)
 
         self.orbs = Ocr('samples/generalsamples.data', 'responses/generalresponses.data')
-        self.xpb = Ocr('samples/xpsamps.data', 'responses/xpresponses.data')
-        self.choose_option = Ocr('samples/bold12lowersamples.data', 'responses/bold12lowerresponses.data')
 
     def health(self):
-        self.w = 42
-        self.h = 27
-        self.x = 1449
-        self.y = 166
-
-        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        health = self.orbs.number(im)
+        health = HealthOrb().get_hp()
         return health
 
-    def run(self):
-
-        self.w = 45
-        self.h = 29
-        self.x = 1470
-        self.y = 306
-
-        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        run = self.orbs.number(im)
-        return run
+    def run_energy(self):
+        energy = RunOrb().get_energy()
+        return energy
 
     def prayer(self):
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
         prayer = self.orbs.number(im)
         return prayer
     
-    def stats(self):
-        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        health = self.numbers.number(im)
-        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        run = self.numbers.number(im)
-        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        prayer = self.numbers.number(im)
+    # def stats(self):
+    #     im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
+    #     health = self.numbers.number(im)
+    #     im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
+    #     run = self.numbers.number(im)
+    #     im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
+    #     prayer = self.numbers.number(im)
 
-        text = "health: " + str(health) + " run: " + str(run) + " prayer: " + str(prayer) + "."
-        return text
+    #     text = "health: " + str(health) + " run: " + str(run) + " prayer: " + str(prayer) + "."
+    #     return text
 
     def xp(self):
-
-        self.w = 138
-        self.h = 47
-        self.x = 1265
-        self.y = 103
-
-        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
-        xp = self.xpb.text(im)
+        xp = XpRegion().get_xp()
         return xp
+        
     
     # def bank_number(self):
     #     im = self.vision.apply_hsv_filter(self.bank_num.get_screenshot(),self.filter)

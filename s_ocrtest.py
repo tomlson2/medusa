@@ -1,7 +1,9 @@
-from windowcapture import SkillsRegion
+from regions import SkillsRegion, XpRegion
 from vision import Vision
 from pytes_ocr import OCR
+from player import Player
 
-skills = SkillsRegion()
+player1 = Player()
 
-skills.get_skill_level('farming')
+while True:
+    print(player1.xp())

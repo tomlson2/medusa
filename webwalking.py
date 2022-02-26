@@ -9,7 +9,8 @@ from math import sqrt
 import numpy as np
 import win32gui, win32con
 import pickle
-from windowcapture import MinimapRegion, WindowCapture, RunOrb
+from windowcapture import WindowCapture
+from regions import RunOrb, MinimapRegion
 
 
 
@@ -295,4 +296,4 @@ class WebWalking(WindowCapture):
 
 if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    WebWalking('','map\\lumbridge.png',orientation='North').draw_path('regular_trees')
+    WebWalking('','map\\wintertodt.png',orientation='North').get_path('wintertodt_door')

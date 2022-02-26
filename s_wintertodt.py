@@ -1,9 +1,6 @@
-from tracemalloc import start
 from webwalking import WebWalking
-from windowcapture import ChatboxRegion, CustomRegion, HealthOrb, ScreenRegion, BankRegion, InventoryRegion
-from player import Player
+from regions import ChatboxRegion, CustomRegion, HealthOrb, ScreenRegion, BankRegion, InventoryRegion
 from vision import Vision
-import threading
 from numpy import array
 import time, random
 from scripting import Script
@@ -21,8 +18,6 @@ root_region = array([(890,1003,40,50)])
 exit_door_region = array([(835,532,261,135)])
 enter_door_region = array([(766,198,379,178)])
 brazier_region = array([(927,406,73,51)])
-
-player = Player()
 
 health = HealthOrb()
 

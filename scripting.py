@@ -1,7 +1,7 @@
 import time
 import random
 from vision import Vision
-from windowcapture import ScreenRegion
+from regions import ScreenRegion
 import logging
 
 path = 'Needle\\scripting\\'
