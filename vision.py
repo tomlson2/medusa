@@ -16,7 +16,7 @@ class Vision:
     method = None
 
     # constructor
-    def __init__(self, needle_img_path, hsv_filter=HsvFilter(), method=cv.TM_CCOEFF_NORMED, scale = 1):
+    def __init__(self, needle_img_path='Needle\\banana.png', hsv_filter=HsvFilter(), method=cv.TM_CCOEFF_NORMED, scale = 1):
         # load the image we're trying to match
         # https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
 

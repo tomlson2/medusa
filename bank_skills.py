@@ -43,9 +43,9 @@ def saltpetre_compost():
             screen.wait_for(bank, threshold=0.75)
     
     time.sleep(0.44)    
-    screen.click(compost)
+    screen.click(compost,1)
     time.sleep(random.normalvariate(0.31, 0.002))
-    screen.click(saltpetre)
+    screen.click(saltpetre,1)
     time.sleep(random.normalvariate(0.44, 0.004))
     screen.click(x)
     
@@ -77,6 +77,6 @@ print('starting script...')
 
 while True:
     
-    arrow_tip(steel_tip)
+    saltpetre_compost()
     
     run_timer()

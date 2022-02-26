@@ -51,12 +51,12 @@ class Wintertodt(Script):
 
     def eat_cake(self):
         self.log("Eating cake")
-        if inventory.contains(cake3):
-            inventory.click(cake3)
-        elif inventory.contains(cake2):
-            inventory.click(cake2)
-        elif inventory.contains(cake1):
-            inventory.click(cake1)
+        if inventory.contains(cake3,0.8):
+            inventory.click(cake3,0.8)
+        elif inventory.contains(cake2,0.8):
+            inventory.click(cake2,0.8)
+        elif inventory.contains(cake1,0.8):
+            inventory.click(cake1,0.8)
         else:
             self.log("No Food!")
         time.sleep(random.normalvariate(0.3,0.05))
@@ -89,6 +89,8 @@ class Wintertodt(Script):
         if inventory.is_emptying() is False:
             self.log("Inventory not emptying")
             return True
+        else:
+            return False
 
     def fletch(self):
         if inventory.contains(logs):
@@ -176,7 +178,7 @@ class Wintertodt(Script):
                 bank.deposit(supply_crate)
             except IndexError:
                 self.log("Didn't have supply crate.")
-            if InventoryRegion().amount(cake1, 0.8) < 3:
+            if InventoryRegion().amount(cake1, 0.85) < 3:
                 bank.withdraw(cake1, quantity=3)
             self.print_time()
 

@@ -100,6 +100,12 @@ class Interactions(WindowCapture, Vision):
     def get_screen_position(self, pos):
         return (pos[0]+self.x-self.border_pixels, pos[1]+self.y-self.titlebar_pixels)
     
+    def click_right_side(self, click_point) -> bool:
+        if click_point[0] > 963:
+            return True
+        else:
+            return False
+    
     def right_click(self, item: object, threshold: float = 0.7, timeout = 7):
         self.mouse_down()
         time.sleep(random.normalvariate(0.72,0.1))
@@ -123,15 +129,16 @@ class Interactions(WindowCapture, Vision):
 
         points = item.get_click_points(rectangles)
         point = self.get_screen_position(points[ind])
-        #print(point)
         lParam = win32api.MAKELONG(point[0], point[1])
 
         self.mouse_down(lParam)
-        if right_click == True:
+        if right_click is True:
             time.sleep(random.normalvariate(0.75,0.01))
         self.mouse_up(lParam)
 
         time.sleep(random.normalvariate(0.25,0.02))
+
+        return point
     
     def get_rectangles(self, item, threshold):
         if type(item) == Vision:
@@ -317,14 +324,48 @@ class Interactions(WindowCapture, Vision):
             
 class CustomRegion(Interactions):
 
-    def __init__(self, w1, h1, x1, y1):
+    def __init__(self, custom_w, custom_h, custom_x, custom_y):
         super().__init__()
-        self.w = w1
-        self.h = h1
-        self.x = x1
-        self.y = y1
+        self.w = custom_w
+        self.h = custom_h
+        self.x = custom_x
+        self.y = custom_y
 
-          
+class SkillsRegion(Interactions):
+
+    def __init__(self):
+        super().__init__()
+        self.w = 408
+        self.h = 559
+        self.x = 1388
+        self.y = 477
+
+        self.skills = ['attack','hitpoints','mining','strength','agility','smithing','defence',
+                'herblore','fishing','ranged','thieving','cooking','prayer','crafting',
+                'firemaking','prayer','fletching','woodcutting','runecraft','slayer','farming',
+                'construction','hunter']
+    
+    def skill_index(self, skill: str):
+        index = self.skills.index(skill)
+        return index
+    
+    def get_row(self, index):
+        row = index % 3
+        return row
+
+    def get_column(self, index):
+        column = index % 7
+        return column
+    
+    def get_position(self, index):
+        row = self.get_row(index)
+        column = self.get_column(index)
+        return row, column
+    
+    def get_skill_level(self, skill: str):
+        index = self.skill_index(skill)
+        row, column = self.get_position(index)
+        print(row, column)
 class InventoryRegion(Interactions):
 
     def __init__(self):
@@ -398,22 +439,24 @@ class InventoryRegion(Interactions):
         else:
             return False
     
-    def is_emptying(self, interval = 5.5) -> bool:
+    def is_emptying(self, interval = 3.5) -> bool:
         '''
         checks if inventory is emptying out (at least 1 item every x amount of seconds)
         useful for things like wintertodt where you put in one thing at a time
         '''
         if self.timer is None:
             self.timer = time.time()
-        num = self.num_items()
+        if self.item_amt is None:
+            self.item_amt = self.num_items()
         if time.time() - self.timer > interval:
             self.timer = None
-            if num == self.num_items():
+            if self.item_amt == self.num_items():
                 return False
             else:
+                self.item_amt = self.num_items()
                 return True
     
-    def item_increasing(self, item: object, interval = 5.5) -> bool:
+    def item_increasing(self, item: object, interval = 3.5) -> bool:
         if self.item_amt is None:
             self.item_amt = self.amount(item)
         elif self.timer is None:
@@ -527,7 +570,6 @@ class ChatboxRegion(Interactions):
         self.please_wait_black = Vision("Needle\\chatbox\\please_wait_black.png")
     
     def tap_handler(self):
-
         while True:
             if self.contains(self.tap_here,0.85):
                 self.click(self.tap_here, 0.85)

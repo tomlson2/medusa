@@ -1,4 +1,5 @@
 import os
+from typing import Type
 import pandas as pd
 import pandas as pd
 from osrsbox import items_api
@@ -65,13 +66,19 @@ def crop_black(path):
     except cv.error as e:
         pass
 
-def pad(path,h,w):
-    im = cv.imread(path)
+def pad(path,h,w,save=False):
+    try:
+        im = cv.imread(path)
+    except TypeError:
+        im = path
     x,y,c = im.shape
     bw = w-y
     bh = h-x
     resized_im = cv.copyMakeBorder(im, bh, bh, bw, bw, borderType=cv.BORDER_CONSTANT)
-    cv.imwrite(path+"//padded",resized_im)
+    if save is True:
+        cv.imwrite(path+"//padded",resized_im)
+    else:
+        return resized_im
 
 def add_margin(pil_img, top, right, bottom, left, color):
     width, height = pil_img.size
@@ -80,6 +87,13 @@ def add_margin(pil_img, top, right, bottom, left, color):
     result = Image.new(pil_img.mode, (new_width, new_height), color)
     result.paste(pil_img, (left, top))
     return result
+
+def concat_images(images: list):
+    '''
+    concatenate images of the same height
+    '''
+    im = cv.hconcat(images)
+    return im
 
 def contour_boxes(im, min = 100):
     contours, _ = cv.findContours(im, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
@@ -111,3 +125,10 @@ def contour_boxes(im, min = 100):
     
 
     return rects
+
+def sharpen(im):
+    kernel = np.array([[0, -1, 0],
+                        [-1, 5,-1],
+                        [0, -1, 0]])
+    sharp_im = cv.filter2D(src=im, ddepth=-1, kernel=kernel)
+    return sharp_im
