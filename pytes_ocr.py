@@ -8,9 +8,10 @@ from image_tools import sharpen, concat_images, pad
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 class OCR():
+    
         
-    def process_image(self, im):
-        im = Vision().apply_hsv_filter(im, HsvFilter(vMin=141))
+    def process_image(self, im, hsv_filter = HsvFilter(vMin=140)):
+        im = Vision().apply_hsv_filter(im, hsv_filter=hsv_filter)
         gray_im = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
         final_im = sharpen(gray_im)
         return final_im
@@ -61,11 +62,12 @@ class OCR():
             return res
 
     def ocr_result(self, im) -> str:
-        text = pytesseract.image_to_string(im)
+        text = pytesseract.image_to_string(im, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789')
         return text
 
-    def processed_result(self, im):
-        im = self.process_image(im)
+    def processed_result(self, im, hsv_filter = HsvFilter(vMin=140)):
+        im = self.process_image(im, hsv_filter)
+        cv.imwrite('s.png',im)
         result = self.ocr_result(im)
         return result
     

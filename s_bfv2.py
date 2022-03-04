@@ -3,7 +3,7 @@ from webwalking import WebWalking
 from vision import Vision
 from player import Player
 from bank import Bank
-from windowcapture import BankRegion, ChatboxRegion, InventoryRegion, ScreenRegion
+from regions import BankRegion, ChatboxRegion, InventoryRegion, ScreenRegion
 from numpy import array
 from wikiapi import Price
 import time
@@ -326,8 +326,6 @@ def steel():
         
 def rune():
     bars = 0
-    coal_run()
-    coal_run()
     while True:
         while(to_bank.end_of_path() == False):
             to_bank.walk()
@@ -526,4 +524,4 @@ def rune():
         coal_run()
 
 if __name__ == "__main__":
-    adamant()
+    rune()

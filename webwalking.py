@@ -296,4 +296,4 @@ class WebWalking(WindowCapture):
 
 if __name__ == '__main__':
     #WebWalking('','map\\rimmington.png',orientation='North').get_path("to_portal")
-    WebWalking('','map\\wintertodt.png',orientation='North').get_path('wintertodt_door')
+    WebWalking('','map\\desert1.png',orientation='North').draw_path('123')

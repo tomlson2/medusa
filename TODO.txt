@@ -1,6 +1,0 @@
--fix webwalking
--expand ocr implementation
--start scripting out quests
-    -think about how to better train models
--bank class
--full analysis of how to refactor codebase

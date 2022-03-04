@@ -1,5 +1,5 @@
 from turtle import Screen
-from windowcapture import ScreenRegion, InventoryRegion, ChatboxRegion
+from regions import ScreenRegion, InventoryRegion, ChatboxRegion
 from vision import Vision
 from scripting import Script
 from webwalking import WebWalking

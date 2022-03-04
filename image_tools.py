@@ -110,7 +110,6 @@ def contour_boxes(im, min = 100):
     for x,y,w,h in rects:
         match = False
         for ht in y_vals:
-            print(ht[1])
             if ht[1]-20 < y < ht[1]+20:
                 y = ht[1]
                 y_vals.append((x,y,w,h))

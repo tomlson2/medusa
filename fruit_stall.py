@@ -2,7 +2,7 @@ import time
 import random
 from numpy import array
 from vision import Vision
-from windowcapture import InventoryRegion, ScreenRegion
+from regions import InventoryRegion, ScreenRegion
 
 
 '''

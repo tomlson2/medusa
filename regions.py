@@ -24,7 +24,7 @@ class CustomRegion(Interactions):
         self.x = custom_x
         self.y = custom_y
 
-class SkillsRegion(Interactions):
+class SkillsRegion(Interactions, OCR):
 
     def __init__(self):
         super().__init__()
@@ -507,10 +507,10 @@ class RunOrb(Interactions, OCR):
 
     def __init__(self):
         super().__init__()
-        self.w = 38
-        self.h = 38
-        self.x = 1527
-        self.y = 292        
+        self.w = 109
+        self.h = 56
+        self.x = 1459
+        self.y = 280      
     
     def is_active(self):
         if self.contains(Vision('Needle\\orbs\\run_boot.png'),0.95):
@@ -519,9 +519,15 @@ class RunOrb(Interactions, OCR):
             return False
     
     def get_energy(self):
+        self.w = 70
+        self.h = 43
+        self.x = 1450
+        self.y = 299
         im = self.get_screenshot()
-        text = self.processed_result(im)
+        padded_im = pad(im, 100, 100)
+        text = self.processed_result(padded_im, hsv_filter=HsvFilter(vMin=136,sSub=255))
         run_energy = self.make_int(text)
+        print(run_energy)
         return run_energy
     
     def run(self):

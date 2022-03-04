@@ -4,6 +4,7 @@ from pytes_ocr import OCR
 from player import Player
 
 player1 = Player()
+xp = XpRegion()
 
 while True:
-    print(player1.xp())
+    print(player1.run())

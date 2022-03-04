@@ -1,6 +1,6 @@
 from win32con import STATUS_ABANDONED_WAIT_0
 from vision import Vision
-from windowcapture import BankRegion, ChatboxRegion, InventoryRegion, ScreenRegion
+from regions import BankRegion, ChatboxRegion, InventoryRegion, ScreenRegion
 from player import Player
 import time
 import random

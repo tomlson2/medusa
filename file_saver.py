@@ -1,11 +1,12 @@
-from windowcapture import ScreenRegion
+from regions import ScreenRegion
 import cv2 as cv
 import uuid
 import time
-
+i = 0
 while True:
     screen = ScreenRegion()
     im = screen.get_screenshot()
-    cv.imwrite("bank_booth_data//"+str(uuid.uuid4())+".png", im)
-    time.sleep(2)
+    cv.imwrite("tourist_trap_data//"+str(i)+".png", im)
+    i += 1
+    time.sleep(1)
 

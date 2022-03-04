@@ -15,12 +15,25 @@ class Player(Interactions):
         self.orbs = Ocr('samples/generalsamples.data', 'responses/generalresponses.data')
 
     def health(self):
-        health = HealthOrb().get_hp()
+        self.w = 42
+        self.h = 27
+        self.x = 1449
+        self.y = 166
+
+        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
+        health = self.orbs.number(im)
         return health
 
-    def run_energy(self):
-        energy = RunOrb().get_energy()
-        return energy
+    def run(self):
+
+        self.w = 45
+        self.h = 29
+        self.x = 1470
+        self.y = 306
+
+        im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
+        run = self.orbs.number(im)
+        return run
 
     def prayer(self):
         im = self.apply_hsv_filter(self.get_screenshot(),self.filter)
